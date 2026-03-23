@@ -156,7 +156,6 @@
         
         #bacflix-chat-window { display: none; width: 380px; max-width: 90vw; height: 550px; max-height: 80vh; background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; box-shadow: 0 15px 50px rgba(0,0,0,0.7); flex-direction: column; overflow: hidden; margin-bottom: 15px; border: 1px solid var(--border-glass); z-index: 1; transition: all 0.3s ease; }
         
-        /* وضع ملء الشاشة للمساعد */
         .fullscreen-chat { width: 100vw !important; max-width: 100vw !important; height: 100vh !important; max-height: 100vh !important; bottom: 0 !important; left: 0 !important; border-radius: 0 !important; margin-bottom: 0 !important; border: none !important; position: fixed; z-index: 99999; }
 
         #chat-header { background: rgba(0,0,0,0.2); padding: 15px 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); }
@@ -173,11 +172,11 @@
         .icon-btn { background: transparent; color: #ccc; border: 1px solid #333; border-radius: 50%; width: 40px; height: 40px; min-width: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .icon-btn:hover { background: #222; color: white; border-color: var(--bacflix-red); }
         
-        /* توجيه الرياضيات للمساعد */
         .message mjx-container, .message .MathJax, .message .MathJax_Display { direction: ltr !important; text-align: left !important; display: inline-block; }
     </style>
 </head>
 <body>
+
 <div id="bacflix-app-root">
 
     <div class="modal-overlay" id="authModal" style="display: flex; position: absolute;">
@@ -193,7 +192,7 @@
         <div id="auth-step-1" class="glass-panel w-[90%] max-w-[420px] text-center hidden">
             <h2 class="text-3xl font-black italic text-white mb-2 tracking-wider">BAC<span style="color: var(--bacflix-red);">FLIX</span></h2>
             <p class="text-gray-400 mb-6 text-xs">إكمال إعدادات الحساب</p>
-            <input type="text" id="regName" placeholder="الاسم الكريم" class="text-center">
+            <input type="text" id="regName" placeholder="الاسم الكريم" class="text-center" readonly>
             <input type="tel" id="regPhone" placeholder="رقم الهاتف (للتواصل)" class="text-center" dir="ltr">
             <select id="regStream" class="text-center">
                 <option value="" disabled selected>-- حدد الشعبة --</option>
@@ -209,6 +208,7 @@
         </div>
     </div>
 
+    <!-- متجر الباقات -->
     <div class="modal-overlay" id="paymentModal" style="display: none; z-index: 10001;">
         <div class="glass-panel w-[90%] max-w-[500px] text-center flex flex-col" style="max-height: 85vh;">
             <h2 class="text-2xl font-bold text-white mb-2">متجر الباقات</h2>
@@ -253,6 +253,7 @@
         </div>
     </div>
 
+    <!-- نافذة استخراج البطاقات -->
     <div class="modal-overlay" id="fileExtractModal" style="position: absolute;">
         <div class="glass-panel w-[90%] max-w-[420px] text-right !p-6">
             <h2 class="text-lg font-bold text-white mb-2 border-b border-white/10 pb-2">استخراج البطاقات من ملف</h2>
@@ -297,10 +298,13 @@
 
     <main class="main-viewport max-w-[1200px] mx-auto px-4">
         
+        <!-- قسم الأكاديمية -->
         <div id="app-academy" class="app-window active">
-            <div id="inactiveBanner" style="display:none;" class="bg-red-500/10 border border-red-500/30 text-red-200 p-4 rounded-xl mb-6 text-sm font-bold flex items-center gap-3 backdrop-blur-sm">
-                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                حسابك غير مفعل حاليا. يرجى شحن الرصيد للوصول للحصص وفتح المولدات.
+            <div id="inactiveBanner" style="display:none;" class="bg-red-500/10 border border-red-500/30 text-red-200 p-4 rounded-xl mb-6 text-sm font-bold flex items-center justify-between gap-3 backdrop-blur-sm">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    حسابك غير مفعل حاليا. يرجى شحن الرصيد للوصول للحصص وفتح المولدات.
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -340,6 +344,7 @@
             </div>
         </div>
 
+        <!-- قسم المختبر -->
         <div id="app-lab" class="app-window">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-3 no-print">
@@ -382,6 +387,7 @@
             </div>
         </div>
 
+        <!-- قسم الكويزات -->
         <div id="app-quiz" class="app-window">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-3 no-print">
@@ -399,7 +405,7 @@
                                 <label class="block mb-1 text-gray-400 text-xs text-[--bacflix-red] font-bold">الصعوبة (ميزة ذكية)</label>
                                 <select id="quiz-difficulty" class="border-l-4 border-[--bacflix-red]">
                                     <option value="تكيفي" selected>تحديد آلي للمستوى (Adaptive)</option>
-                                    <option value="سهل ومباشر">مراجعة خ خفيفة (سهل)</option>
+                                    <option value="سهل ومباشر">مراجعة خفيفة (سهل)</option>
                                     <option value="مستوى بكالوريا">مستوى بكالوريا (متوسط)</option>
                                     <option value="تحدي وصعب جدا وتحليلي">تحدي للعباقرة (صعب)</option>
                                 </select>
@@ -435,6 +441,7 @@
             </div>
         </div>
 
+        <!-- قسم البطاقات -->
         <div id="app-cards" class="app-window">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-4">
@@ -480,6 +487,7 @@
             </div>
         </div>
 
+        <!-- قسم الإحصائيات -->
         <div id="app-stats" class="app-window">
             <header class="mb-6 border-b border-[#30363d] pb-4 no-print">
                 <h2 class="text-2xl font-black text-white">إحصائيات التعلم وتحليل الذكاء الاصطناعي</h2>
@@ -522,9 +530,9 @@
                 </div>
             </div>
         </div>
-
     </main>
 
+    <!-- المساعد الذكي -->
     <div id="bacflix-chat-widget" class="no-print">
         <div id="bacflix-chat-window">
             <div id="chat-header">
@@ -557,1215 +565,1309 @@
 
 </div>
 
-    <script>
-        const BacflixSecurity = (function() {
-            let _isToolsActive = false; 
-            const _SECRET_KEY = "BACFLIX_SECURE_" + Math.random().toString(36).substr(2, 9); 
-            
-            return {
-                isActive: function() { return _isToolsActive; },
-                setActive: function(status, key) {
-                    if (key === _SECRET_KEY) {
-                        _isToolsActive = status;
-                    } else {
-                        console.error("محاولة غير مصرح بها.");
-                    }
-                },
-                getKey: function() { return _SECRET_KEY; }
-            };
-        })();
+<script>
+    const BacflixSecurity = (function() {
+        let _isToolsActive = false; 
+        const _SECRET_KEY = "BACFLIX_SECURE_" + Math.random().toString(36).substr(2, 9); 
+        return {
+            isActive: function() { return _isToolsActive; },
+            setActive: function(status, key) {
+                if (key === _SECRET_KEY) {
+                    _isToolsActive = status;
+                } else {
+                    console.error("محاولة غير مصرح بها.");
+                }
+            },
+            getKey: function() { return _SECRET_KEY; }
+        };
+    })();
 
-        setInterval(function() {
-            const before = new Date().getTime();
-            debugger; 
-            const after = new Date().getTime();
-            if (after - before > 100) {
-                document.getElementById('bacflix-app-root').innerHTML = "<div class='glass-panel' style='position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;'><h1 style='color:#ef4444;'>تنبيه أمني</h1><p>يرجى إغلاق أدوات المطور (F12) لاستخدام المنصة.</p></div>";
+    setInterval(function() {
+        const before = new Date().getTime();
+        debugger; 
+        const after = new Date().getTime();
+        if (after - before > 100) {
+            document.getElementById('bacflix-app-root').innerHTML = "<div class='glass-panel' style='position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;'><h1 style='color:#ef4444;'>تنبيه أمني</h1><p>يرجى إغلاق أدوات المطور (F12) لاستخدام المنصة.</p></div>";
+        }
+    }, 1000);
+
+    let activeApp = 'academy'; 
+    let cloudCurriculum = {};
+    let currentUser = null; 
+    let currentStream = null;
+    let globalChatHistory = [];
+    let userDataCache = { credits: 0, subscriptionEnd: 0 };
+    let currentQuizPoolKey = null;
+    let currentQuizFirebaseId = null;
+    let globalContactSettings = { rip: '', ccp: '', ccpKey: '', name: '', wa: '', tg: '' };
+
+    setTimeout(() => {
+        if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) { 
+            firebase.initializeApp(firebaseConfig); 
+            window.cloudDb = firebase.database();
+        }
+    }, 100);
+
+    document.querySelectorAll('input[id*="Code"], .voucher-input').forEach(el => {
+        el.addEventListener('input', function (e) {
+            let val = e.target.value.replace(/-/g, '').toUpperCase();
+            if (val.length > 0) val = val.match(/.{1,4}/g).join('-');
+            e.target.value = val;
+        });
+    });
+
+    // --- إحصائيات ---
+    function initStats() {
+        if(!currentUser) return null;
+        let stats = JSON.parse(localStorage.getItem(`bacflix_stats_${currentUser}`));
+        if(!stats) {
+            stats = { labGenerated: 0, quizzesTaken: 0, quizTotalQuestions: 0, quizCorrectAnswers: 0, cardsReviewed: 0, cardsEasy: 0, cardsGood: 0, cardsHard: 0 };
+            localStorage.setItem(`bacflix_stats_${currentUser}`, JSON.stringify(stats));
+        }
+        return stats;
+    }
+
+    function updateStat(key, value) {
+        let stats = initStats();
+        if(!stats) return;
+        if(stats[key] !== undefined) {
+            stats[key] += value;
+            localStorage.setItem(`bacflix_stats_${currentUser}`, JSON.stringify(stats));
+        }
+    }
+
+    function saveQuizHistory(subject, topics, scorePercentage) {
+        if (!currentUser) return;
+        const key = `bacflix_quiz_history_${currentUser}`;
+        let history = JSON.parse(localStorage.getItem(key)) || [];
+        history.unshift({ date: Date.now(), subject, topics, score: scorePercentage });
+        if(history.length > 50) history.pop();
+        localStorage.setItem(key, JSON.stringify(history));
+    }
+
+    function getAdaptiveDifficulty(subject) {
+        const history = JSON.parse(localStorage.getItem(`bacflix_quiz_history_${currentUser}`)) || [];
+        const subjTests = history.filter(h => h.subject === subject);
+        if (subjTests.length === 0) return "مستوى بكالوريا"; 
+        const recentTests = subjTests.slice(0, 3);
+        const avg = recentTests.reduce((acc, curr) => acc + curr.score, 0) / recentTests.length;
+        if (avg < 50) return "سهل ومباشر"; 
+        if (avg > 80) return "تحدي وصعب جدا وتحليلي"; 
+        return "مستوى بكالوريا";
+    }
+
+    function renderStats() {
+        let stats = initStats();
+        if(!stats) return;
+        
+        document.getElementById('statVal_lab').innerText = stats.labGenerated;
+        document.getElementById('statVal_quizCount').innerText = stats.quizzesTaken;
+        
+        let percent = 0;
+        if(stats.quizTotalQuestions > 0) percent = Math.round((stats.quizCorrectAnswers / stats.quizTotalQuestions) * 100);
+        document.getElementById('statVal_quizScore').innerText = `${percent}%`;
+        
+        document.getElementById('statVal_cards').innerText = stats.cardsReviewed;
+        document.getElementById('statVal_cardsEasy').innerText = stats.cardsEasy;
+        document.getElementById('statVal_cardsGood').innerText = stats.cardsGood;
+        document.getElementById('statVal_cardsHard').innerText = stats.cardsHard;
+
+        const history = JSON.parse(localStorage.getItem(`bacflix_quiz_history_${currentUser}`)) || [];
+        let weakAreas = {};
+        history.forEach(test => {
+            if (test.score < 50) {
+                const lessonKey = `${test.subject} - ${test.topics}`;
+                weakAreas[lessonKey] = (weakAreas[lessonKey] || 0) + 1;
             }
-        }, 1000);
-
-        let activeApp = 'academy'; 
-        let cloudCurriculum = {};
-        let currentUser = null; 
-        let currentStream = null;
-        let globalChatHistory = [];
-        let userDataCache = { credits: 0, subscriptionEnd: 0 };
-        let globalContactSettings = { rip: '', ccp: '', ccpKey: '', name: '', wa: '', tg: '' };
-        let isFullscreenChat = false;
-        let currentQuizPoolKey = null;
-        let currentQuizFirebaseId = null;
-
-        setTimeout(() => {
-            if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) { 
-                firebase.initializeApp(firebaseConfig); 
-                window.cloudDb = firebase.database();
-            }
-        }, 100);
-
-        document.querySelectorAll('input[id*="Code"], .voucher-input').forEach(el => {
-            el.addEventListener('input', function (e) {
-                let val = e.target.value.replace(/-/g, '').toUpperCase();
-                if (val.length > 0) val = val.match(/.{1,4}/g).join('-');
-                e.target.value = val;
-            });
         });
 
-        // ---------------------------------------------------------
-        // الإحصائيات الشاملة
-        // ---------------------------------------------------------
-        function initStats() {
-            if(!currentUser) return null;
-            let stats = JSON.parse(localStorage.getItem(`bacflix_stats_${currentUser}`));
-            if(!stats) {
-                stats = { labGenerated: 0, quizzesTaken: 0, quizTotalQuestions: 0, quizCorrectAnswers: 0, cardsReviewed: 0, cardsEasy: 0, cardsGood: 0, cardsHard: 0 };
-                localStorage.setItem(`bacflix_stats_${currentUser}`, JSON.stringify(stats));
-            }
-            return stats;
-        }
-
-        function updateStat(key, value) {
-            let stats = initStats();
-            if(!stats) return;
-            if(stats[key] !== undefined) {
-                stats[key] += value;
-                localStorage.setItem(`bacflix_stats_${currentUser}`, JSON.stringify(stats));
-            }
-        }
-
-        function saveQuizHistory(subject, topics, scorePercentage) {
-            if (!currentUser) return;
-            const key = `bacflix_quiz_history_${currentUser}`;
-            let history = JSON.parse(localStorage.getItem(key)) || [];
-            history.unshift({ date: Date.now(), subject, topics, score: scorePercentage });
-            if(history.length > 50) history.pop();
-            localStorage.setItem(key, JSON.stringify(history));
-        }
-
-        function getAdaptiveDifficulty(subject) {
-            const history = JSON.parse(localStorage.getItem(`bacflix_quiz_history_${currentUser}`)) || [];
-            const subjTests = history.filter(h => h.subject === subject);
-            if (subjTests.length === 0) return "مستوى بكالوريا"; 
-            const recentTests = subjTests.slice(0, 3);
-            const avg = recentTests.reduce((acc, curr) => acc + curr.score, 0) / recentTests.length;
-            if (avg < 50) return "سهل ومباشر"; 
-            if (avg > 80) return "تحدي وصعب جدا وتحليلي"; 
-            return "مستوى بكالوريا";
-        }
-
-        function renderStats() {
-            let stats = initStats();
-            if(!stats) return;
-            
-            document.getElementById('statVal_lab').innerText = stats.labGenerated;
-            document.getElementById('statVal_quizCount').innerText = stats.quizzesTaken;
-            
-            let percent = 0;
-            if(stats.quizTotalQuestions > 0) percent = Math.round((stats.quizCorrectAnswers / stats.quizTotalQuestions) * 100);
-            document.getElementById('statVal_quizScore').innerText = `${percent}%`;
-            
-            document.getElementById('statVal_cards').innerText = stats.cardsReviewed;
-            document.getElementById('statVal_cardsEasy').innerText = stats.cardsEasy;
-            document.getElementById('statVal_cardsGood').innerText = stats.cardsGood;
-            document.getElementById('statVal_cardsHard').innerText = stats.cardsHard;
-
-            const history = JSON.parse(localStorage.getItem(`bacflix_quiz_history_${currentUser}`)) || [];
-            let weakAreas = {};
-            history.forEach(test => {
-                if (test.score < 50) {
-                    const lessonKey = `${test.subject} - ${test.topics}`;
-                    weakAreas[lessonKey] = (weakAreas[lessonKey] || 0) + 1;
-                }
-            });
-
-            const weakListEl = document.getElementById('weakLessonsList');
-            weakListEl.innerHTML = '';
-            const sortedWeakAreas = Object.entries(weakAreas).sort((a, b) => b[1] - a[1]);
-            
-            if (sortedWeakAreas.length === 0 && history.length > 0) {
-                weakListEl.innerHTML = '<li class="text-green-500 font-bold p-2 bg-green-900/20 rounded border border-green-900/50">عمل ممتاز! لا توجد دروس ضعيفة حالياً.</li>';
-            } else if (history.length === 0) {
-                weakListEl.innerHTML = '<li class="text-gray-500">قم بإجراء اختبارات التقييم ليقوم النظام بتحديد محاور الضعف لديك.</li>';
-            } else {
-                sortedWeakAreas.slice(0, 5).forEach(([lesson, count]) => {
-                    weakListEl.innerHTML += `<li class="flex justify-between items-center bg-black/40 p-2 rounded border border-[#333]"><span class="truncate pr-2">${lesson}</span> <span class="text-[10px] bg-red-900/50 text-red-300 px-2 py-1 rounded whitespace-nowrap">أخطأت ${count} مرات</span></li>`;
-                });
-            }
-        }
-
-        async function generateAIStatsAnalysis() {
-            let stats = initStats();
-            if(!stats || (stats.labGenerated === 0 && stats.quizzesTaken === 0 && stats.cardsReviewed === 0)) {
-                return alert("لا توجد بيانات كافية للتحليل. قم بتوليد بعض المواضيع أو إجراء اختبارات أولاً!");
-            }
-
-            const btn = document.getElementById('btn-analyze-stats');
-            const resultDiv = document.getElementById('ai-analysis-result');
-            btn.disabled = true;
-            btn.innerText = "جاري التحليل السحابي...";
-            resultDiv.classList.add('hidden');
-
-            let percent = stats.quizTotalQuestions > 0 ? Math.round((stats.quizCorrectAnswers / stats.quizTotalQuestions) * 100) : 0;
-            
-            const prompt = `أنت موجه بيداغوجي جزائري صارم وداعم. هذه إحصائيات التلميذ في منصة الذكاء الاصطناعي:
-            - المواضيع المولدة (للمراجعة العميقة): ${stats.labGenerated}
-            - الاختبارات المجراة: ${stats.quizzesTaken} (متوسط النجاح: ${percent}%)
-            - البطاقات المراجعة (للحفظ السريع): ${stats.cardsReviewed} (سهل: ${stats.cardsEasy}، متوسط: ${stats.cardsGood}، صعب: ${stats.cardsHard}).
-            بناءً على هذه الأرقام، قدم له تحليلاً قصيراً جداً، حدد مستواه بشكل عام، وقدم نصيحة واحدة مركزة لتحسين أدائه للبكالوريا. استخدم لغة محفزة وصارمة في نفس الوقت.`;
-
-            try {
-                let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
-                res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
-                resultDiv.innerHTML = marked.parse(res);
-                resultDiv.classList.remove('hidden');
-            } catch(e) {
-                alert("حدث خطأ أثناء الاتصال بالمحلل السحابي.");
-            }
-            btn.disabled = false;
-            btn.innerText = "تحديث التحليل الأكاديمي";
-        }
-
-        // ---------------------------------------------------------
-        // إدارة الحسابات والاتصال
-        // ---------------------------------------------------------
-        function getForumUsername() {
-            try {
-                if (typeof _userdata !== "undefined" && _userdata.session_logged_in == 1) return _userdata.username;
-                if (window.parent && typeof window.parent._userdata !== "undefined" && window.parent._userdata.session_logged_in == 1) return window.parent._userdata.username;
-            } catch (e) {}
-            let match = document.cookie.match(new RegExp('(^| )forum_user=([^;]+)'));
-            if (match) return decodeURIComponent(match[2]);
-            return null; 
-        }
-
-        function loadContactSettings() {
-            if(!window.cloudDb) return;
-            window.cloudDb.ref('bacflix_settings/contact').on('value', snap => {
-                if(snap.exists()) {
-                    globalContactSettings = snap.val();
-                    document.getElementById('displayRip').innerText = globalContactSettings.rip || 'غير متوفر';
-                    document.getElementById('displayCcp').innerText = globalContactSettings.ccp || 'غير متوفر';
-                    document.getElementById('displayCcpKey').innerText = globalContactSettings.ccpKey || '';
-                    document.getElementById('displayAccName').innerText = globalContactSettings.name || 'غير متوفر';
-                }
+        const weakListEl = document.getElementById('weakLessonsList');
+        weakListEl.innerHTML = '';
+        const sortedWeakAreas = Object.entries(weakAreas).sort((a, b) => b[1] - a[1]);
+        
+        if (sortedWeakAreas.length === 0 && history.length > 0) {
+            weakListEl.innerHTML = '<li class="text-green-500 font-bold p-2 bg-green-900/20 rounded border border-green-900/50">عمل ممتاز! لا توجد دروس ضعيفة حالياً.</li>';
+        } else if (history.length === 0) {
+            weakListEl.innerHTML = '<li class="text-gray-500">قم بإجراء اختبارات التقييم ليقوم النظام بتحديد محاور الضعف لديك.</li>';
+        } else {
+            sortedWeakAreas.slice(0, 5).forEach(([lesson, count]) => {
+                weakListEl.innerHTML += `<li class="flex justify-between items-center bg-black/40 p-2 rounded border border-[#333]"><span class="truncate pr-2">${lesson}</span> <span class="text-[10px] bg-red-900/50 text-red-300 px-2 py-1 rounded whitespace-nowrap">أخطأت ${count} مرات</span></li>`;
             });
         }
+    }
 
-        function copyText(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text);
+    async function generateAIStatsAnalysis() {
+        let stats = initStats();
+        if(!stats || (stats.labGenerated === 0 && stats.quizzesTaken === 0 && stats.cardsReviewed === 0)) {
+            return alert("لا توجد بيانات كافية للتحليل. قم بتوليد بعض المواضيع أو إجراء اختبارات أولاً!");
+        }
+
+        const btn = document.getElementById('btn-analyze-stats');
+        const resultDiv = document.getElementById('ai-analysis-result');
+        btn.disabled = true;
+        btn.innerText = "جاري التحليل السحابي...";
+        resultDiv.classList.add('hidden');
+
+        let percent = stats.quizTotalQuestions > 0 ? Math.round((stats.quizCorrectAnswers / stats.quizTotalQuestions) * 100) : 0;
+        
+        const prompt = `أنت موجه بيداغوجي جزائري صارم وداعم. هذه إحصائيات التلميذ في منصة الذكاء الاصطناعي:
+        - المواضيع المولدة (للمراجعة العميقة): ${stats.labGenerated}
+        - الاختبارات المجراة: ${stats.quizzesTaken} (متوسط النجاح: ${percent}%)
+        - البطاقات المراجعة (للحفظ السريع): ${stats.cardsReviewed} (سهل: ${stats.cardsEasy}، متوسط: ${stats.cardsGood}، صعب: ${stats.cardsHard}).
+        بناءً على هذه الأرقام، قدم له تحليلاً قصيراً جداً، حدد مستواه بشكل عام، وقدم نصيحة واحدة مركزة لتحسين أدائه للبكالوريا. استخدم لغة محفزة وصارمة في نفس الوقت.`;
+
+        try {
+            let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+            res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
+            resultDiv.innerHTML = marked.parse(res);
+            resultDiv.classList.remove('hidden');
+        } catch(e) {
+            alert("حدث خطأ أثناء الاتصال بالمحلل السحابي.");
+        }
+        btn.disabled = false;
+        btn.innerText = "تحديث التحليل الأكاديمي";
+    }
+
+    // --- حسابات المنتدى والربط ---
+    function getForumUsername() {
+        try {
+            if (typeof _userdata !== "undefined" && _userdata.session_logged_in == 1) {
+                return _userdata.username;
+            } else if (window.parent && typeof window.parent._userdata !== "undefined" && window.parent._userdata.session_logged_in == 1) {
+                return window.parent._userdata.username;
+            }
+        } catch (e) {}
+        let match = document.cookie.match(new RegExp('(^| )forum_user=([^;]+)'));
+        if (match) return decodeURIComponent(match[2]);
+        return null;
+    }
+
+    // --- نظام المتجر والاتصال ---
+    function loadContactSettings() {
+        if(!window.cloudDb) return;
+        window.cloudDb.ref('bacflix_settings/contact').on('value', snap => {
+            if(snap.exists()) {
+                globalContactSettings = snap.val();
+                const elRip = document.getElementById('displayRip');
+                const elCcp = document.getElementById('displayCcp');
+                const elCcpKey = document.getElementById('displayCcpKey');
+                const elAccName = document.getElementById('displayAccName');
+                
+                if(elRip) elRip.innerText = globalContactSettings.rip || 'غير متوفر';
+                if(elCcp) elCcp.innerText = globalContactSettings.ccp || 'غير متوفر';
+                if(elCcpKey) elCcpKey.innerText = globalContactSettings.ccpKey || '';
+                if(elAccName) elAccName.innerText = globalContactSettings.name || 'غير متوفر';
+            }
+        });
+    }
+
+    function copyText(elementId) {
+        const el = document.getElementById(elementId);
+        if(el) {
+            navigator.clipboard.writeText(el.innerText);
             alert('تم النسخ بنجاح!');
         }
+    }
 
-        function copyCcpFull() {
-            const ccp = globalContactSettings.ccp || '';
-            const key = globalContactSettings.ccpKey || '';
-            if(ccp) {
-                navigator.clipboard.writeText(`${ccp} Clé: ${key}`);
-                alert('تم نسخ رقم الـ CCP والمفتاح بنجاح!');
-            }
+    function copyCcpFull() {
+        const ccp = globalContactSettings.ccp || '';
+        const key = globalContactSettings.ccpKey || '';
+        if(ccp) {
+            navigator.clipboard.writeText(`${ccp} Clé: ${key}`);
+            alert('تم نسخ رقم الـ CCP والمفتاح بنجاح!');
         }
+    }
 
-        function loadStudentPackages() {
-            if(!window.cloudDb) return;
-            window.cloudDb.ref('bacflix_packages').on('value', snap => {
-                const container = document.getElementById('packagesContainer');
-                if(!snap.exists()) { container.innerHTML = '<p class="text-gray-500 text-sm">لا توجد باقات متوفرة حالياً.</p>'; return; }
-                
-                let html = '';
-                const pkgs = snap.val();
-                let arr = Object.values(pkgs).sort((a,b) => a.price - b.price);
-                
-                arr.forEach(p => {
-                    html += `
-                    <div class="bg-black/40 border border-white/10 hover:border-blue-500 transition p-4 rounded-xl flex justify-between items-center text-right cursor-pointer" onclick="selectPackageToBuy('${p.name}', ${p.price})">
-                        <div>
-                            <h4 class="text-white font-bold text-sm mb-1">${p.name}</h4>
-                            <div class="flex gap-2 text-[10px] text-gray-400 font-bold">
-                                <span class="bg-blue-900/30 text-blue-400 px-2 py-0.5 rounded">المدة: ${p.days} يوم</span>
-                                <span class="bg-yellow-900/30 text-yellow-500 px-2 py-0.5 rounded">رصيد: ${p.credits} ن</span>
-                            </div>
+    function loadStudentPackages() {
+        if(!window.cloudDb) return;
+        window.cloudDb.ref('bacflix_packages').on('value', snap => {
+            const container = document.getElementById('packagesContainer');
+            if(!container) return;
+            if(!snap.exists()) { container.innerHTML = '<p class="text-gray-500 text-sm">لا توجد باقات متوفرة حالياً.</p>'; return; }
+            
+            let html = '';
+            const pkgs = snap.val();
+            let arr = Object.values(pkgs).sort((a,b) => a.price - b.price);
+            
+            arr.forEach(p => {
+                html += `
+                <div class="bg-black/40 border border-white/10 hover:border-blue-500 transition p-4 rounded-xl flex justify-between items-center text-right cursor-pointer" onclick="selectPackageToBuy('${p.name}', ${p.price})">
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-1">${p.name}</h4>
+                        <div class="flex gap-2 text-[10px] text-gray-400 font-bold">
+                            <span class="bg-blue-900/30 text-blue-400 px-2 py-0.5 rounded">المدة: ${p.days} يوم</span>
+                            <span class="bg-yellow-900/30 text-yellow-500 px-2 py-0.5 rounded">رصيد: ${p.credits} ن</span>
                         </div>
-                        <div class="text-left">
-                            <div class="text-green-400 font-black text-lg">${p.price} دج</div>
-                            <div class="text-[10px] bg-white text-black px-2 py-0.5 rounded-full font-bold mt-1 inline-block">اطلب الآن</div>
-                        </div>
-                    </div>`;
-                });
-                container.innerHTML = html;
-            });
-        }
-
-        function selectPackageToBuy(name, price) {
-            document.getElementById('packagesContainer').style.display = 'none';
-            document.getElementById('paymentInfoStep').style.display = 'flex';
-            
-            document.getElementById('selectedPkgName').innerText = name;
-            document.getElementById('selectedPkgPrice').innerText = price;
-
-            const msg = encodeURIComponent(`مرحباً، أريد شراء "${name}" بسعر ${price} دج.\nاسم حسابي في المنصة هو: ${currentUser}`);
-            document.getElementById('waLink').href = `https://wa.me/${globalContactSettings.wa}?text=${msg}`;
-            document.getElementById('tgLink').href = `https://t.me/${globalContactSettings.tg}?text=${msg}`;
-        }
-
-        function backToPackages() {
-            document.getElementById('paymentInfoStep').style.display = 'none';
-            document.getElementById('packagesContainer').style.display = 'flex';
-        }
-
-        function checkAuth() {
-            const forumUser = getForumUsername();
-            
-            if (!forumUser) {
-                document.getElementById('authModal').style.display = 'flex';
-                document.getElementById('auth-step-1').classList.add('hidden');
-                const guestWarning = document.getElementById('auth-guest-warning');
-                if(guestWarning) guestWarning.classList.remove('hidden');
-                return;
-            }
-
-            if(!window.cloudDb) window.cloudDb = firebase.database();
-            
-            window.cloudDb.ref(`bacflix_users/${forumUser}`).on('value', snap => {
-                if (!snap.exists()) {
-                    document.getElementById('authModal').style.display = 'flex'; 
-                    document.getElementById('auth-step-1').classList.remove('hidden');
-                    const guestWarning = document.getElementById('auth-guest-warning');
-                    if(guestWarning) guestWarning.classList.add('hidden');
-                    
-                    const nameField = document.getElementById('regName');
-                    nameField.value = forumUser; 
-                    nameField.readOnly = true;   
-                    nameField.classList.add('opacity-60', 'cursor-not-allowed', 'bg-black/30');
-                    
-                    const msg = document.getElementById('auth-msg');
-                    msg.innerHTML = `مرحباً بك! أكمل البيانات للحصول على هديتك (ساعة تفعيل مجانية).`;
-                    msg.classList.remove('hidden');
-                    return; 
-                }
-
-                userDataCache = snap.val();
-                currentUser = forumUser; 
-
-                let needsUpdate = false;
-                let autoUpdates = {};
-                if (userDataCache.credits === undefined) { autoUpdates.credits = 0; needsUpdate = true; }
-                if (userDataCache.subscriptionEnd === undefined) { autoUpdates.subscriptionEnd = 0; needsUpdate = true; }
-                if (userDataCache.isBanned === undefined) { autoUpdates.isBanned = false; needsUpdate = true; }
-                
-                if (needsUpdate) {
-                    window.cloudDb.ref(`bacflix_users/${currentUser}`).update(autoUpdates);
-                    userDataCache = { ...userDataCache, ...autoUpdates };
-                }
-
-                if (userDataCache.isBanned === true) {
-                    document.body.innerHTML = `
-                    <div style="background:#0a0a0a; height:100vh; width:100vw; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; z-index:999999; position:fixed; top:0; right:0;">
-                        <div style="background:rgba(229,9,20,0.1); border:1px solid rgba(229,9,20,0.3); padding:40px; border-radius:20px; max-width:400px;">
-                            <svg style="margin: 0 auto 20px auto; width:64px; height:64px; stroke:#E50914;" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-                            <h1 style="color:#E50914; font-size:1.5rem; font-weight:900; margin-bottom:10px;">تم تعليق حسابك</h1>
-                            <p style="color:#cbd5e1; font-size:13px; line-height:1.6; margin-bottom:20px;">عذراً، لقد تم تعليق حسابك من قبل الإدارة ولم يعد بإمكانك الوصول إلى المنصة وميزاتها.<br>يرجى التواصل مع الدعم الفني للمزيد من التفاصيل.</p>
-                            <a href="https://bacflix.yoo7.com/" style="background:#E50914; color:white; text-decoration:none; padding:10px 20px; border-radius:10px; font-weight:bold; font-size:13px; display:inline-block;">العودة للمنتدى</a>
-                        </div>
-                    </div>`;
-                    return;
-                }
-
-                document.getElementById('authModal').style.display = 'none'; 
-                currentStream = userDataCache.stream;
-
-                document.getElementById('sidebarUserName').innerText = currentUser;
-                document.getElementById('sidebarStreamName').innerText = currentStream;
-
-                initStats();
-                loadCurriculum().then(() => {
-                    ['lab', 'quiz', 'cards'].forEach(prefix => updateDropdowns(prefix, false));
-                });
-                renderLibrary();
-
-                let hasTime = userDataCache.subscriptionEnd > Date.now();
-                let hasCredits = parseFloat(userDataCache.credits) > 0;
-                
-                BacflixSecurity.setActive(hasTime, BacflixSecurity.getKey()); 
-
-                document.getElementById('studentCredits').innerText = userDataCache.credits || 0;
-                document.getElementById('subStatusText').innerHTML = hasTime 
-                    ? `حالة الأدوات: <span class="text-green-400 font-bold">مفعل</span>` 
-                    : `حالة الأدوات: <span class="text-red-400 font-bold">غير مفعل</span>`;
-                
-                initLiveSessions(userDataCache.credits || 0); 
-                initRecordedSessions(userDataCache.credits || 0); 
-                loadStudentTimetable();
-
-                const banner = document.getElementById('inactiveBanner');
-                if (!hasTime && !hasCredits) {
-                    if(banner) banner.style.display = 'flex';
-                } else {
-                    if(banner) banner.style.display = 'none';
-                }
-
-                if(!BacflixSecurity.isActive() && activeApp !== 'academy') {
-                    switchApp('academy');
-                }
-
-                loadContactSettings();
-                loadStudentPackages();
-            });
-        }
-
-        async function verifyUser() {
-            const forumUser = getForumUsername();
-            if (!forumUser) return;
-
-            const phone = document.getElementById('regPhone').value.trim();
-            const stream = document.getElementById('regStream').value;
-            const msg = document.getElementById('auth-msg');
-
-            if(phone.length < 8 || !stream) {
-                msg.innerText = "الرجاء إكمال رقم الهاتف واختيار الشعبة."; 
-                msg.classList.remove('hidden'); 
-                return;
-            }
-            
-            document.getElementById('btn-check-auth').innerText = "جاري الاتصال..."; 
-            document.getElementById('btn-check-auth').disabled = true;
-
-            try {
-                if(!window.cloudDb) window.cloudDb = firebase.database();
-                const userRef = window.cloudDb.ref('bacflix_users/' + forumUser);
-                const snap = await userRef.once('value');
-                
-                if(!snap.exists()) {
-                    let freeHour = Date.now() + (60 * 60 * 1000);
-                    await userRef.set({ name: forumUser, phone: phone, stream: stream, credits: 0, subscriptionEnd: freeHour, isBanned: false });
-                }
-                location.reload();
-            } catch(e) {
-                msg.innerText = "حدث خطأ في الاتصال. حاول مجددا."; 
-                msg.classList.remove('hidden');
-                document.getElementById('btn-check-auth').innerText = "دخول المنصة"; 
-                document.getElementById('btn-check-auth').disabled = false;
-            }
-        }
-
-        function logoutGlobalUser() { location.reload(); }
-
-        async function processActivationCode() {
-            let rawCode = document.getElementById('voucherInput').value.replace(/-/g, '').toUpperCase();
-            const msg = document.getElementById('voucherMsg');
-            const btn = document.getElementById('redeemBtn');
-
-            if(rawCode.length !== 16) { msg.innerHTML = "<span class='text-red-400'>الكود غير مكتمل.</span>"; return; }
-            let code = rawCode.match(/.{1,4}/g).join('-');
-            btn.disabled = true; btn.innerText = "جاري التفعيل..."; msg.innerHTML = "";
-
-            try {
-                if(!window.cloudDb) window.cloudDb = firebase.database();
-                const codeRef = window.cloudDb.ref('bacflix_codes/' + code);
-                const codeSnap = await codeRef.once('value');
-
-                if(codeSnap.exists() && codeSnap.val().status === 'active') {
-                    const codeData = codeSnap.val();
-                    let userRef = window.cloudDb.ref('bacflix_users/' + currentUser);
-                    let userSnap = await userRef.once('value');
-                    let uData = userSnap.val() || { credits: 0, subscriptionEnd: 0 };
-
-                    let updates = { 
-                        lastCodeUsed: code,
-                        lastVoucherPrice: parseFloat(codeData.price) || 0,
-                        lastVoucherCredits: parseFloat(codeData.credits) || 1
-                    };
-
-                    if (codeData.credits && codeData.credits > 0) {
-                        updates.credits = (parseFloat(uData.credits) || 0) + parseFloat(codeData.credits);
-                    } else {
-                        updates.credits = uData.credits || 0; 
-                    }
-
-                    if (codeData.days && codeData.days > 0) {
-                        let currentEnd = uData.subscriptionEnd > Date.now() ? uData.subscriptionEnd : Date.now();
-                        updates.subscriptionEnd = currentEnd + (codeData.days * 24 * 60 * 60 * 1000);
-                    } else {
-                        updates.subscriptionEnd = uData.subscriptionEnd || 0;
-                    }
-
-                    await codeRef.update({ status: 'used', usedBy: currentUser, activationDate: Date.now() });
-                    await userRef.update(updates);
-
-                    msg.innerHTML = "<span class='text-green-400'>تم التفعيل بنجاح!</span>";
-                    document.getElementById('voucherInput').value = '';
-                    setTimeout(() => { msg.innerHTML = ""; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }, 3000);
-                } else {
-                    msg.innerHTML = "<span class='text-red-400'>الكود خاطئ أو مستخدم.</span>";
-                    btn.disabled = false; btn.innerText = "تأكيد الشحن";
-                }
-            } catch(e) { msg.innerHTML = "<span class='text-red-400'>خطأ في الاتصال.</span>"; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }
-        }
-
-        async function fetchFromGemini(contentsArray, systemInstruction = null) {
-            if (typeof API_KEYS === 'undefined') throw new Error("المفاتيح مفقودة.");
-            let keys = [...API_KEYS].sort(() => 0.5 - Math.random());
-            let data = null, success = false, lastErr = "";
-            for (const key of keys) {
-                if(success) break;
-                try {
-                    let req = { contents: contentsArray };
-                    if (systemInstruction) req.systemInstruction = { parts: [{ text: systemInstruction }] };
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${key}`, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(req)
-                    });
-                    if (res.ok) { data = await res.json(); success = true; break; }
-                    else { const err = await res.json(); lastErr = err.error?.message; if(res.status===429) await new Promise(r=>setTimeout(r,1000)); }
-                } catch(e) { lastErr = e.message; }
-            }
-            if(!success) throw new Error(lastErr || "الخوادم عليها ضغط حاليا.");
-            return data.candidates[0].content.parts[0].text;
-        }
-
-        function switchApp(app) {
-            if (app !== 'academy' && app !== 'stats' && BacflixSecurity.isActive() === false) {
-                alert("عذرا! اشتراكك الزمني في (الأدوات الذكية) غير مفعل أو انتهى.\nامتلاكك للرصيد يسمح لك بالحضور المباشر فقط. يرجى الشحن لفتح المولدات.");
-                return;
-            }
-
-            activeApp = app;
-            document.querySelectorAll('.app-window').forEach(w => w.classList.remove('active'));
-            document.getElementById('app-' + app).classList.add('active');
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('btn-' + app).classList.add('active');
-            
-            const titles = { 'academy': 'المساعد الإداري', 'lab': 'المختبر (التحليل)', 'quiz': 'التقييم (الشرح)', 'cards': 'البطاقات (المراجعة)', 'stats': 'المحلل الأكاديمي' };
-            document.getElementById('chat-title-text').innerText = titles[app];
-            document.querySelector('.main-viewport').scrollTop = 0;
-            
-            if(app === 'stats') renderStats();
-            if(app !== 'academy' && app !== 'stats') {
-                updateDropdowns(app, true);
-            }
-        }
-
-        async function loadCurriculum() {
-            if(!window.cloudDb) window.cloudDb = firebase.database();
-            try {
-                const snap = await window.cloudDb.ref('bacflix_curriculum_pro').once('value');
-                if (snap.exists()) { 
-                    cloudCurriculum = snap.val(); 
-                    if(activeApp !== 'academy' && activeApp !== 'stats') updateDropdowns(activeApp, false);
-                }
-            } catch(e) {}
-        }
-
-        function updateDropdowns(prefix, skipSubjectUpdate = false) {
-            const stream = currentStream;
-            const subjEl = document.getElementById(`${prefix}-subject`);
-            const topicCont = document.getElementById(`${prefix}-topicContainer`);
-            if(!subjEl || !topicCont || !cloudCurriculum) return;
-
-            if(!skipSubjectUpdate || subjEl.options.length === 0) {
-                let subjects = new Set();
-                if(cloudCurriculum[stream]) Object.keys(cloudCurriculum[stream]).forEach(s => subjects.add(s));
-                if(cloudCurriculum["مواد مشتركة"]) Object.keys(cloudCurriculum["مواد مشتركة"]).forEach(s => subjects.add(s));
-                
-                let currentVal = subjEl.value;
-                subjEl.innerHTML = '';
-                Array.from(subjects).forEach(s => subjEl.innerHTML += `<option value="${s}">${s}</option>`);
-                
-                if(currentVal && Array.from(subjects).includes(currentVal)) {
-                    subjEl.value = currentVal;
-                }
-            }
-
-            const subject = subjEl.value;
-            if(!subject) {
-                topicCont.innerHTML = '';
-                return;
-            }
-
-            let topicsObj = cloudCurriculum[stream]?.[subject] || cloudCurriculum["مواد مشتركة"]?.[subject] || {};
-            let topicNames = Object.keys(topicsObj);
-            
-            topicCont.innerHTML = `<label class="checkbox-label" style="grid-column: 1 / -1;"><input type="checkbox" onchange="document.querySelectorAll('.topic-cb-${prefix}').forEach(cb => cb.checked = this.checked)"> <span class="font-bold text-white">تحديد الكل</span></label>`;
-            topicNames.forEach(t => { topicCont.innerHTML += `<label class="checkbox-label"><input type="checkbox" class="topic-cb-${prefix}" value="${t}"> <span>${t}</span></label>`; });
-        }
-
-        function getSelectedTopicsData(prefix, subject) {
-            const stream = currentStream;
-            let selectedCbs = document.querySelectorAll(`.topic-cb-${prefix}:checked`);
-            if(selectedCbs.length === 0) return null;
-            let names = Array.from(selectedCbs).map(cb => cb.value);
-            let topicsObj = cloudCurriculum[stream]?.[subject] || cloudCurriculum["مواد مشتركة"]?.[subject] || {};
-            let detailsArr = names.map(n => `- **${n}**: ${topicsObj[n] || 'مراجعة عامة'}`);
-            return { namesString: names.join(' و '), namesArray: names, detailsString: detailsArr.join('\n') };
-        }
-
-        function cleanLatex(text) { return text.replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/\\textbf{([^}]+)}/g, '**$1**').replace(/\\section\*{([^}]+)}/g, '### $1'); }
-        function renderMathAndGraphs(containerId) {
-            const container = document.getElementById(containerId); if(!container) return;
-            container.querySelectorAll('code.language-functionplot').forEach((block, index) => {
-                let rawFuncs = block.textContent.trim().split('\n'); const pre = block.parentElement;
-                if (pre && pre.tagName === 'PRE') {
-                    const plotId = 'plot-' + Date.now() + '-' + index;
-                    const div = document.createElement('div'); div.id = plotId; div.className = 'graph-container'; pre.replaceWith(div);
-                    let validData = [];
-                    rawFuncs.forEach(f => {
-                        let cleanedF = f.trim().replace(/[\u0600-\u06FF]/g, '').replace(/^(f\(x\)|y|g\(x\)|h\(x\)|f)\s*=\s*/i, '').replace(/e\^x/g, 'exp(x)').replace(/ln\(/g, 'log(');
-                        if(cleanedF.length > 0 && cleanedF.includes('x')) validData.push({ fn: cleanedF, graphType: 'polyline', color: '#E50914' });
-                    });
-                    if(validData.length > 0) { try { functionPlot({ target: '#'+plotId, width: 400, height: 250, grid: true, data: validData }); } catch(e) {} }
-                }
-            });
-            container.querySelectorAll('code.language-mermaid').forEach((block) => {
-                const pre = block.parentElement;
-                if (pre && pre.tagName === 'PRE') { const div = document.createElement('div'); div.className = 'mermaid-container mermaid'; div.innerHTML = block.textContent.trim(); pre.replaceWith(div); }
-            });
-            try { mermaid.run({ querySelector: '.mermaid' }); } catch(e) {}
-            if(window.MathJax) MathJax.typesetPromise([container]).catch(()=>{});
-        }
-
-        function initLiveSessions(studentCredits) {
-            if(!window.cloudDb) return;
-            window.cloudDb.ref('bacflix_live_sessions').on('value', (snap) => {
-                const container = document.getElementById('liveSessionsContainer'); container.innerHTML = '';
-                const now = new Date();
-                if(!snap.exists()) { container.innerHTML = "<div class='glass-panel text-center text-gray-500 py-10'>لا توجد حصص مبرمجة حاليا.</div>"; return; }
-
-                let sessions = Object.keys(snap.val()).map(k => ({id:k, ...snap.val()[k]}));
-                sessions = sessions.filter(s => s.stream === currentStream || s.stream === "جميع الشعب");
-                sessions.sort((a,b) => new Date(a.time) - new Date(b.time));
-
-                let count = 0;
-                sessions.forEach(s => {
-                    const startTime = new Date(s.time); const duration = parseInt(s.duration) || 60;
-                    const endTime = new Date(startTime.getTime() + duration * 60000); const allowJoinTime = new Date(startTime.getTime() - 5 * 60000); 
-                    if ((now - endTime) / 3600000 > 3) return; 
-                    count++;
-
-                    const myStatus = (s.attendance && s.attendance[currentUser]) ? s.attendance[currentUser].status : null;
-                    let btnHtml = '';
-
-                    if (myStatus === 'confirmed') btnHtml = `<button disabled class="btn-primary !bg-emerald-600/20 !text-emerald-400 !shadow-none whitespace-nowrap">تم تسجيل حضورك</button>`;
-                    else if (myStatus === 'joined') {
-                        if (now >= endTime) btnHtml = `<button onclick="confirmPresence('${s.id}')" class="btn-primary !bg-emerald-600 animate-pulse whitespace-nowrap">أكد حضورك الآن</button>`;
-                        else btnHtml = `<button disabled class="btn-primary !bg-orange-500/20 !text-orange-400 !shadow-none whitespace-nowrap">الحصة جارية...</button>`;
-                    } else {
-                        if (now < allowJoinTime) btnHtml = `<button disabled class="btn-secondary !py-2 text-xs whitespace-nowrap">يفتح: ${startTime.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'})}</button>`;
-                        else if (now < endTime) {
-                            if (studentCredits >= 1) btnHtml = `<button onclick="joinLive('${s.id}', '${s.meetLink}')" class="btn-primary shadow-lg shadow-red-500/30 whitespace-nowrap">دخول الحصة (-1)</button>`;
-                            else btnHtml = `<button disabled class="btn-primary !bg-red-500/20 !text-red-400 !shadow-none whitespace-nowrap">رصيد غير كاف</button>`;
-                        } else btnHtml = `<button disabled class="btn-secondary !py-2 text-xs whitespace-nowrap">فاتتك الحصة</button>`;
-                    }
-
-                    container.innerHTML += `
-                        <div class="glass-panel flex flex-col md:flex-row justify-between items-center gap-4 ${now >= allowJoinTime && now < endTime ? 'border-red-500/50 bg-red-950/20' : ''}">
-                            <div>
-                                <h3 class="text-white font-bold text-lg leading-tight">${s.title}</h3>
-                                <p class="text-xs text-gray-400 mt-1">أ. ${s.teacher} | ${s.stream}</p>
-                                <div class="text-[11px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 w-fit px-3 py-1 rounded-md mt-3">${startTime.toLocaleString('ar-DZ', { weekday: 'long', hour: '2-digit', minute:'2-digit' })}</div>
-                            </div>
-                            <div class="min-w-[150px] flex justify-center">${btnHtml}</div>
-                        </div>`;
-                });
-                if(count === 0) container.innerHTML = "<div class='glass-panel text-center text-gray-500 py-10'>لا توجد حصص مباشرة قادمة.</div>";
-            });
-        }
-
-        async function joinLive(id, link) {
-            if(!confirm("سيتم خصم (1 نقطة) من رصيدك. تأكيد؟")) return;
-            try {
-                const sSnap = await window.cloudDb.ref(`bacflix_users/${currentUser}`).once('value');
-                const uData = sSnap.val();
-                const credits = parseFloat(uData.credits) || 0;
-                if (credits < 1) return alert("لا تملك رصيدا كافيا!");
-                
-                await window.cloudDb.ref(`bacflix_live_sessions/${id}/attendance/${currentUser}`).set({ 
-                    status: 'joined', 
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    voucherPrice: uData.lastVoucherPrice || 2000, 
-                    voucherCredits: uData.lastVoucherCredits || 8
-                });
-                
-                await window.cloudDb.ref(`bacflix_users/${currentUser}/credits`).transaction(c => { let current = parseFloat(c) || 0; return current >= 1 ? current - 1 : current; });
-                window.open(link, '_blank');
-            } catch (e) { alert("حدث خطأ في الاتصال."); }
-        }
-
-        async function confirmPresence(id) {
-            try {
-                await window.cloudDb.ref(`bacflix_live_sessions/${id}/attendance/${currentUser}/status`).set('confirmed');
-                alert("تم توثيق حضورك بنجاح!");
-            } catch(e) { alert("خطأ في التوثيق."); }
-        }
-
-        function initRecordedSessions(studentCredits) {
-            window.cloudDb.ref('bacflix_sessions_history').on('value', snap => {
-                const container = document.getElementById('recordedSessionsContainer'); container.innerHTML = '';
-                if(!snap.exists()) { container.innerHTML = "<div class='glass-panel col-span-full text-center text-gray-500 py-10'>لا توجد حصص مسجلة في الأرشيف.</div>"; return; }
-
-                let sessions = Object.keys(snap.val()).map(k => ({id:k, ...snap.val()[k]}));
-                sessions = sessions.filter(s => (s.stream === currentStream || s.stream === "جميع الشعب") && s.recordingLink);
-                sessions.sort((a,b) => b.completedAt - a.completedAt);
-                
-                let count = 0;
-                sessions.forEach(s => {
-                    count++;
-                    const myStatus = (s.attendance_stats && s.attendance_stats[currentUser]) ? s.attendance_stats[currentUser].status : null;
-                    let btnHtml = '';
-
-                    if (myStatus === 'joined' || myStatus === 'confirmed' || myStatus === 'recorded_paid') btnHtml = `<button onclick="window.open('${s.recordingLink}', '_blank')" class="btn-primary !bg-gray-700 hover:!bg-gray-600 !py-2.5 text-xs whitespace-nowrap">مشاهدة التسجيل</button>`;
-                    else {
-                        if (studentCredits >= 0.5) btnHtml = `<button onclick="buyRecording('${s.id}', '${s.recordingLink}')" class="btn-secondary !py-2.5 w-full text-xs whitespace-nowrap">فتح التسجيل (-0.5)</button>`;
-                        else btnHtml = `<button disabled class="btn-secondary !bg-red-500/10 !text-red-400 !border-red-500/20 !py-2.5 w-full text-xs whitespace-nowrap">رصيد غير كاف</button>`;
-                    }
-
-                    container.innerHTML += `
-                        <div class="glass-panel !p-5 flex flex-col justify-between gap-4">
-                            <div>
-                                <h3 class="text-white font-bold text-sm leading-tight">${s.title}</h3>
-                                <p class="text-[10px] text-gray-400 mt-1">أ. ${s.teacher} | ${s.stream}</p>
-                            </div>
-                            <div>${btnHtml}</div>
-                        </div>`;
-                });
-                if(count === 0) container.innerHTML = "<div class='glass-panel col-span-full text-center text-gray-500 py-10'>لا يوجد أرشيف تسجيلات حالياً.</div>";
-            });
-        }
-
-        async function buyRecording(id, link) {
-            if(!confirm("سيتم خصم (0.5 نقطة) لفتح هذا التسجيل للأبد. تأكيد؟")) return;
-            try {
-                const sSnap = await window.cloudDb.ref(`bacflix_users/${currentUser}`).once('value');
-                const uData = sSnap.val();
-                if (parseFloat(uData.credits) < 0.5) return alert("رصيد غير كاف!");
-                
-                await window.cloudDb.ref(`bacflix_sessions_history/${id}/attendance_stats/${currentUser}`).set({ 
-                    status: 'recorded_paid', 
-                    isHalfPoint: true,
-                    voucherPrice: uData.lastVoucherPrice || 2000,
-                    voucherCredits: uData.lastVoucherCredits || 8
-                });
-                
-                await window.cloudDb.ref(`bacflix_users/${currentUser}/credits`).transaction(c => { let current = parseFloat(c) || 0; return current >= 0.5 ? current - 0.5 : current; });
-                window.open(link, '_blank');
-            } catch (e) { alert("حدث خطأ في الاتصال."); }
-        }
-
-        function loadStudentTimetable() {
-            window.cloudDb.ref('bacflix_timetable').once('value', (snap) => {
-                const container = document.getElementById('studentTimetableContainer');
-                if (!snap.exists()) return container.innerHTML = '<p class="text-gray-500 text-xs text-center py-2">لا يوجد جدول حصص مبرمج.</p>';
-                let arr = Object.values(snap.val()).filter(t => t.stream === currentStream || t.stream === "جميع الشعب");
-                arr.sort((a,b) => a.order - b.order);
-                let html = '';
-                arr.forEach(t => {
-                    html += `<div class="bg-black/30 p-3 rounded-xl mb-2 border-r-2 border-red-600 flex justify-between items-center gap-2">
-                        <div><p class="text-white text-xs font-bold leading-tight">${t.subject}</p><p class="text-gray-400 text-[9px] mt-0.5">أ. ${t.teacher}</p></div>
-                        <div class="text-left"><p class="text-red-400 font-bold text-[11px]">${t.day}</p><p class="text-gray-500 text-[10px] font-mono mt-0.5">${t.time}</p></div>
-                    </div>`;
-                });
-                container.innerHTML = html || '<p class="text-gray-500 text-xs text-center py-2">لا يوجد جدول لهذه الشعبة.</p>';
-            });
-        }
-
-        // ===================================
-        // محرك المختبر (Lab)
-        // ===================================
-        let lab_rawText = "";
-        async function lab_generateContent() {
-            const subj = document.getElementById('lab-subject').value; const stream = currentStream;
-            const mode = document.getElementById('lab-toolMode').value; const diff = document.getElementById('lab-difficulty').value;
-            
-            const topicsData = getSelectedTopicsData('lab', subj);
-            if(!topicsData) return alert("الرجاء اختيار محور واحد على الأقل.");
-            
-            let extra = document.getElementById('lab-extraRules').value || "";
-            const checkedOptions = Array.from(document.querySelectorAll('.lab-extra-cb:checked')).map(cb => cb.value);
-            if (checkedOptions.length > 0) extra += " الإضافات المطلوبة: " + checkedOptions.join("، ");
-
-            document.getElementById('lab-examWrapper').classList.add('hidden');
-            document.getElementById('lab-loadingState').classList.remove('hidden'); document.getElementById('lab-loadingState').classList.add('flex');
-            
-            const prompt = `أنت أستاذ ومفتش جزائري خبير. قم ببناء ${mode==='exam'?'موضوع امتحان تجريبي شامل':'ملخص درس احترافي'} في مادة ${subj} لشعبة ${stream}. المستوى البيداغوجي المطلـوب: ${diff}.
-            المحتوى يجب أن يبنى حصراً على هذه المحاور:
-            ${topicsData.detailsString}
-            ${extra ? '\nتوجيهات إضافية: ' + extra : ''}
-            ${mode==='exam'?'افصل بين الموضوع والتصحيح النموذجي بكلمة [SOLUTION_BREAK] في سطر مستقل وبشكل واضح.':''} استخدم MathJax للمعادلات العلمية $...$. تأكد من كتابة الرموز الرياضية واللاتينية من اليسار إلى اليمين بطريقة سليمة.`;
-            
-            try {
-                let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
-                res = cleanLatex(res); lab_rawText = res;
-                updateStat('labGenerated', 1);
-                renderLabContent(mode, subj, stream);
-            } catch(e) { alert(e.message); document.getElementById('lab-loadingState').classList.add('hidden'); }
-        }
-        
-        function renderLabContent(mode, subj, stream) {
-            document.getElementById('lab-loadingState').classList.add('hidden'); document.getElementById('lab-loadingState').classList.remove('flex');
-            if(mode === 'exam') {
-                const parts = lab_rawText.split('[SOLUTION_BREAK]');
-                document.getElementById('lab-printSubject').innerText = subj; document.getElementById('lab-printStream').innerText = stream;
-                document.getElementById('lab-examContent').innerHTML = marked.parse(parts[0]||'');
-                document.getElementById('lab-correctionContent').innerHTML = marked.parse(parts[1]||'التصحيح غير متوفر أو مدمج.');
-                document.getElementById('lab-correctionSection').classList.add('hidden');
-            } else {
-                document.getElementById('lab-printSubject').innerText = subj + " (ملخص)"; document.getElementById('lab-printStream').innerText = stream;
-                document.getElementById('lab-examContent').innerHTML = marked.parse(lab_rawText);
-                document.getElementById('lab-correctionSection').classList.add('hidden');
-            }
-            document.getElementById('lab-examWrapper').classList.remove('hidden'); document.getElementById('lab-examWrapper').classList.add('flex');
-            setTimeout(()=>renderMathAndGraphs('lab-examWrapper'), 100);
-        }
-        function lab_toggleSolution() { document.getElementById('lab-correctionSection').classList.toggle('hidden'); }
-
-        // ===================================
-        // محرك الكويزات
-        // ===================================
-        let quiz_data = []; let quiz_interval;
-        
-        async function quiz_generate() {
-            const subj = document.getElementById('quiz-subject').value; 
-            const stream = currentStream;
-            const count = document.getElementById('quiz-count').value; 
-            const userDifficulty = document.getElementById('quiz-difficulty').value;
-            const type = document.getElementById('quiz-type').value;
-            const extra = document.getElementById('quiz-extraRules').value;
-            const forceNew = document.getElementById('forceNewExam') ? document.getElementById('forceNewExam').checked : false;
-            let timeVal = document.getElementById('quiz-timer').value;
-            
-            const topicsData = getSelectedTopicsData('quiz', subj);
-            if(!topicsData) return alert("الرجاء اختيار محور.");
-
-            document.getElementById('quiz-emptyState').classList.add('hidden'); 
-            document.getElementById('quiz-wrapper').classList.add('hidden');
-            document.getElementById('quiz-loadingState').classList.remove('hidden'); 
-            document.getElementById('quiz-loadingState').classList.add('flex');
-            
-            const loadingText = document.getElementById('quiz-loadingText');
-
-            let appliedDifficulty = userDifficulty;
-            if(userDifficulty === "تكيفي") {
-                appliedDifficulty = getAdaptiveDifficulty(subj);
-            }
-
-            const poolKey = `bacflix_quiz_${subj}_${stream}_${topicsData.namesString}_${appliedDifficulty}_${count}`.replace(/\s+/g, '_');
-
-            if (!forceNew) {
-                loadingText.innerText = "جاري البحث عن كويز في السحابة...";
-                try {
-                    const snap = await window.cloudDb.ref('bacflix_pool/' + poolKey).once('value');
-                    if (snap.exists()) {
-                        const cloudTopics = Object.keys(snap.val()).map(key => ({ id: key, content: snap.val()[key] }));
-                        const seenExams = JSON.parse(localStorage.getItem(`bacflix_quiz_seen_${currentUser}`)) || [];
-                        const unseenTopics = cloudTopics.filter(topic => !seenExams.includes(topic.id));
-                        
-                        if (unseenTopics.length > 0) {
-                            const chosenTopic = unseenTopics[Math.floor(Math.random() * unseenTopics.length)];
-                            seenExams.push(chosenTopic.id); localStorage.setItem(`bacflix_quiz_seen_${currentUser}`, JSON.stringify(seenExams));
-                            displayQuizContent(chosenTopic.content, timeVal, subj);
-                            if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
-                            return; 
-                        }
-                    }
-                } catch(e) {}
-            }
-
-            loadingText.innerText = `يتم الآن بناء كويز جديد كلياً... (${appliedDifficulty})`;
-
-            const prompt = `ألف ${count} أسئلة من نوع (${type}) في مادة ${subj} شعبة ${stream}. الصعوبة المطبقة: ${appliedDifficulty}. 
-            مستوحاة من هذه المحاور:
-            ${topicsData.detailsString}
-            ${extra ? '\nتوجيهات إضافية من الطالب: ' + extra : ''}
-            قم بتغيير الأرقام والأمثلة لضمان عدم التكرار. استخدم MathJax للمعادلات العلمية $...$.
-            الإخراج JSON Array فقط (دون أي نص خارجي): [{"question":"السؤال","options":["خيار1","خيار2","خيار3","خيار4"],"correctIndex":0,"explanation":"الشرح البيداغوجي"}]`;
-            
-            try {
-                let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
-                let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
-                
-                const newRef = window.cloudDb.ref('bacflix_pool/' + poolKey).push();
-                newRef.set(jsonStr);
-                
-                let seen = JSON.parse(localStorage.getItem(`bacflix_quiz_seen_${currentUser}`)) || [];
-                seen.push(newRef.key); localStorage.setItem(`bacflix_quiz_seen_${currentUser}`, JSON.stringify(seen));
-                
-                displayQuizContent(jsonStr, timeVal, subj);
-                if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
-
-            } catch(e) { 
-                alert("حدث خطأ في توليد الأسئلة."); 
-                document.getElementById('quiz-loadingState').classList.add('hidden'); 
-                document.getElementById('quiz-emptyState').classList.remove('hidden'); 
-                if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
-            }
-        }
-
-        function displayQuizContent(jsonString, timeVal, subj) {
-            try {
-                quiz_data = JSON.parse(jsonString);
-                document.getElementById('quiz-loadingState').classList.add('hidden'); document.getElementById('quiz-loadingState').classList.remove('flex');
-                let area = document.getElementById('quiz-questionsArea'); area.innerHTML = '';
-                quiz_data.forEach((q, i) => {
-                    let html = `<div class="question-card" id="qcard-${i}"><h3 class="font-bold mb-4 text-slate-800 text-lg">${i+1}. ${marked.parseInline(q.question)}</h3><div class="space-y-2">`;
-                    q.options.forEach((opt, oi) => { html += `<label class="option-label" id="lbl-${i}-${oi}"><input type="radio" name="q${i}" value="${oi}"><span>${marked.parseInline(opt)}</span></label>`; });
-                    html += `</div>
-                    <div class="explanation-box" id="exp-${i}">
-                        <strong>الشرح العلمي:</strong><br>${marked.parse(q.explanation)}
-                        <div class="border-t border-yellow-500/30 pt-3 mt-3 flex gap-2 items-center flex-wrap">
-                            <span class="text-xs font-bold text-yellow-900 ml-2">ما رأيك في هذا السؤال؟</span>
-                            <button onclick="submitRating(event, ${i}, 'واضح')" class="rating-btn rate-clear">✅ واضح</button>
-                            <button onclick="submitRating(event, ${i}, 'صعب')" class="rating-btn rate-hard">🔥 صعب جداً</button>
-                            <button onclick="submitRating(event, ${i}, 'خطأ')" class="rating-btn rate-error">⚠️ خطأ</button>
-                        </div>
-                    </div></div>`;
-                    area.innerHTML += html;
-                });
-                document.getElementById('quiz-title').innerText = `تقييم ذكي: ${subj}`;
-                document.getElementById('quiz-submitBtn').style.display = 'flex'; document.getElementById('quiz-finalScore').classList.add('hidden');
-                document.getElementById('quiz-wrapper').classList.remove('hidden'); document.getElementById('quiz-wrapper').classList.add('block');
-                setTimeout(()=>renderMathAndGraphs('quiz-questionsArea'), 100);
-                
-                let mins = parseInt(timeVal);
-                if(mins>0) { 
-                    clearInterval(quiz_interval); let time = mins*60; document.getElementById('quiz-timerDisplay').style.display = 'flex';
-                    document.getElementById('quiz-timeText').innerText = `${mins < 10 ? '0'+mins : mins}:00`;
-                    quiz_interval = setInterval(()=>{ 
-                        time--; let m=Math.floor(time/60); let s=time%60; document.getElementById('quiz-timeText').innerText=`${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
-                        if(time<=60) document.getElementById('quiz-timerDisplay').classList.add('warning');
-                        if(time<=0) quiz_evaluate(true);
-                    },1000);
-                } else { document.getElementById('quiz-timerDisplay').style.display = 'none'; }
-            } catch(e) {
-                alert("عذراً، حدث خطأ في تنسيق الكويز المحمل. سيتم توليد واحد جديد.");
-                document.getElementById('quiz-loadingState').classList.add('hidden'); document.getElementById('quiz-emptyState').classList.remove('hidden');
-            }
-        }
-
-        window.submitRating = function(event, qIndex, ratingType) {
-            const questionData = quiz_data[qIndex];
-            const btn = event.target;
-            btn.parentElement.innerHTML = `<span class="text-xs font-bold text-green-700 p-2 bg-green-100 rounded border border-green-300">✓ شكراً على تقييمك (${ratingType})</span>`;
-            if(!window.cloudDb) return;
-            window.cloudDb.ref('bacflix_ratings').push({
-                user: currentUser, rating: ratingType, subject: document.getElementById('quiz-subject').value,
-                questionText: questionData.question, date: new Date().toISOString()
-            });
-        }
-
-        function quiz_evaluate(timeUp) {
-            clearInterval(quiz_interval); document.getElementById('quiz-timerDisplay').classList.remove('warning');
-            let score = 0; let wrongAnswersDetails = [];
-
-            quiz_data.forEach((q, i) => {
-                let checked = document.querySelector(`input[name="q${i}"]:checked`);
-                document.querySelectorAll(`input[name="q${i}"]`).forEach(inp => inp.disabled=true);
-                let correctLabel = document.getElementById(`lbl-${i}-${q.correctIndex}`);
-                if(correctLabel) correctLabel.classList.add('correct-answer');
-                
-                if(checked) { 
-                    const selectedVal = parseInt(checked.value);
-                    if(selectedVal === q.correctIndex) {
-                        score++; 
-                    } else { 
-                        document.getElementById(`lbl-${i}-${selectedVal}`).classList.add('wrong-answer'); 
-                        wrongAnswersDetails.push(`- السؤال: ${q.question}\n- إجابتك: ${q.options[selectedVal]}\n- الصحيحة: ${q.options[q.correctIndex]}\n- التعليل: ${q.explanation}`);
-                    }
-                } else {
-                    wrongAnswersDetails.push(`- السؤال: ${q.question}\n- لم تجب\n- الصحيحة: ${q.options[q.correctIndex]}\n- التعليل: ${q.explanation}`);
-                }
-                document.getElementById(`exp-${i}`).classList.add('visible');
-            });
-            
-            const percentage = Math.round((score / quiz_data.length) * 100);
-            updateStat('quizzesTaken', 1); updateStat('quizTotalQuestions', quiz_data.length); updateStat('quizCorrectAnswers', score);
-            
-            const currentSubj = document.getElementById('quiz-subject').value;
-            const selectedTopics = Array.from(document.querySelectorAll('.topic-cb-quiz:checked')).map(cb => cb.value).join(' و ');
-            saveQuizHistory(currentSubj, selectedTopics, percentage);
-
-            document.getElementById('quiz-submitBtn').style.display = 'none';
-            let scoreDiv = document.getElementById('quiz-finalScore'); scoreDiv.classList.remove('hidden');
-            scoreDiv.innerText = `${timeUp?'انتهى الوقت! ':''}النتيجة النهائية: ${score} / ${quiz_data.length} (${percentage}%)`;
-            scoreDiv.className = `text-center p-6 rounded-xl font-bold text-3xl mt-6 ${percentage>=50?'bg-emerald-100 text-emerald-800 border border-emerald-500':'bg-red-100 text-red-800 border border-red-500'}`;
-            scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(()=>renderMathAndGraphs('quiz-questionsArea'), 100);
-
-            let botGreeting = "";
-            if (percentage < 50) botGreeting = `مرحباً بك! لاحظت أنك واجهت بعض الصعوبة في كويز ${currentSubj}. لا تقلق، الأخطاء هي أفضل طريق للتعلم! هل تريدني أن أشرح لك الأسئلة التي أخطأت فيها؟`;
-            else if (percentage >= 75) botGreeting = `عمل ممتاز! لقد تألقت في كويز ${currentSubj}. هل هناك أي نقطة معينة تود التعمق فيها أكثر؟`;
-            else botGreeting = `نتيجة جيدة جداً في كويز ${currentSubj}. أنت في الطريق الصحيح! هل نراجع معاً الأسئلة التي ضاعت منك لتحصل على العلامة الكاملة المرة القادمة؟`;
-
-            let hiddenPrompt = `[ملاحظة نظامية مخفية - لا ترد عليها]: الطالب أنهى للتو كويز في ${currentSubj} وحصل على ${score} من ${quiz_data.length}. لقد بادرت أنت بسؤاله وعرضت المساعدة.\n`;
-            if (wrongAnswersDetails.length > 0) {
-                hiddenPrompt += `\nإليك الأسئلة التي أخطأ فيها الطالب لتعرف الإجابات الصحيحة:\n${wrongAnswersDetails.join('\n')}\nبناءً على رده القادم، قم بإدارة الحوار بذكاء وتدرج في الشرح.`;
-            } else {
-                hiddenPrompt += `\nالطالب أجاب على جميع الأسئلة بشكل صحيح! شجعه واستعد لأي استفسار.`;
-            }
-
-            globalChatHistory.push({ role: "user", parts: [{ text: hiddenPrompt }] });
-            globalChatHistory.push({ role: "model", parts: [{ text: botGreeting }] });
-            
-            const chatBody = document.getElementById('chat-body');
-            chatBody.innerHTML += `<div class="message bot-msg" dir="auto">${botGreeting}</div>`;
-            chatBody.scrollTop = chatBody.scrollHeight;
-            
-            const chatBtn = document.getElementById('bacflix-chat-btn');
-            chatBtn.classList.add('chat-alert-active');
-            setTimeout(() => chatBtn.classList.remove('chat-alert-active'), 10000); 
-        }
-
-        // ===================================
-        // البطاقات
-        // ===================================
-        let cards_deck = []; let cards_index = 0; let cards_isFlipped = false;
-        
-        function renderLibrary() {
-            const list = document.getElementById('cards-localDecks'); if (!list) return;
-            let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
-            list.innerHTML = ''; const keys = Object.keys(lib).sort((a,b) => lib[b].lastAccessed - lib[a].lastAccessed);
-            if (keys.length === 0) { list.innerHTML = '<p class="text-[11px] text-gray-500 py-3 text-center">لا توجد حزم محفوظة في مكتبتك حالياً.</p>'; return; }
-            keys.forEach(k => {
-                const item = lib[k];
-                list.innerHTML += `<div class="deck-item" onclick="cards_startLocal('${item.subject}', '${item.topic}')">
-                    <div><div class="font-bold text-xs text-white">${item.subject}</div><div class="text-[9px] text-gray-400 mt-1">${item.topic}</div></div>
-                    <span class="text-[10px] bg-red-950/50 text-red-400 px-2 py-1 rounded-md">${item.cards.length} بطاقة</span>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-green-400 font-black text-lg">${p.price} دج</div>
+                        <div class="text-[10px] bg-white text-black px-2 py-0.5 rounded-full font-bold mt-1 inline-block">اطلب الآن</div>
+                    </div>
                 </div>`;
             });
-        }
-        function cacheCardsLocally(subj, topic, cardsArray) {
-            let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
-            const key = `${subj}_${topic}`; let existing = lib[key] ? lib[key].cards : [];
-            let ids = new Set(existing.map(c=>c.front)); cardsArray.forEach(c=>{if(!ids.has(c.front)) existing.push(c);});
-            lib[key] = { subject: subj, topic: topic, lastAccessed: Date.now(), cards: existing };
-            localStorage.setItem(`bacflix_library_${currentUser}`, JSON.stringify(lib)); renderLibrary();
-        }
-        window.cards_startLocal = function(subj, topic) {
-            let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
-            cards_deck = lib[`${subj}_${topic}`].cards.sort(() => 0.5 - Math.random());
-            cards_index = 0; document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
-            document.getElementById('cards-topicTitle').innerText = `${subj}`; cards_show();
-        }
+            container.innerHTML = html;
+        });
+    }
 
-        async function cards_fetchAndStart() {
-            const subj = document.getElementById('cards-subject').value; const stream = currentStream; const count = document.getElementById('cards-count').value;
-            const diff = document.getElementById('cards-difficulty').value; const extra = document.getElementById('cards-extraRules').value;
-            const topicsData = getSelectedTopicsData('cards', subj); if(!topicsData) return alert("اختر محورا.");
+    function selectPackageToBuy(name, price) {
+        document.getElementById('packagesContainer').style.display = 'none';
+        document.getElementById('paymentInfoStep').style.display = 'flex';
+        
+        document.getElementById('selectedPkgName').innerText = name;
+        document.getElementById('selectedPkgPrice').innerText = price;
+
+        const msg = encodeURIComponent(`مرحباً، أريد شراء "${name}" بسعر ${price} دج.\nاسم حسابي في المنصة هو: ${currentUser}`);
+        
+        document.getElementById('waLink').href = `https://wa.me/${globalContactSettings.wa}?text=${msg}`;
+        document.getElementById('tgLink').href = `https://t.me/${globalContactSettings.tg}?text=${msg}`;
+    }
+
+    function backToPackages() {
+        document.getElementById('paymentInfoStep').style.display = 'none';
+        document.getElementById('packagesContainer').style.display = 'flex';
+    }
+
+    async function verifyUser() {
+        const forumUser = getForumUsername();
+        if (!forumUser) return;
+
+        const phone = document.getElementById('regPhone').value.trim();
+        const stream = document.getElementById('regStream').value;
+        const msg = document.getElementById('auth-msg');
+
+        if(phone.length < 8 || !stream) {
+            msg.innerText = "الرجاء إكمال رقم الهاتف واختيار الشعبة."; 
+            msg.classList.remove('hidden'); 
+            return;
+        }
+        
+        document.getElementById('btn-check-auth').innerText = "جاري الاتصال..."; 
+        document.getElementById('btn-check-auth').disabled = true;
+
+        try {
+            if(!window.cloudDb) window.cloudDb = firebase.database();
+            const userRef = window.cloudDb.ref('bacflix_users/' + forumUser);
+            const snap = await userRef.once('value');
             
-            document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.add('hidden');
-            document.getElementById('cards-loadingState').classList.remove('hidden'); document.getElementById('cards-loadingState').classList.add('flex');
+            if(!snap.exists()) {
+                let freeHour = Date.now() + (60 * 60 * 1000);
+                await userRef.set({ name: forumUser, phone: phone, stream: stream, credits: 0, subscriptionEnd: freeHour, isBanned: false });
+            }
 
-            const prompt = `ألف ${count} بطاقات مراجعة ذكية (سؤال وجواب قصير جداً للحفظ) في مادة ${subj} شعبة ${stream}. مستوى الصعوبة: ${diff}.
-            تغطي المحاور التالية: ${topicsData.detailsString}
-            ${extra ? '\nتوجيهات إضافية: ' + extra : ''}
-            استخدم MathJax للمعادلات العلمية $...$. الإخراج JSON Array فقط (دون أي نص خارجي): [{"front":"السؤال (وجه البطاقة)","back":"الجواب (ظهر البطاقة)"}]`;
+            location.reload();
+        } catch(e) {
+            msg.innerText = "حدث خطأ في الاتصال. حاول مجددا."; 
+            msg.classList.remove('hidden');
+            document.getElementById('btn-check-auth').innerText = "دخول المنصة"; 
+            document.getElementById('btn-check-auth').disabled = false;
+        }
+    }
+
+    function checkAuth() {
+        const forumUser = getForumUsername();
+        
+        if (!forumUser) {
+            document.getElementById('authModal').style.display = 'flex';
+            document.getElementById('auth-step-1').classList.add('hidden');
+            const guestWarning = document.getElementById('auth-guest-warning');
+            if(guestWarning) guestWarning.classList.remove('hidden');
+            return;
+        }
+
+        if(!window.cloudDb) window.cloudDb = firebase.database();
+        
+        window.cloudDb.ref(`bacflix_users/${forumUser}`).on('value', snap => {
+            if (!snap.exists()) {
+                document.getElementById('authModal').style.display = 'flex'; 
+                document.getElementById('auth-step-1').classList.remove('hidden');
+                const guestWarning = document.getElementById('auth-guest-warning');
+                if(guestWarning) guestWarning.classList.add('hidden');
+                
+                const nameField = document.getElementById('regName');
+                nameField.value = forumUser; 
+                nameField.readOnly = true;   
+                nameField.classList.add('opacity-60', 'cursor-not-allowed', 'bg-black/30');
+                
+                const msg = document.getElementById('auth-msg');
+                msg.innerHTML = `مرحباً بك! أكمل البيانات للحصول على هديتك (ساعة تفعيل مجانية).`;
+                msg.classList.remove('hidden');
+                return; 
+            }
+
+            userDataCache = snap.val();
+            currentUser = forumUser;
+
+            // --- الشفاء الذاتي للحسابات ---
+            let needsUpdate = false;
+            let autoUpdates = {};
+            if (userDataCache.credits === undefined) { autoUpdates.credits = 0; needsUpdate = true; }
+            if (userDataCache.subscriptionEnd === undefined) { autoUpdates.subscriptionEnd = 0; needsUpdate = true; }
+            if (userDataCache.isBanned === undefined) { autoUpdates.isBanned = false; needsUpdate = true; }
+            
+            if (needsUpdate) {
+                window.cloudDb.ref(`bacflix_users/${currentUser}`).update(autoUpdates);
+                userDataCache = { ...userDataCache, ...autoUpdates };
+            }
+
+            // --- نظام الحظر ---
+            if (userDataCache.isBanned === true) {
+                document.body.innerHTML = `
+                <div style="background:#0a0a0a; height:100vh; width:100vw; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; z-index:999999; position:fixed; top:0; right:0;">
+                    <div style="background:rgba(229,9,20,0.1); border:1px solid rgba(229,9,20,0.3); padding:40px; border-radius:20px; max-width:400px;">
+                        <svg style="margin: 0 auto 20px auto; width:64px; height:64px; stroke:#E50914;" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                        <h1 style="color:#E50914; font-size:1.5rem; font-weight:900; margin-bottom:10px;">تم تعليق حسابك</h1>
+                        <p style="color:#cbd5e1; font-size:13px; line-height:1.6; margin-bottom:20px;">عذراً، لقد تم تعليق حسابك من قبل الإدارة ولم يعد بإمكانك الوصول إلى المنصة وميزاتها.<br>يرجى التواصل مع الدعم الفني للمزيد من التفاصيل.</p>
+                        <a href="https://bacflix.yoo7.com/" style="background:#E50914; color:white; text-decoration:none; padding:10px 20px; border-radius:10px; font-weight:bold; font-size:13px; display:inline-block;">العودة للمنتدى</a>
+                    </div>
+                </div>`;
+                return;
+            }
+
+            document.getElementById('authModal').style.display = 'none'; 
+            currentStream = userDataCache.stream;
+
+            document.getElementById('sidebarUserName').innerText = currentUser;
+            document.getElementById('sidebarStreamName').innerText = currentStream;
+
+            initStats();
+
+            loadCurriculum().then(() => {
+                ['lab', 'quiz', 'cards'].forEach(prefix => updateDropdowns(prefix, false));
+            });
+            renderLibrary();
+
+            let hasTime = userDataCache.subscriptionEnd > Date.now();
+            let hasCredits = parseFloat(userDataCache.credits) > 0;
+            
+            BacflixSecurity.setActive(hasTime, BacflixSecurity.getKey()); 
+
+            document.getElementById('studentCredits').innerText = userDataCache.credits || 0;
+            document.getElementById('subStatusText').innerHTML = hasTime 
+                ? `حالة الأدوات: <span class="text-green-400 font-bold">مفعل</span>` 
+                : `حالة الأدوات: <span class="text-red-400 font-bold">غير مفعل</span>`;
+            
+            initLiveSessions(userDataCache.credits || 0); 
+            initRecordedSessions(userDataCache.credits || 0); 
+            loadStudentTimetable();
+
+            const banner = document.getElementById('inactiveBanner');
+            if (!hasTime && !hasCredits) {
+                if(banner) banner.style.display = 'flex';
+            } else {
+                if(banner) banner.style.display = 'none';
+            }
+
+            if(!BacflixSecurity.isActive() && activeApp !== 'academy') {
+                switchApp('academy');
+            }
+            
+            loadContactSettings();
+            loadStudentPackages();
+        });
+    }
+
+    function logoutGlobalUser() {
+        location.reload();
+    }
+
+    async function processActivationCode() {
+        let codeInputId = 'voucherInput';
+        let msgId = 'voucherMsg';
+        let btnId = 'redeemBtn';
+        
+        let rawCode = document.getElementById(codeInputId).value.replace(/-/g, '').toUpperCase();
+        const msg = document.getElementById(msgId);
+        const btn = document.getElementById(btnId);
+
+        if(rawCode.length !== 16) {
+            msg.innerHTML = "<span class='text-red-400'>الكود غير مكتمل.</span>"; return;
+        }
+
+        let code = rawCode.match(/.{1,4}/g).join('-');
+
+        btn.disabled = true; btn.innerText = "جاري التفعيل..."; msg.innerHTML = "";
+
+        try {
+            if(!window.cloudDb) window.cloudDb = firebase.database();
+            const codeRef = window.cloudDb.ref('bacflix_codes/' + code);
+            const codeSnap = await codeRef.once('value');
+
+            if(codeSnap.exists() && codeSnap.val().status === 'active') {
+                const codeData = codeSnap.val();
+                
+                let userRef = window.cloudDb.ref('bacflix_users/' + currentUser);
+                let userSnap = await userRef.once('value');
+                let uData = userSnap.val() || { credits: 0, subscriptionEnd: 0 };
+
+                let updates = { 
+                    lastCodeUsed: code,
+                    lastVoucherPrice: parseFloat(codeData.price) || 0,
+                    lastVoucherCredits: parseFloat(codeData.credits) || 1
+                };
+
+                if (codeData.credits && codeData.credits > 0) {
+                    updates.credits = (parseFloat(uData.credits) || 0) + parseFloat(codeData.credits);
+                } else {
+                    updates.credits = uData.credits || 0; 
+                }
+
+                if (codeData.days && codeData.days > 0) {
+                    let currentEnd = uData.subscriptionEnd > Date.now() ? uData.subscriptionEnd : Date.now();
+                    updates.subscriptionEnd = currentEnd + (codeData.days * 24 * 60 * 60 * 1000);
+                } else {
+                    updates.subscriptionEnd = uData.subscriptionEnd || 0;
+                }
+
+                await codeRef.update({ status: 'used', usedBy: currentUser, activationDate: Date.now() });
+                await userRef.update(updates);
+
+                msg.innerHTML = "<span class='text-green-400'>تم التفعيل بنجاح!</span>";
+                document.getElementById(codeInputId).value = '';
+                setTimeout(() => { msg.innerHTML = ""; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }, 3000);
+
+            } else {
+                msg.innerHTML = "<span class='text-red-400'>الكود خاطئ أو مستخدم.</span>";
+                btn.disabled = false; btn.innerText = "تأكيد الشحن";
+            }
+        } catch(e) { msg.innerHTML = "<span class='text-red-400'>خطأ في الاتصال.</span>"; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }
+    }
+
+    async function fetchFromGemini(contentsArray, systemInstruction = null) {
+        if (typeof API_KEYS === 'undefined') throw new Error("المفاتيح مفقودة.");
+        let keys = [...API_KEYS].sort(() => 0.5 - Math.random());
+        let data = null, success = false, lastErr = "";
+        for (const key of keys) {
+            if(success) break;
             try {
-                let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+                let req = { contents: contentsArray };
+                if (systemInstruction) req.systemInstruction = { parts: [{ text: systemInstruction }] };
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${key}`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(req)
+                });
+                if (res.ok) { data = await res.json(); success = true; break; }
+                else { const err = await res.json(); lastErr = err.error?.message; if(res.status===429) await new Promise(r=>setTimeout(r,1000)); }
+            } catch(e) { lastErr = e.message; }
+        }
+        if(!success) throw new Error(lastErr || "الخوادم عليها ضغط حاليا.");
+        return data.candidates[0].content.parts[0].text;
+    }
+
+    function switchApp(app) {
+        if (app !== 'academy' && app !== 'stats' && BacflixSecurity.isActive() === false) {
+            alert("عذرا! اشتراكك الزمني في (الأدوات الذكية) غير مفعل أو انتهى.\nامتلاكك للرصيد يسمح لك بالحضور المباشر فقط. يرجى الشحن لفتح المولدات.");
+            return;
+        }
+
+        activeApp = app;
+        document.querySelectorAll('.app-window').forEach(w => w.classList.remove('active'));
+        document.getElementById('app-' + app).classList.add('active');
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.getElementById('btn-' + app).classList.add('active');
+        
+        const titles = { 'academy': 'المساعد الإداري', 'lab': 'المختبر (التحليل)', 'quiz': 'التقييم (الشرح)', 'cards': 'البطاقات (المراجعة)', 'stats': 'المحلل الأكاديمي' };
+        document.getElementById('chat-title-text').innerText = titles[app];
+        document.querySelector('.main-viewport').scrollTop = 0;
+        
+        if(app === 'stats') renderStats();
+        if(app !== 'academy' && app !== 'stats') {
+            updateDropdowns(app, true);
+        }
+    }
+
+    async function loadCurriculum() {
+        if(!window.cloudDb) window.cloudDb = firebase.database();
+        try {
+            const snap = await window.cloudDb.ref('bacflix_curriculum_pro').once('value');
+            if (snap.exists()) { 
+                cloudCurriculum = snap.val(); 
+                if(activeApp !== 'academy' && activeApp !== 'stats') updateDropdowns(activeApp, false);
+            }
+        } catch(e) {}
+    }
+
+    function updateDropdowns(prefix, skipSubjectUpdate = false) {
+        const stream = currentStream;
+        const subjEl = document.getElementById(`${prefix}-subject`);
+        const topicCont = document.getElementById(`${prefix}-topicContainer`);
+        if(!subjEl || !topicCont || !cloudCurriculum) return;
+
+        if(!skipSubjectUpdate || subjEl.options.length === 0) {
+            let subjects = new Set();
+            if(cloudCurriculum[stream]) Object.keys(cloudCurriculum[stream]).forEach(s => subjects.add(s));
+            if(cloudCurriculum["مواد مشتركة"]) Object.keys(cloudCurriculum["مواد مشتركة"]).forEach(s => subjects.add(s));
+            
+            let currentVal = subjEl.value;
+            subjEl.innerHTML = '';
+            Array.from(subjects).forEach(s => subjEl.innerHTML += `<option value="${s}">${s}</option>`);
+            
+            if(currentVal && Array.from(subjects).includes(currentVal)) {
+                subjEl.value = currentVal;
+            }
+        }
+
+        const subject = subjEl.value;
+        if(!subject) {
+            topicCont.innerHTML = '';
+            return;
+        }
+
+        let topicsObj = cloudCurriculum[stream]?.[subject] || cloudCurriculum["مواد مشتركة"]?.[subject] || {};
+        let topicNames = Object.keys(topicsObj);
+        
+        topicCont.innerHTML = `<label class="checkbox-label" style="grid-column: 1 / -1;"><input type="checkbox" onchange="document.querySelectorAll('.topic-cb-${prefix}').forEach(cb => cb.checked = this.checked)"> <span class="font-bold text-white">تحديد الكل</span></label>`;
+        topicNames.forEach(t => { topicCont.innerHTML += `<label class="checkbox-label"><input type="checkbox" class="topic-cb-${prefix}" value="${t}"> <span>${t}</span></label>`; });
+    }
+
+    function getSelectedTopicsData(prefix, subject) {
+        const stream = currentStream;
+        let selectedCbs = document.querySelectorAll(`.topic-cb-${prefix}:checked`);
+        if(selectedCbs.length === 0) return null;
+        let names = Array.from(selectedCbs).map(cb => cb.value);
+        let topicsObj = cloudCurriculum[stream]?.[subject] || cloudCurriculum["مواد مشتركة"]?.[subject] || {};
+        let detailsArr = names.map(n => `- **${n}**: ${topicsObj[n] || 'مراجعة عامة'}`);
+        return { namesString: names.join(' و '), namesArray: names, detailsString: detailsArr.join('\n') };
+    }
+
+    function cleanLatex(text) { return text.replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/\\textbf{([^}]+)}/g, '**$1**').replace(/\\section\*{([^}]+)}/g, '### $1'); }
+    function renderMathAndGraphs(containerId) {
+        const container = document.getElementById(containerId); if(!container) return;
+        container.querySelectorAll('code.language-functionplot').forEach((block, index) => {
+            let rawFuncs = block.textContent.trim().split('\n'); const pre = block.parentElement;
+            if (pre && pre.tagName === 'PRE') {
+                const plotId = 'plot-' + Date.now() + '-' + index;
+                const div = document.createElement('div'); div.id = plotId; div.className = 'graph-container'; pre.replaceWith(div);
+                let validData = [];
+                rawFuncs.forEach(f => {
+                    let cleanedF = f.trim().replace(/[\u0600-\u06FF]/g, '').replace(/^(f\(x\)|y|g\(x\)|h\(x\)|f)\s*=\s*/i, '').replace(/e\^x/g, 'exp(x)').replace(/ln\(/g, 'log(');
+                    if(cleanedF.length > 0 && cleanedF.includes('x')) validData.push({ fn: cleanedF, graphType: 'polyline', color: '#E50914' });
+                });
+                if(validData.length > 0) { try { functionPlot({ target: '#'+plotId, width: 400, height: 250, grid: true, data: validData }); } catch(e) {} }
+            }
+        });
+        container.querySelectorAll('code.language-mermaid').forEach((block) => {
+            const pre = block.parentElement;
+            if (pre && pre.tagName === 'PRE') { const div = document.createElement('div'); div.className = 'mermaid-container mermaid'; div.innerHTML = block.textContent.trim(); pre.replaceWith(div); }
+        });
+        try { mermaid.run({ querySelector: '.mermaid' }); } catch(e) {}
+        if(window.MathJax) MathJax.typesetPromise([container]).catch(()=>{});
+    }
+
+    function initLiveSessions(studentCredits) {
+        if(!window.cloudDb) return;
+        window.cloudDb.ref('bacflix_live_sessions').on('value', (snap) => {
+            const container = document.getElementById('liveSessionsContainer'); container.innerHTML = '';
+            const now = new Date();
+            if(!snap.exists()) { container.innerHTML = "<div class='glass-panel text-center text-gray-500 py-10'>لا توجد حصص مبرمجة حاليا.</div>"; return; }
+
+            let sessions = Object.keys(snap.val()).map(k => ({id:k, ...snap.val()[k]}));
+            sessions = sessions.filter(s => s.stream === currentStream || s.stream === "جميع الشعب");
+            sessions.sort((a,b) => new Date(a.time) - new Date(b.time));
+
+            let count = 0;
+            sessions.forEach(s => {
+                const startTime = new Date(s.time); const duration = parseInt(s.duration) || 60;
+                const endTime = new Date(startTime.getTime() + duration * 60000); const allowJoinTime = new Date(startTime.getTime() - 5 * 60000); 
+                if ((now - endTime) / 3600000 > 3) return; 
+                count++;
+
+                const myStatus = (s.attendance && s.attendance[currentUser]) ? s.attendance[currentUser].status : null;
+                let btnHtml = '';
+
+                if (myStatus === 'confirmed') btnHtml = `<button disabled class="btn-primary !bg-emerald-600/20 !text-emerald-400 !shadow-none whitespace-nowrap">تم تسجيل حضورك</button>`;
+                else if (myStatus === 'joined') {
+                    if (now >= endTime) btnHtml = `<button onclick="confirmPresence('${s.id}')" class="btn-primary !bg-emerald-600 animate-pulse whitespace-nowrap">أكد حضورك الآن</button>`;
+                    else btnHtml = `<button disabled class="btn-primary !bg-orange-500/20 !text-orange-400 !shadow-none whitespace-nowrap">الحصة جارية...</button>`;
+                } else {
+                    if (now < allowJoinTime) btnHtml = `<button disabled class="btn-secondary !py-2 text-xs whitespace-nowrap">يفتح: ${startTime.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'})}</button>`;
+                    else if (now < endTime) {
+                        if (studentCredits >= 1) btnHtml = `<button onclick="joinLive('${s.id}', '${s.meetLink}')" class="btn-primary shadow-lg shadow-red-500/30 whitespace-nowrap">دخول الحصة (-1)</button>`;
+                        else btnHtml = `<button disabled class="btn-primary !bg-red-500/20 !text-red-400 !shadow-none whitespace-nowrap">رصيد غير كاف</button>`;
+                    } else btnHtml = `<button disabled class="btn-secondary !py-2 text-xs whitespace-nowrap">فاتتك الحصة</button>`;
+                }
+
+                container.innerHTML += `
+                    <div class="glass-panel flex flex-col md:flex-row justify-between items-center gap-4 ${now >= allowJoinTime && now < endTime ? 'border-red-500/50 bg-red-950/20' : ''}">
+                        <div>
+                            <h3 class="text-white font-bold text-lg leading-tight">${s.title}</h3>
+                            <p class="text-xs text-gray-400 mt-1">أ. ${s.teacher} | ${s.stream}</p>
+                            <div class="text-[11px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 w-fit px-3 py-1 rounded-md mt-3">${startTime.toLocaleString('ar-DZ', { weekday: 'long', hour: '2-digit', minute:'2-digit' })}</div>
+                        </div>
+                        <div class="min-w-[150px] flex justify-center">${btnHtml}</div>
+                    </div>`;
+            });
+            if(count === 0) container.innerHTML = "<div class='glass-panel text-center text-gray-500 py-10'>لا توجد حصص مباشرة قادمة.</div>";
+        });
+    }
+
+    async function joinLive(id, link) {
+        if(!confirm("سيتم خصم (1 نقطة) من رصيدك. تأكيد؟")) return;
+        try {
+            const sSnap = await window.cloudDb.ref(`bacflix_users/${currentUser}`).once('value');
+            const uData = sSnap.val();
+            const credits = parseFloat(uData.credits) || 0;
+            if (credits < 1) return alert("لا تملك رصيدا كافيا!");
+            
+            await window.cloudDb.ref(`bacflix_live_sessions/${id}/attendance/${currentUser}`).set({ 
+                status: 'joined', 
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                voucherPrice: uData.lastVoucherPrice || 2000, 
+                voucherCredits: uData.lastVoucherCredits || 8
+            });
+            
+            await window.cloudDb.ref(`bacflix_users/${currentUser}/credits`).transaction(c => { let current = parseFloat(c) || 0; return current >= 1 ? current - 1 : current; });
+            window.open(link, '_blank');
+        } catch (e) { alert("حدث خطأ في الاتصال."); }
+    }
+
+    async function confirmPresence(id) {
+        try {
+            await window.cloudDb.ref(`bacflix_live_sessions/${id}/attendance/${currentUser}/status`).set('confirmed');
+            alert("تم توثيق حضورك بنجاح!");
+        } catch(e) { alert("خطأ في التوثيق."); }
+    }
+
+    function initRecordedSessions(studentCredits) {
+        window.cloudDb.ref('bacflix_sessions_history').on('value', snap => {
+            const container = document.getElementById('recordedSessionsContainer'); container.innerHTML = '';
+            if(!snap.exists()) { container.innerHTML = "<div class='glass-panel col-span-full text-center text-gray-500 py-10'>لا توجد حصص مسجلة في الأرشيف.</div>"; return; }
+
+            let sessions = Object.keys(snap.val()).map(k => ({id:k, ...snap.val()[k]}));
+            sessions = sessions.filter(s => (s.stream === currentStream || s.stream === "جميع الشعب") && s.recordingLink);
+            sessions.sort((a,b) => b.completedAt - a.completedAt);
+            
+            let count = 0;
+            sessions.forEach(s => {
+                count++;
+                const myStatus = (s.attendance_stats && s.attendance_stats[currentUser]) ? s.attendance_stats[currentUser].status : null;
+                let btnHtml = '';
+
+                if (myStatus === 'joined' || myStatus === 'confirmed' || myStatus === 'recorded_paid') btnHtml = `<button onclick="window.open('${s.recordingLink}', '_blank')" class="btn-primary !bg-gray-700 hover:!bg-gray-600 !py-2.5 text-xs whitespace-nowrap">مشاهدة التسجيل</button>`;
+                else {
+                    if (studentCredits >= 0.5) btnHtml = `<button onclick="buyRecording('${s.id}', '${s.recordingLink}')" class="btn-secondary !py-2.5 w-full text-xs whitespace-nowrap">فتح التسجيل (-0.5)</button>`;
+                    else btnHtml = `<button disabled class="btn-secondary !bg-red-500/10 !text-red-400 !border-red-500/20 !py-2.5 w-full text-xs whitespace-nowrap">رصيد غير كاف</button>`;
+                }
+
+                container.innerHTML += `
+                    <div class="glass-panel !p-5 flex flex-col justify-between gap-4">
+                        <div>
+                            <h3 class="text-white font-bold text-sm leading-tight">${s.title}</h3>
+                            <p class="text-[10px] text-gray-400 mt-1">أ. ${s.teacher} | ${s.stream}</p>
+                        </div>
+                        <div>${btnHtml}</div>
+                    </div>`;
+            });
+            if(count === 0) container.innerHTML = "<div class='glass-panel col-span-full text-center text-gray-500 py-10'>لا يوجد أرشيف تسجيلات حالياً.</div>";
+        });
+    }
+
+    async function buyRecording(id, link) {
+        if(!confirm("سيتم خصم (0.5 نقطة) لفتح هذا التسجيل للأبد. تأكيد؟")) return;
+        try {
+            const sSnap = await window.cloudDb.ref(`bacflix_users/${currentUser}`).once('value');
+            const uData = sSnap.val();
+            if (parseFloat(uData.credits) < 0.5) return alert("رصيد غير كاف!");
+            
+            await window.cloudDb.ref(`bacflix_sessions_history/${id}/attendance_stats/${currentUser}`).set({ 
+                status: 'recorded_paid', 
+                isHalfPoint: true,
+                voucherPrice: uData.lastVoucherPrice || 2000,
+                voucherCredits: uData.lastVoucherCredits || 8
+            });
+            
+            await window.cloudDb.ref(`bacflix_users/${currentUser}/credits`).transaction(c => { let current = parseFloat(c) || 0; return current >= 0.5 ? current - 0.5 : current; });
+            window.open(link, '_blank');
+        } catch (e) { alert("حدث خطأ في الاتصال."); }
+    }
+
+    function loadStudentTimetable() {
+        window.cloudDb.ref('bacflix_timetable').once('value', (snap) => {
+            const container = document.getElementById('studentTimetableContainer');
+            if (!snap.exists()) return container.innerHTML = '<p class="text-gray-500 text-xs text-center py-2">لا يوجد جدول حصص مبرمج.</p>';
+            let arr = Object.values(snap.val()).filter(t => t.stream === currentStream || t.stream === "جميع الشعب");
+            arr.sort((a,b) => a.order - b.order);
+            let html = '';
+            arr.forEach(t => {
+                html += `<div class="bg-black/30 p-3 rounded-xl mb-2 border-r-2 border-red-600 flex justify-between items-center gap-2">
+                    <div><p class="text-white text-xs font-bold leading-tight">${t.subject}</p><p class="text-gray-400 text-[9px] mt-0.5">أ. ${t.teacher}</p></div>
+                    <div class="text-left"><p class="text-red-400 font-bold text-[11px]">${t.day}</p><p class="text-gray-500 text-[10px] font-mono mt-0.5">${t.time}</p></div>
+                </div>`;
+            });
+            container.innerHTML = html || '<p class="text-gray-500 text-xs text-center py-2">لا يوجد جدول لهذه الشعبة.</p>';
+        });
+    }
+
+    // ===================================
+    // المولد السحابي (Cloud Pool)
+    // ===================================
+    function generateStorageKey(mode, subject, stream, topics, difficulty) {
+        const topicKey = topics.split(' و ').sort().join('_').substring(0, 40);
+        return `bacflix_${mode}_${subject}_${stream}_${topicKey}_${difficulty}`.replace(/\s+/g, '_');
+    }
+
+    async function fetchFromCloudPool(poolKey) {
+        if(!window.cloudDb) window.cloudDb = firebase.database();
+        try {
+            const snapshot = await window.cloudDb.ref('bacflix_pool/' + poolKey).once('value');
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                return Object.keys(data).map(key => ({ id: key, content: data[key] })); 
+            }
+            return [];
+        } catch (error) { return []; }
+    }
+
+    function saveToCloudPool(poolKey, content) {
+        if(!window.cloudDb) window.cloudDb = firebase.database();
+        const newRef = window.cloudDb.ref('bacflix_pool/' + poolKey).push();
+        newRef.set(content);
+        return newRef.key;
+    }
+
+    function markQuizAsSeen(examId) {
+        if (!currentUser || !examId) return;
+        const key = `bacflix_quiz_seen_${currentUser}`;
+        let seen = JSON.parse(localStorage.getItem(key)) || [];
+        if (!seen.includes(examId)) { seen.push(examId); localStorage.setItem(key, JSON.stringify(seen)); }
+    }
+
+    function getSeenQuizzes() {
+        if (!currentUser) return [];
+        return JSON.parse(localStorage.getItem(`bacflix_quiz_seen_${currentUser}`)) || [];
+    }
+
+    // ===================================
+    // محرك المختبر (Lab)
+    // ===================================
+    let lab_rawText = "";
+    async function lab_generateContent() {
+        const subj = document.getElementById('lab-subject').value; const stream = currentStream;
+        const mode = document.getElementById('lab-toolMode').value; const diff = document.getElementById('lab-difficulty').value;
+        
+        const topicsData = getSelectedTopicsData('lab', subj);
+        if(!topicsData) return alert("الرجاء اختيار محور واحد على الأقل.");
+        
+        let extra = document.getElementById('lab-extraRules').value || "";
+        const checkedOptions = Array.from(document.querySelectorAll('.lab-extra-cb:checked')).map(cb => cb.value);
+        if (checkedOptions.length > 0) extra += " الإضافات المطلوبة: " + checkedOptions.join("، ");
+
+        document.getElementById('lab-examWrapper').classList.add('hidden');
+        document.getElementById('lab-loadingState').classList.remove('hidden'); document.getElementById('lab-loadingState').classList.add('flex');
+        
+        const prompt = `أنت أستاذ ومفتش جزائري خبير. قم ببناء ${mode==='exam'?'موضوع امتحان تجريبي شامل':'ملخص درس احترافي'} في مادة ${subj} لشعبة ${stream}. المستوى البيداغوجي المطلـوب: ${diff}.
+        المحتوى يجب أن يبنى حصراً على هذه المحاور:
+        ${topicsData.detailsString}
+        ${extra ? '\nتوجيهات إضافية: ' + extra : ''}
+        ${mode==='exam'?'افصل بين الموضوع والتصحيح النموذجي بكلمة [SOLUTION_BREAK] في سطر مستقل وبشكل واضح.':''} استخدم MathJax للمعادلات العلمية $...$. تأكد من كتابة الرموز الرياضية واللاتينية من اليسار إلى اليمين بطريقة سليمة.`;
+        
+        try {
+            let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+            res = cleanLatex(res); lab_rawText = res;
+            updateStat('labGenerated', 1);
+            renderLabContent(mode, subj, stream);
+        } catch(e) { alert(e.message); document.getElementById('lab-loadingState').classList.add('hidden'); }
+    }
+    
+    function renderLabContent(mode, subj, stream) {
+        document.getElementById('lab-loadingState').classList.add('hidden'); document.getElementById('lab-loadingState').classList.remove('flex');
+        if(mode === 'exam') {
+            const parts = lab_rawText.split('[SOLUTION_BREAK]');
+            document.getElementById('lab-printSubject').innerText = subj; document.getElementById('lab-printStream').innerText = stream;
+            document.getElementById('lab-examContent').innerHTML = marked.parse(parts[0]||'');
+            document.getElementById('lab-correctionContent').innerHTML = marked.parse(parts[1]||'التصحيح غير متوفر أو مدمج.');
+            document.getElementById('lab-correctionSection').classList.add('hidden');
+        } else {
+            document.getElementById('lab-printSubject').innerText = subj + " (ملخص)"; document.getElementById('lab-printStream').innerText = stream;
+            document.getElementById('lab-examContent').innerHTML = marked.parse(lab_rawText);
+            document.getElementById('lab-correctionSection').classList.add('hidden');
+        }
+        document.getElementById('lab-examWrapper').classList.remove('hidden'); document.getElementById('lab-examWrapper').classList.add('flex');
+        setTimeout(()=>renderMathAndGraphs('lab-examWrapper'), 100);
+    }
+    function lab_toggleSolution() { document.getElementById('lab-correctionSection').classList.toggle('hidden'); }
+
+    // ===================================
+    // محرك الكويزات
+    // ===================================
+    let quiz_data = []; let quiz_interval;
+    
+    async function quiz_generate() {
+        const subj = document.getElementById('quiz-subject').value; 
+        const stream = currentStream;
+        const count = document.getElementById('quiz-count').value; 
+        const userDifficulty = document.getElementById('quiz-difficulty').value;
+        const type = document.getElementById('quiz-type').value;
+        const extra = document.getElementById('quiz-extraRules').value;
+        const forceNew = document.getElementById('forceNewExam') ? document.getElementById('forceNewExam').checked : false;
+        let timeVal = document.getElementById('quiz-timer').value;
+        
+        const topicsData = getSelectedTopicsData('quiz', subj);
+        if(!topicsData) return alert("الرجاء اختيار محور.");
+
+        document.getElementById('quiz-emptyState').classList.add('hidden'); 
+        document.getElementById('quiz-wrapper').classList.add('hidden');
+        document.getElementById('quiz-loadingState').classList.remove('hidden'); 
+        document.getElementById('quiz-loadingState').classList.add('flex');
+        
+        const loadingText = document.getElementById('quiz-loadingText');
+
+        let appliedDifficulty = userDifficulty;
+        if(userDifficulty === "تكيفي") {
+            appliedDifficulty = getAdaptiveDifficulty(subj);
+        }
+
+        const poolKey = generateStorageKey('quiz', subj, stream, topicsData.namesString, `${appliedDifficulty}_${count}`);
+        currentQuizPoolKey = poolKey;
+
+        if (!forceNew) {
+            loadingText.innerText = "جاري البحث عن كويز في السحابة...";
+            const cloudTopics = await fetchFromCloudPool(poolKey);
+            const seenExams = getSeenQuizzes();
+            const unseenTopics = cloudTopics.filter(topic => !seenExams.includes(topic.id));
+            
+            if (unseenTopics.length > 0) {
+                const randomIndex = Math.floor(Math.random() * unseenTopics.length);
+                const chosenTopic = unseenTopics[randomIndex];
+                currentQuizFirebaseId = chosenTopic.id;
+                markQuizAsSeen(chosenTopic.id);
+                
+                displayQuizContent(chosenTopic.content, timeVal, subj);
+                if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
+                return; 
+            }
+        }
+
+        loadingText.innerText = `يتم الآن بناء كويز جديد كلياً... (${appliedDifficulty})`;
+
+        const prompt = `ألف ${count} أسئلة من نوع (${type}) في مادة ${subj} شعبة ${stream}. الصعوبة المطبقة: ${appliedDifficulty}. 
+        مستوحاة من هذه المحاور:
+        ${topicsData.detailsString}
+        ${extra ? '\nتوجيهات إضافية من الطالب: ' + extra : ''}
+        قم بتغيير الأرقام والأمثلة لضمان عدم التكرار. استخدم MathJax للمعادلات العلمية $...$.
+        الإخراج JSON Array فقط (دون أي نص خارجي): [{"question":"السؤال","options":["خيار1","خيار2","خيار3","خيار4"],"correctIndex":0,"explanation":"الشرح البيداغوجي"}]`;
+        
+        try {
+            let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+            let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
+            
+            const newExamId = saveToCloudPool(poolKey, jsonStr);
+            currentQuizFirebaseId = newExamId; 
+            markQuizAsSeen(newExamId);
+            
+            displayQuizContent(jsonStr, timeVal, subj);
+            if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
+
+        } catch(e) { 
+            alert("حدث خطأ في توليد الأسئلة."); 
+            document.getElementById('quiz-loadingState').classList.add('hidden'); 
+            document.getElementById('quiz-emptyState').classList.remove('hidden'); 
+            if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
+        }
+    }
+
+    function displayQuizContent(jsonString, timeVal, subj) {
+        try {
+            quiz_data = JSON.parse(jsonString);
+            
+            document.getElementById('quiz-loadingState').classList.add('hidden'); document.getElementById('quiz-loadingState').classList.remove('flex');
+            let area = document.getElementById('quiz-questionsArea'); area.innerHTML = '';
+            quiz_data.forEach((q, i) => {
+                let html = `<div class="question-card" id="qcard-${i}"><h3 class="font-bold mb-4 text-slate-800 text-lg">${i+1}. ${marked.parseInline(q.question)}</h3><div class="space-y-2">`;
+                q.options.forEach((opt, oi) => { html += `<label class="option-label" id="lbl-${i}-${oi}"><input type="radio" name="q${i}" value="${oi}"><span>${marked.parseInline(opt)}</span></label>`; });
+                html += `</div>
+                <div class="explanation-box" id="exp-${i}">
+                    <strong>الشرح العلمي:</strong><br>${marked.parse(q.explanation)}
+                    <div class="border-t border-yellow-500/30 pt-3 mt-3 flex gap-2 items-center flex-wrap">
+                        <span class="text-xs font-bold text-yellow-900 ml-2">ما رأيك في هذا السؤال؟</span>
+                        <button onclick="submitRating(event, ${i}, 'واضح')" class="rating-btn rate-clear">✅ واضح</button>
+                        <button onclick="submitRating(event, ${i}, 'صعب')" class="rating-btn rate-hard">🔥 صعب جداً</button>
+                        <button onclick="submitRating(event, ${i}, 'خطأ')" class="rating-btn rate-error">⚠️ خطأ</button>
+                    </div>
+                </div></div>`;
+                area.innerHTML += html;
+            });
+            document.getElementById('quiz-title').innerText = `تقييم ذكي: ${subj}`;
+            document.getElementById('quiz-submitBtn').style.display = 'flex'; document.getElementById('quiz-finalScore').classList.add('hidden');
+            document.getElementById('quiz-wrapper').classList.remove('hidden'); document.getElementById('quiz-wrapper').classList.add('block');
+            setTimeout(()=>renderMathAndGraphs('quiz-questionsArea'), 100);
+            
+            let mins = parseInt(timeVal);
+            if(mins>0) { 
+                clearInterval(quiz_interval); let time = mins*60; document.getElementById('quiz-timerDisplay').style.display = 'flex';
+                document.getElementById('quiz-timeText').innerText = `${mins < 10 ? '0'+mins : mins}:00`;
+                quiz_interval = setInterval(()=>{ 
+                    time--; let m=Math.floor(time/60); let s=time%60; document.getElementById('quiz-timeText').innerText=`${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+                    if(time<=60) document.getElementById('quiz-timerDisplay').classList.add('warning');
+                    if(time<=0) quiz_evaluate(true);
+                },1000);
+            } else { document.getElementById('quiz-timerDisplay').style.display = 'none'; }
+        } catch(e) {
+            alert("عذراً، حدث خطأ في تنسيق الكويز المحمل. سيتم توليد واحد جديد.");
+            document.getElementById('quiz-loadingState').classList.add('hidden'); document.getElementById('quiz-emptyState').classList.remove('hidden');
+        }
+    }
+
+    window.submitRating = function(event, qIndex, ratingType) {
+        const questionData = quiz_data[qIndex];
+        const btn = event.target;
+        btn.parentElement.innerHTML = `<span class="text-xs font-bold text-green-700 p-2 bg-green-100 rounded border border-green-300">✓ شكراً على تقييمك (${ratingType})</span>`;
+        if(!window.cloudDb) return;
+        window.cloudDb.ref('bacflix_ratings').push({
+            user: currentUser, rating: ratingType, subject: document.getElementById('quiz-subject').value,
+            questionText: questionData.question, date: new Date().toISOString()
+        });
+    }
+
+    function quiz_evaluate(timeUp) {
+        clearInterval(quiz_interval); document.getElementById('quiz-timerDisplay').classList.remove('warning');
+        let score = 0;
+        let wrongAnswersDetails = [];
+
+        quiz_data.forEach((q, i) => {
+            let checked = document.querySelector(`input[name="q${i}"]:checked`);
+            document.querySelectorAll(`input[name="q${i}"]`).forEach(inp => inp.disabled=true);
+            let correctLabel = document.getElementById(`lbl-${i}-${q.correctIndex}`);
+            if(correctLabel) correctLabel.classList.add('correct-answer');
+            
+            if(checked) { 
+                const selectedVal = parseInt(checked.value);
+                if(selectedVal === q.correctIndex) {
+                    score++; 
+                } else { 
+                    document.getElementById(`lbl-${i}-${selectedVal}`).classList.add('wrong-answer'); 
+                    wrongAnswersDetails.push(`- السؤال: ${q.question}\n- إجابتك: ${q.options[selectedVal]}\n- الصحيحة: ${q.options[q.correctIndex]}\n- التعليل: ${q.explanation}`);
+                }
+            } else {
+                wrongAnswersDetails.push(`- السؤال: ${q.question}\n- لم تجب\n- الصحيحة: ${q.options[q.correctIndex]}\n- التعليل: ${q.explanation}`);
+            }
+            document.getElementById(`exp-${i}`).classList.add('visible');
+        });
+        
+        const percentage = Math.round((score / quiz_data.length) * 100);
+        
+        updateStat('quizzesTaken', 1);
+        updateStat('quizTotalQuestions', quiz_data.length);
+        updateStat('quizCorrectAnswers', score);
+        
+        const currentSubj = document.getElementById('quiz-subject').value;
+        const selectedTopics = Array.from(document.querySelectorAll('.topic-cb-quiz:checked')).map(cb => cb.value).join(' و ');
+        saveQuizHistory(currentSubj, selectedTopics, percentage);
+
+        document.getElementById('quiz-submitBtn').style.display = 'none';
+        let scoreDiv = document.getElementById('quiz-finalScore'); scoreDiv.classList.remove('hidden');
+        scoreDiv.innerText = `${timeUp?'انتهى الوقت! ':''}النتيجة النهائية: ${score} / ${quiz_data.length} (${percentage}%)`;
+        scoreDiv.className = `text-center p-6 rounded-xl font-bold text-3xl mt-6 ${percentage>=50?'bg-emerald-100 text-emerald-800 border border-emerald-500':'bg-red-100 text-red-800 border border-red-500'}`;
+        scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(()=>renderMathAndGraphs('quiz-questionsArea'), 100);
+
+        // التدخل الاستباقي للمساعد الذكي
+        let botGreeting = "";
+        if (percentage < 50) {
+            botGreeting = `مرحباً بك! لاحظت أنك واجهت بعض الصعوبة في كويز ${currentSubj}. لا تقلق، الأخطاء هي أفضل طريق للتعلم! هل تريدني أن أشرح لك الأسئلة التي أخطأت فيها؟`;
+        } else if (percentage >= 75) {
+            botGreeting = `عمل ممتاز! لقد تألقت في كويز ${currentSubj}. هل هناك أي نقطة معينة تود التعمق فيها أكثر؟`;
+        } else {
+            botGreeting = `نتيجة جيدة جداً في كويز ${currentSubj}. أنت في الطريق الصحيح! هل نراجع معاً الأسئلة التي ضاعت منك لتحصل على العلامة الكاملة المرة القادمة؟`;
+        }
+
+        let hiddenPrompt = `[ملاحظة نظامية مخفية - لا ترد عليها]: الطالب أنهى للتو كويز في ${currentSubj} وحصل على ${score} من ${quiz_data.length}. لقد بادرت أنت بسؤاله وعرضت المساعدة.\n`;
+        if (wrongAnswersDetails.length > 0) {
+            hiddenPrompt += `\nإليك الأسئلة التي أخطأ فيها الطالب لتعرف الإجابات الصحيحة:\n${wrongAnswersDetails.join('\n')}\nبناءً على رده القادم، قم بإدارة الحوار بذكاء وتدرج في الشرح.`;
+        } else {
+            hiddenPrompt += `\nالطالب أجاب على جميع الأسئلة بشكل صحيح! شجعه واستعد لأي استفسار.`;
+        }
+
+        globalChatHistory.push({ role: "user", parts: [{ text: hiddenPrompt }] });
+        globalChatHistory.push({ role: "model", parts: [{ text: botGreeting }] });
+        
+        const chatBody = document.getElementById('chat-body');
+        chatBody.innerHTML += `<div class="message bot-msg" dir="auto">${botGreeting}</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
+        
+        const chatBtn = document.getElementById('bacflix-chat-btn');
+        chatBtn.classList.add('chat-alert-active');
+        setTimeout(() => chatBtn.classList.remove('chat-alert-active'), 10000); 
+    }
+
+    // ===================================
+    // البطاقات
+    // ===================================
+    let cards_deck = []; let cards_index = 0; let cards_isFlipped = false;
+    
+    function renderLibrary() {
+        const list = document.getElementById('cards-localDecks'); if (!list) return;
+        let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
+        list.innerHTML = ''; const keys = Object.keys(lib).sort((a,b) => lib[b].lastAccessed - lib[a].lastAccessed);
+        if (keys.length === 0) { list.innerHTML = '<p class="text-[11px] text-gray-500 py-3 text-center">لا توجد حزم محفوظة في مكتبتك حالياً.</p>'; return; }
+        keys.forEach(k => {
+            const item = lib[k];
+            list.innerHTML += `<div class="deck-item" onclick="cards_startLocal('${item.subject}', '${item.topic}')">
+                <div><div class="font-bold text-xs text-white">${item.subject}</div><div class="text-[9px] text-gray-400 mt-1">${item.topic}</div></div>
+                <span class="text-[10px] bg-red-950/50 text-red-400 px-2 py-1 rounded-md">${item.cards.length} بطاقة</span>
+            </div>`;
+        });
+    }
+    
+    function cacheCardsLocally(subj, topic, cardsArray) {
+        let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
+        const key = `${subj}_${topic}`; let existing = lib[key] ? lib[key].cards : [];
+        let ids = new Set(existing.map(c=>c.front)); cardsArray.forEach(c=>{if(!ids.has(c.front)) existing.push(c);});
+        lib[key] = { subject: subj, topic: topic, lastAccessed: Date.now(), cards: existing };
+        localStorage.setItem(`bacflix_library_${currentUser}`, JSON.stringify(lib)); renderLibrary();
+    }
+
+    // دالة لحفظ البطاقات من المساعد الذكي
+    window.saveChatCardsToBank = function(jsonStr) {
+        try {
+            let cards = JSON.parse(jsonStr);
+            const subj = document.getElementById('cards-subject')?.value || 'عام';
+            cacheCardsLocally(subj, "من المساعد الذكي", cards);
+            alert("تم حفظ البطاقات في مكتبتك بنجاح!");
+        } catch(e) { alert("خطأ في قراءة البطاقات."); }
+    };
+
+    window.cards_startLocal = function(subj, topic) {
+        let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
+        cards_deck = lib[`${subj}_${topic}`].cards.sort(() => 0.5 - Math.random());
+        cards_index = 0; document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
+        document.getElementById('cards-topicTitle').innerText = `${subj}`; cards_show();
+    }
+
+    async function cards_fetchAndStart() {
+        const subj = document.getElementById('cards-subject').value; const stream = currentStream; const count = document.getElementById('cards-count').value;
+        const diff = document.getElementById('cards-difficulty').value;
+        const extra = document.getElementById('cards-extraRules').value;
+        const topicsData = getSelectedTopicsData('cards', subj); if(!topicsData) return alert("اختر محورا.");
+        
+        document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.add('hidden');
+        document.getElementById('cards-loadingState').classList.remove('hidden'); document.getElementById('cards-loadingState').classList.add('flex');
+
+        const prompt = `ألف ${count} بطاقات مراجعة ذكية (سؤال وجواب قصير جداً للحفظ) في مادة ${subj} شعبة ${stream}. مستوى الصعوبة: ${diff}.
+        تغطي المحاور التالية: ${topicsData.detailsString}
+        ${extra ? '\nتوجيهات إضافية: ' + extra : ''}
+        استخدم MathJax للمعادلات العلمية $...$.
+        الإخراج JSON Array فقط (دون أي نص خارجي): [{"front":"السؤال (وجه البطاقة)","back":"الجواب (ظهر البطاقة)"}]`;
+        try {
+            let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+            let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
+            cards_deck = JSON.parse(jsonStr); cards_index = 0;
+            cacheCardsLocally(subj, topicsData.namesString, cards_deck);
+            document.getElementById('cards-loadingState').classList.add('hidden'); document.getElementById('cards-loadingState').classList.remove('flex');
+            document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
+            document.getElementById('cards-topicTitle').innerText = `بطاقات: ${subj}`; cards_show();
+        } catch(e) { alert("خطأ في توليد البطاقات."); document.getElementById('cards-loadingState').classList.add('hidden'); document.getElementById('cards-emptyState').classList.remove('hidden');}
+    }
+
+    async function cards_extractFromFile() {
+        const fileInput = document.getElementById('fileToExtract'); if(fileInput.files.length===0) return alert("اختر ملفا");
+        const file = fileInput.files[0]; const subj = document.getElementById('cards-subject').value;
+        const btn = document.getElementById('btn-extract-cards'); const orig = btn.innerText; btn.disabled=true; btn.innerText="جاري الاستخراج...";
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const b64 = e.target.result.split(',')[1];
+            try {
+                let res = await fetchFromGemini([{parts:[{text:`استخرج بطاقات بصيغة JSON Array: [{"front":"سؤال قصير","back":"جواب قصير جدا"}] لمادة ${subj} من هذا الملف.`},{inlineData:{data:b64,mimeType:file.type}}]}]);
                 let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
                 cards_deck = JSON.parse(jsonStr); cards_index = 0;
-                cacheCardsLocally(subj, topicsData.namesString, cards_deck);
-                document.getElementById('cards-loadingState').classList.add('hidden'); document.getElementById('cards-loadingState').classList.remove('flex');
-                document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
-                document.getElementById('cards-topicTitle').innerText = `بطاقات: ${subj}`; cards_show();
-            } catch(e) { alert("خطأ في توليد البطاقات."); document.getElementById('cards-loadingState').classList.add('hidden'); document.getElementById('cards-emptyState').classList.remove('hidden');}
-        }
+                cacheCardsLocally(subj, "مستخرج من ملف", cards_deck);
+                document.getElementById('fileExtractModal').style.display='none';
+                document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
+                document.getElementById('cards-topicTitle').innerText = `مستخرج: ${subj}`; cards_show();
+            } catch(err){ alert("خطأ في قراءة أو تحليل الملف."); } finally { btn.disabled=false; btn.innerText=orig; }
+        }; reader.readAsDataURL(file);
+    }
 
-        async function cards_extractFromFile() {
-            const fileInput = document.getElementById('fileToExtract'); if(fileInput.files.length===0) return alert("اختر ملفا");
-            const file = fileInput.files[0]; const subj = document.getElementById('cards-subject').value;
-            const btn = document.getElementById('btn-extract-cards'); const orig = btn.innerText; btn.disabled=true; btn.innerText="جاري الاستخراج...";
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const b64 = e.target.result.split(',')[1];
-                try {
-                    let res = await fetchFromGemini([{parts:[{text:`استخرج بطاقات بصيغة JSON Array: [{"front":"سؤال قصير","back":"جواب قصير جدا"}] لمادة ${subj} من هذا الملف.`},{inlineData:{data:b64,mimeType:file.type}}]}]);
-                    let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
-                    cards_deck = JSON.parse(jsonStr); cards_index = 0;
-                    cacheCardsLocally(subj, "مستخرج من ملف", cards_deck);
-                    document.getElementById('fileExtractModal').style.display='none';
-                    document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
-                    document.getElementById('cards-topicTitle').innerText = `مستخرج: ${subj}`; cards_show();
-                } catch(err){ alert("خطأ في قراءة أو تحليل الملف."); } finally { btn.disabled=false; btn.innerText=orig; }
-            }; reader.readAsDataURL(file);
-        }
+    async function cards_submitManual() {
+        const subj = document.getElementById('cards-subject').value;
+        const front = document.getElementById('manualFront').value; const back = document.getElementById('manualBack').value;
+        if(!front||!back) return alert("أكمل الفراغات");
+        cacheCardsLocally(subj, "إضافة يدوية", [{front: front, back: back}]);
+        alert("تمت الإضافة بنجاح!"); document.getElementById('manualCardModal').style.display='none';
+        document.getElementById('manualFront').value=''; document.getElementById('manualBack').value='';
+    }
 
-        function cards_submitManual() {
-            const subj = document.getElementById('cards-subject').value;
-            const front = document.getElementById('manualFront').value; const back = document.getElementById('manualBack').value;
-            if(!front||!back) return alert("أكمل الفراغات");
-            cacheCardsLocally(subj, "إضافة يدوية", [{front: front, back: back}]);
-            alert("تمت الإضافة بنجاح!"); document.getElementById('manualCardModal').style.display='none';
-            document.getElementById('manualFront').value=''; document.getElementById('manualBack').value='';
+    function cards_show() {
+        if(cards_index >= cards_deck.length) {
+            document.getElementById('cards-wrapper').classList.add('hidden'); document.getElementById('cards-emptyState').classList.remove('hidden');
+            document.getElementById('cards-emptyState').innerHTML = `<p class="text-xl font-bold text-emerald-500">أنهيت مراجعة الحزمة بنجاح!</p>`; return;
         }
+        cards_isFlipped = false; document.getElementById('cards-activeCard').classList.remove('is-flipped');
+        document.getElementById('cards-rating').classList.add('hidden'); document.getElementById('cards-hint').style.display = 'block';
+        document.getElementById('cards-front').innerHTML = marked.parse(cards_deck[cards_index].front);
+        document.getElementById('cards-back').innerHTML = marked.parse(cards_deck[cards_index].back);
+        document.getElementById('cards-counter').innerText = `${cards_index+1} / ${cards_deck.length}`;
+        setTimeout(()=>renderMathAndGraphs('cards-activeCard'), 50);
+    }
+    function cards_flip() { if(cards_isFlipped) return; cards_isFlipped=true; document.getElementById('cards-activeCard').classList.add('is-flipped'); document.getElementById('cards-hint').style.display='none'; setTimeout(()=>document.getElementById('cards-rating').classList.remove('hidden'), 400); }
+    
+    function cards_rate(rate, e) { 
+        e.stopPropagation(); 
+        updateStat('cardsReviewed', 1);
+        if(rate === 'easy') updateStat('cardsEasy', 1);
+        else if(rate === 'good') updateStat('cardsGood', 1);
+        else updateStat('cardsHard', 1);
 
-        function cards_show() {
-            if(cards_index >= cards_deck.length) {
-                document.getElementById('cards-wrapper').classList.add('hidden'); document.getElementById('cards-emptyState').classList.remove('hidden');
-                document.getElementById('cards-emptyState').innerHTML = `<p class="text-xl font-bold text-emerald-500">أنهيت مراجعة الحزمة بنجاح!</p>`; return;
-            }
-            cards_isFlipped = false; document.getElementById('cards-activeCard').classList.remove('is-flipped');
-            document.getElementById('cards-rating').classList.add('hidden'); document.getElementById('cards-hint').style.display = 'block';
-            document.getElementById('cards-front').innerHTML = marked.parse(cards_deck[cards_index].front);
-            document.getElementById('cards-back').innerHTML = marked.parse(cards_deck[cards_index].back);
-            document.getElementById('cards-counter').innerText = `${cards_index+1} / ${cards_deck.length}`;
-            setTimeout(()=>renderMathAndGraphs('cards-activeCard'), 50);
+        cards_index++; 
+        cards_show(); 
+    }
+
+    // ===================================
+    // المساعد الذكي
+    // ===================================
+    let isSocraticMode = false; let attachedFileBase64 = null, attachedFileMimeType = null, attachedFileName = null; let speechRecognition, isRecording = false; let isFullscreenChat = false;
+
+    function chat_toggle() { 
+        const w = document.getElementById('bacflix-chat-window'); 
+        w.style.display = w.style.display==='flex'?'none':'flex'; 
+        document.getElementById('bacflix-chat-btn').classList.remove('chat-alert-active');
+    }
+    
+    function toggleFullscreenChat() {
+        const win = document.getElementById('bacflix-chat-window');
+        const maxBtn = document.getElementById('maximize-btn');
+        if (!isFullscreenChat) { 
+            win.classList.add('fullscreen-chat'); 
+            maxBtn.innerHTML = 'تصغير'; 
+            isFullscreenChat = true; 
+        } else { 
+            win.classList.remove('fullscreen-chat'); 
+            maxBtn.innerHTML = 'تكبير'; 
+            isFullscreenChat = false; 
         }
-        function cards_flip() { if(cards_isFlipped) return; cards_isFlipped=true; document.getElementById('cards-activeCard').classList.add('is-flipped'); document.getElementById('cards-hint').style.display='none'; setTimeout(()=>document.getElementById('cards-rating').classList.remove('hidden'), 400); }
+    }
+
+    function chat_clear() { document.getElementById('chat-body').innerHTML = '<div class="message bot-msg" dir="auto">تم مسح ذاكرة الجلسة. كيف يمكنني مساعدتك الآن؟</div>'; globalChatHistory = []; removeAttachment(); }
+    
+    function toggleSocraticMode() {
+        isSocraticMode = !isSocraticMode; const btn = document.getElementById('socratic-toggle-btn');
+        if (isSocraticMode) { btn.innerHTML = 'تحدي (سقراطي)'; btn.style.background = 'var(--bacflix-red)'; btn.style.color = '#fff'; btn.style.border = 'none'; } 
+        else { btn.innerHTML = 'شرح مباشر'; btn.style.background = '#111'; btn.style.color = '#ccc'; btn.style.border = '1px solid #333'; }
+    }
+
+    async function forceReviewAndFix() {
+        if(activeApp !== 'lab') return alert("هذا الزر مخصص لفحص أوراق المختبر فقط.");
+        if(!lab_rawText) return alert("لا توجد ورقة لفحصها!");
         
-        function cards_rate(rate, e) { 
-            e.stopPropagation(); updateStat('cardsReviewed', 1);
-            if(rate === 'easy') updateStat('cardsEasy', 1); else if(rate === 'good') updateStat('cardsGood', 1); else updateStat('cardsHard', 1);
-            cards_index++; cards_show(); 
-        }
+        const win = document.getElementById('bacflix-chat-window');
+        if(win.style.display !== 'flex') chat_toggle();
 
-        // ===================================
-        // المساعد الذكي
-        // ===================================
-        let isSocraticMode = false; let attachedFileBase64 = null, attachedFileMimeType = null, attachedFileName = null; let speechRecognition, isRecording = false; let isFullscreenChat = false;
+        const chatBody = document.getElementById('chat-body');
+        chatBody.innerHTML += `<div class="message user-msg" dir="auto">افحص الورقة المعروضة حالياً وصحح أي أخطاء علمية أو بيداغوجية فيها.</div>`; chatBody.scrollTop = chatBody.scrollHeight;
 
-        function chat_toggle() { 
-            const w = document.getElementById('bacflix-chat-window'); 
-            w.style.display = w.style.display==='flex'?'none':'flex'; 
-            document.getElementById('bacflix-chat-btn').classList.remove('chat-alert-active');
-        }
-        
-        function toggleFullscreenChat() {
-            const win = document.getElementById('bacflix-chat-window');
-            const maxBtn = document.getElementById('maximize-btn');
-            isFullscreenChat = !isFullscreenChat;
-            if (isFullscreenChat) { win.classList.add('fullscreen-chat'); maxBtn.innerHTML = 'تصغير'; } 
-            else { win.classList.remove('fullscreen-chat'); maxBtn.innerHTML = 'تكبير'; }
-        }
+        const loaderId = 'loader-' + Date.now();
+        chatBody.innerHTML += `<div class="message bot-msg" id="${loaderId}">أقوم بفحص دقيق للورقة، لحظات...</div>`; chatBody.scrollTop = chatBody.scrollHeight;
 
-        function chat_clear() { document.getElementById('chat-body').innerHTML = '<div class="message bot-msg" dir="auto">تم مسح ذاكرة الجلسة. كيف يمكنني مساعدتك الآن؟</div>'; globalChatHistory = []; removeAttachment(); }
-        
-        function toggleSocraticMode() {
-            isSocraticMode = !isSocraticMode; const btn = document.getElementById('socratic-toggle-btn');
-            if (isSocraticMode) { btn.innerHTML = 'تحدي (سقراطي)'; btn.style.background = 'var(--bacflix-red)'; btn.style.color = '#fff'; border='none'; } 
-            else { btn.innerHTML = 'شرح مباشر'; btn.style.background = '#111'; btn.style.color = '#ccc'; }
-        }
+        const subj = document.getElementById('lab-subject').value;
+        const prompt = `المهمة: مراجعة وتصحيح الورقة التالية في مادة ${subj}:\n${lab_rawText}\nقم بإعادة كتابة المحتوى المحدث والمنقح بالكامل داخل علامات <UPDATE_EXAM> المحتوى الجديد </UPDATE_EXAM>`;
 
-        async function forceReviewAndFix() {
-            if(activeApp !== 'lab') return alert("هذا الزر مخصص لفحص أوراق المختبر فقط.");
-            if(!lab_rawText) return alert("لا توجد ورقة لفحصها!");
+        globalChatHistory.push({role: "user", parts: [{text: prompt}]});
+
+        try {
+            let res = await fetchFromGemini(globalChatHistory, "أنت مفتش بيداغوجي جزائري خبير.");
+            res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
+            document.getElementById(loaderId).remove();
+            globalChatHistory.push({role:"model", parts:[{text:res}]});
             
-            const win = document.getElementById('bacflix-chat-window');
-            if(win.style.display !== 'flex') chat_toggle();
-
-            const chatBody = document.getElementById('chat-body');
-            chatBody.innerHTML += `<div class="message user-msg" dir="auto">افحص الورقة المعروضة حالياً وصحح أي أخطاء علمية أو بيداغوجية فيها.</div>`; chatBody.scrollTop = chatBody.scrollHeight;
-
-            const loaderId = 'loader-' + Date.now();
-            chatBody.innerHTML += `<div class="message bot-msg" id="${loaderId}">أقوم بفحص دقيق للورقة، لحظات...</div>`; chatBody.scrollTop = chatBody.scrollHeight;
-
-            const subj = document.getElementById('lab-subject').value;
-            const prompt = `المهمة: مراجعة وتصحيح الورقة التالية في مادة ${subj}:\n${lab_rawText}\nقم بإعادة كتابة المحتوى المحدث والمنقح بالكامل داخل علامات <UPDATE_EXAM> المحتوى الجديد </UPDATE_EXAM>`;
-
-            globalChatHistory.push({role: "user", parts: [{text: prompt}]});
-
-            try {
-                let res = await fetchFromGemini(globalChatHistory, "أنت مفتش بيداغوجي جزائري خبير.");
-                res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
-                document.getElementById(loaderId).remove();
-                globalChatHistory.push({role:"model", parts:[{text:res}]});
-                
-                if(res.includes('<UPDATE_EXAM>')) {
-                    const match = res.match(/<UPDATE_EXAM>([\s\S]*?)<\/UPDATE_EXAM>/);
-                    if(match && match[1]) {
-                        lab_rawText = match[1].trim();
-                        renderLabContent(document.getElementById('lab-toolMode').value, document.getElementById('lab-subject').value, currentStream);
-                        res = res.replace(match[0], `<div class="bg-red-950/40 p-3 rounded-lg border border-red-500/50 mt-2 text-center text-xs font-bold text-red-300">تم تحديث ورقة العمل بناءً على الفحص!</div>`);
-                    }
+            if(res.includes('<UPDATE_EXAM>')) {
+                const match = res.match(/<UPDATE_EXAM>([\s\S]*?)<\/UPDATE_EXAM>/);
+                if(match && match[1]) {
+                    lab_rawText = match[1].trim();
+                    renderLabContent(document.getElementById('lab-toolMode').value, document.getElementById('lab-subject').value, currentStream);
+                    res = res.replace(match[0], `<div class="bg-red-950/40 p-3 rounded-lg border border-red-500/50 mt-2 text-center text-xs font-bold text-red-300">تم تحديث ورقة العمل بناءً على الفحص!</div>`);
                 }
-
-                const msgId = 'msg-' + Date.now();
-                chatBody.innerHTML += `<div class="message bot-msg" id="${msgId}" dir="auto">${marked.parse(res)}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
-                setTimeout(()=>renderMathAndGraphs(msgId), 50);
-            } catch(e) { document.getElementById(loaderId).innerText = 'خطأ في الاتصال.'; globalChatHistory.pop(); }
-        }
-
-        function handleFileSelection(e) {
-            const file = e.target.files[0]; if(!file) return; const reader = new FileReader();
-            reader.onload = (event) => {
-                attachedFileBase64 = event.target.result.split(',')[1]; attachedFileMimeType = file.type; attachedFileName = file.name;
-                document.getElementById('attachment-preview').style.display = 'flex'; document.getElementById('attachment-name').innerText = file.name;
-            }; reader.readAsDataURL(file);
-        }
-        function removeAttachment() { attachedFileBase64 = null; attachedFileMimeType = null; attachedFileName = null; document.getElementById('chat-file-input').value = ''; document.getElementById('attachment-preview').style.display = 'none'; }
-
-        function initSpeechRecognition() {
-            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (window.SpeechRecognition) {
-                speechRecognition = new window.SpeechRecognition(); speechRecognition.lang = 'ar-DZ'; speechRecognition.continuous = false; speechRecognition.interimResults = false;
-                let voiceDetected = false; 
-                speechRecognition.onstart = function() { isRecording = true; voiceDetected = false; document.getElementById('chat-input').placeholder = "تحدث الآن، أنا أستمع..."; MicBtnPulse(true); };
-                speechRecognition.onresult = function(event) { document.getElementById('chat-input').value += (document.getElementById('chat-input').value ? ' ' : '') + event.results[0][0].transcript; voiceDetected = true; };
-                speechRecognition.onerror = function() { stopSpeechRecognition(); }; speechRecognition.onend = function() { stopSpeechRecognition(); if (voiceDetected) chat_send(); };
-            } else { alert("متصفحك لا يدعم خاصية التعرف على الصوت."); }
-        }
-        function toggleSpeechRecognition() { if (!speechRecognition) initSpeechRecognition(); if (speechRecognition) { if (isRecording) speechRecognition.stop(); else try { speechRecognition.start(); } catch (e) {} } }
-        function stopSpeechRecognition() { isRecording = false; document.getElementById('chat-input').placeholder = "اكتب سؤالك هنا..."; MicBtnPulse(false); }
-        function MicBtnPulse(active) { const btn = document.getElementById('mic-btn'); if(active) btn.classList.add('animate-pulse', 'border-red-500', 'text-red-500'); else btn.classList.remove('animate-pulse', 'border-red-500', 'text-red-500'); }
-
-        async function chat_send() {
-            const inp = document.getElementById('chat-input'); const text = input.value.trim();
-            if(!text && !attachedFileBase64) return;
-            inp.value = ''; const chatBody = document.getElementById('chat-body'); document.getElementById('send-btn').disabled = true; MicBtnPulse(false);
-
-            let fileHtmlForUI = '';
-            if(attachedFileBase64) {
-                if(attachedFileMimeType.startsWith('image/')) fileHtmlForUI = `<br><img src="data:${attachedFileMimeType};base64,${attachedFileBase64}" style="max-width:200px; border-radius:8px; margin-top:8px;">`;
-                else fileHtmlForUI = `<br><div class="bg-black/30 p-2 rounded mt-2 text-[10px] text-gray-400">ملف مرفق: ${attachedFileName}</div>`;
-            }
-            chatBody.innerHTML += `<div class="message user-msg" dir="auto">${text}${fileHtmlForUI}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
-
-            let userParts = []; if(text) userParts.push({text: text});
-            if(attachedFileBase64) userParts.push({inlineData: {data: attachedFileBase64, mimeType: attachedFileMimeType}});
-            globalChatHistory.push({role: "user", parts: userParts}); removeAttachment();
-
-            let inst = "أنت المساعد البيداغوجي الذكي لمنصة BACFLIX التعليمية. ";
-            inst += "قاعدة صارمة جداً: يقتصر دورك حصراً على الإجابة عن الأسئلة التعليمية والأكاديمية للبكالوريا الجزائرية، أو الاستفسارات التقنية حول المنصة. إذا سألك الطالب عن أي موضوع آخر (سياسة، رياضة، دردشة، إلخ)، اعتذر بلباقة واطلب منه التركيز على دراسته. لا تجب أبدًا على الأسئلة الخارجة عن التعليم. ";
-            
-            if(isSocraticMode) inst += "أنت الآن في وضع التحدي (السقراطي). وجه الطالب بأسئلة دقيقة وتلميحات ليستنتج الحل بنفسه، ولا تعطه الإجابة مباشرة أبداً. ";
-            else inst += "أنت الآن في وضع الشرح المباشر. قدم شروحات علمية دقيقة، مفصلة، ومبسطة. ";
-            inst += "تنسيق الرياضيات: استخدم MathJax للمعادلات العلمية $...$. تأكد من كتابة الرموز الرياضية واللاتينية من اليسار إلى اليمين بطريقة سليمة ومقروءة. أجوبتك العامة يجب أن تكون باللغة العربية. ";
-
-            if(activeApp === 'lab' && lab_rawText) { 
-                inst += `الطالب يراجع حالياً ورقة العمل التالية:\n${lab_rawText}\n إذا طلب الطالب تعديل أو تحسين الورقة، قم بإعادة كتابتها بالكامل وضعها حصراً بين الوسمين: <UPDATE_EXAM> المحتوى الجديد </UPDATE_EXAM>`; 
-            } else if(activeApp === 'cards') {
-                inst += `إذا طلب الطالب استخراج أو تأليف بطاقات مراجعة، قم بتأليفها بصيغة JSON وضعها حصراً بين الوسمين: \`\`\`json_flashcards [{"front":"سؤال","back":"جواب"}] \`\`\``;
             }
 
-            const loaderId = 'loader-' + Date.now();
-            chatBody.innerHTML += `<div class="message bot-msg loader-pulse" id="${loaderId}">جاري التفكير وتحليل طلبك...</div>`; chatBody.scrollTop = chatBody.scrollHeight;
-            
-            try {
-                let res = await fetchFromGemini(globalChatHistory, inst);
-                res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
-                document.getElementById(loaderId).remove();
-                globalChatHistory.push({role:"model", parts:[{text:res}]});
-                
-                if(res.includes('<UPDATE_EXAM>')) {
-                    const match = res.match(/<UPDATE_EXAM>([\s\S]*?)<\/UPDATE_EXAM>/);
-                    if(match && match[1]) {
-                        lab_rawText = match[1].trim();
-                        renderLabContent(document.getElementById('lab-toolMode').value, document.getElementById('lab-subject').value, currentStream);
-                        res = res.replace(match[0], `<div class="bg-red-950/40 p-3 rounded-lg border border-red-500/50 mt-2 text-center text-xs font-bold text-red-300">تم تحديث ورقة العمل بنجاح!</div>`);
-                    }
-                }
-                
-                if(res.includes('```json_flashcards')) {
-                    const match = res.match(/```json_flashcards([\s\S]*?)```/);
-                    if(match) {
-                        const safeJson = encodeURIComponent(match[1].trim());
-                        res = res.replace(match[0], `<div class="bg-emerald-950/40 p-3 rounded-lg border border-emerald-500/50 mt-2 text-center"><button onclick="saveChatCardsToBank(decodeURIComponent('${safeJson}'))" class="btn-primary !py-2 w-full text-xs !bg-emerald-600 hover:!bg-emerald-500 border-none shadow-none">حفظ هذه البطاقات في مكتبتي</button></div>`);
-                    }
-                }
+            const msgId = 'msg-' + Date.now();
+            chatBody.innerHTML += `<div class="message bot-msg" id="${msgId}" dir="auto">${marked.parse(res)}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+            setTimeout(()=>renderMathAndGraphs(msgId), 50);
+        } catch(e) { document.getElementById(loaderId).innerText = 'خطأ في الاتصال.'; globalChatHistory.pop(); }
+    }
 
-                const msgId = 'msg-' + Date.now();
-                chatBody.innerHTML += `<div class="message bot-msg" id="${msgId}" dir="auto">${marked.parse(res)}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
-                setTimeout(()=>renderMathAndGraphs(msgId), 50);
-            } catch(e) { document.getElementById(loaderId).innerText = 'عذراً، حدث خطأ في الاتصال بالسيرفر.'; globalChatHistory.pop(); }
-            document.getElementById('send-btn').disabled = false;
+    function handleFileSelection(e) {
+        const file = e.target.files[0]; if(!file) return; const reader = new FileReader();
+        reader.onload = (event) => {
+            attachedFileBase64 = event.target.result.split(',')[1]; attachedFileMimeType = file.type; attachedFileName = file.name;
+            document.getElementById('attachment-preview').style.display = 'flex'; document.getElementById('attachment-name').innerText = file.name;
+        }; reader.readAsDataURL(file);
+    }
+    function removeAttachment() { attachedFileBase64 = null; attachedFileMimeType = null; attachedFileName = null; document.getElementById('chat-file-input').value = ''; document.getElementById('attachment-preview').style.display = 'none'; }
+
+    function initSpeechRecognition() {
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (window.SpeechRecognition) {
+            speechRecognition = new window.SpeechRecognition(); speechRecognition.lang = 'ar-DZ'; speechRecognition.continuous = false; speechRecognition.interimResults = false;
+            let voiceDetected = false; 
+            speechRecognition.onstart = function() { isRecording = true; voiceDetected = false; document.getElementById('chat-input').placeholder = "تحدث الآن، أنا أستمع..."; MicBtnPulse(true); };
+            speechRecognition.onresult = function(event) { document.getElementById('chat-input').value += (document.getElementById('chat-input').value ? ' ' : '') + event.results[0][0].transcript; voiceDetected = true; };
+            speechRecognition.onerror = function() { stopSpeechRecognition(); }; speechRecognition.onend = function() { stopSpeechRecognition(); if (voiceDetected) chat_send(); };
+        } else { alert("متصفحك لا يدعم خاصية التعرف على الصوت."); }
+    }
+    function toggleSpeechRecognition() { if (!speechRecognition) initSpeechRecognition(); if (speechRecognition) { if (isRecording) speechRecognition.stop(); else try { speechRecognition.start(); } catch (e) {} } }
+    function stopSpeechRecognition() { isRecording = false; document.getElementById('chat-input').placeholder = "اطلب أي شيء..."; MicBtnPulse(false); }
+    function MicBtnPulse(active) { const btn = document.getElementById('mic-btn'); if(active) btn.classList.add('animate-pulse', 'border-red-500', 'text-red-500'); else btn.classList.remove('animate-pulse', 'border-red-500', 'text-red-500'); }
+
+    async function chat_send() {
+        const inp = document.getElementById('chat-input'); const text = input.value.trim();
+        if(!text && !attachedFileBase64) return;
+        inp.value = ''; const chatBody = document.getElementById('chat-body'); document.getElementById('send-btn').disabled = true; MicBtnPulse(false);
+
+        let fileHtmlForUI = '';
+        if(attachedFileBase64) {
+            if(attachedFileMimeType.startsWith('image/')) fileHtmlForUI = `<br><img src="data:${attachedFileMimeType};base64,${attachedFileBase64}" style="max-width:200px; border-radius:8px; margin-top:8px;">`;
+            else fileHtmlForUI = `<br><div class="bg-black/30 p-2 rounded mt-2 text-[10px] text-gray-400">ملف مرفق: ${attachedFileName}</div>`;
+        }
+        chatBody.innerHTML += `<div class="message user-msg" dir="auto">${text}${fileHtmlForUI}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+
+        let userParts = []; if(text) userParts.push({text: text});
+        if(attachedFileBase64) userParts.push({inlineData: {data: attachedFileBase64, mimeType: attachedFileMimeType}});
+        globalChatHistory.push({role: "user", parts: userParts}); removeAttachment();
+
+        let inst = "أنت المساعد البيداغوجي الذكي لمنصة BACFLIX التعليمية. ";
+        inst += "قاعدة صارمة جداً: يقتصر دورك حصراً على الإجابة عن الأسئلة التعليمية والأكاديمية للبكالوريا الجزائرية، أو الاستفسارات التقنية حول المنصة. إذا سألك الطالب عن أي موضوع آخر، اعتذر بلباقة واطلب منه التركيز على دراسته. لا تجب أبدًا على الأسئلة الخارجة عن التعليم. ";
+        
+        if(isSocraticMode) inst += "أنت الآن في وضع التحدي (السقراطي). وجه الطالب بأسئلة دقيقة وتلميحات ليستنتج الحل بنفسه، ولا تعطه الإجابة مباشرة أبداً. ";
+        else inst += "أنت الآن في وضع الشرح المباشر. قدم شروحات علمية دقيقة، مفصلة، ومبسطة. ";
+        inst += "تنسيق الرياضيات: استخدم MathJax للمعادلات العلمية $...$ أو $$...$$. تأكد من كتابة الرموز من اليسار إلى اليمين بطريقة سليمة. أجوبتك العامة يجب أن تكون باللغة العربية. ";
+
+        if(activeApp === 'lab' && lab_rawText) { 
+            inst += `الطالب يراجع حالياً ورقة العمل التالية:\n${lab_rawText}\n إذا طلب الطالب تعديل أو تحسين الورقة، قم بإعادة كتابتها بالكامل وضعها حصراً بين الوسمين: <UPDATE_EXAM> المحتوى الجديد </UPDATE_EXAM>`; 
+        } else if(activeApp === 'cards') {
+            inst += `إذا طلب الطالب استخراج أو تأليف بطاقات مراجعة، قم بتأليفها بصيغة JSON وضعها حصراً بين الوسمين: \`\`\`json_flashcards [{"front":"سؤال","back":"جواب"}] \`\`\``;
         }
 
-        window.onload = checkAuth;
-    </script>
+        const loaderId = 'loader-' + Date.now();
+        chatBody.innerHTML += `<div class="message bot-msg loader-pulse" id="${loaderId}">جاري التفكير وتحليل طلبك...</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+        
+        try {
+            let res = await fetchFromGemini(globalChatHistory, inst);
+            res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
+            document.getElementById(loaderId).remove();
+            globalChatHistory.push({role:"model", parts:[{text:res}]});
+            
+            if(res.includes('<UPDATE_EXAM>')) {
+                const match = res.match(/<UPDATE_EXAM>([\s\S]*?)<\/UPDATE_EXAM>/);
+                if(match && match[1]) {
+                    lab_rawText = match[1].trim();
+                    renderLabContent(document.getElementById('lab-toolMode').value, document.getElementById('lab-subject').value, currentStream);
+                    res = res.replace(match[0], `<div class="bg-red-950/40 p-3 rounded-lg border border-red-500/50 mt-2 text-center text-xs font-bold text-red-300">تم تحديث ورقة العمل بنجاح!</div>`);
+                }
+            }
+            
+            if(res.includes('```json_flashcards')) {
+                const match = res.match(/```json_flashcards([\s\S]*?)```/);
+                if(match) {
+                    const safeJson = encodeURIComponent(match[1].trim());
+                    res = res.replace(match[0], `<div class="bg-emerald-950/40 p-3 rounded-lg border border-emerald-500/50 mt-2 text-center"><button onclick="saveChatCardsToBank(decodeURIComponent('${safeJson}'))" class="btn-primary !py-2 w-full text-xs !bg-emerald-600 hover:!bg-emerald-500 border-none shadow-none">حفظ هذه البطاقات في مكتبتي</button></div>`);
+                }
+            }
+
+            const msgId = 'msg-' + Date.now();
+            chatBody.innerHTML += `<div class="message bot-msg" id="${msgId}" dir="auto">${marked.parse(res)}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+            setTimeout(()=>renderMathAndGraphs(msgId), 50);
+        } catch(e) { document.getElementById(loaderId).innerText = 'عذراً، حدث خطأ في الاتصال بالسيرفر.'; globalChatHistory.pop(); }
+        document.getElementById('send-btn').disabled = false;
+    }
+
+    window.onload = checkAuth;
+</script>
 </body>
 </html>
