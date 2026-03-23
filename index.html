@@ -111,7 +111,6 @@
         .checkbox-label input[type="checkbox"] { accent-color: var(--bacflix-red); width: 16px; height: 16px; margin-top: 2px; cursor: pointer; flex-shrink: 0;}
         
         .paper, .quiz-container, .card-face, .message { unicode-bidi: isolate; }
-        mjx-container, .MathJax, .MathJax_Display { direction: ltr !important; text-align: left !important; display: inline-block; }
         .exam-content p, .explanation-box p, .message p { line-height: 2; text-align: right; }
         
         .paper { background: #ffffff; color: #0f172a; width: 100%; padding: 2cm; border-radius: 16px; font-family: var(--font-math); font-size: 17px; line-height: 1.9; word-wrap: break-word; overflow-x: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); box-sizing: border-box; }
@@ -150,13 +149,16 @@
         @media print { .floating-nav, #bacflix-chat-widget, .no-print { display: none !important; } .main-viewport { margin: 0; padding: 0; overflow: visible; } .paper { padding: 0; border: none; box-shadow: none; } }
         @media (max-width: 768px) { .floating-nav { top: 10px; width: 95%; padding: 6px; } .main-viewport { margin-top: 80px; } .paper { padding: 20px; font-size: 15px; } .checkbox-grid { grid-template-columns: 1fr; } }
 
-        /* المساعد الذكي الأساسي */
+        /* المساعد الذكي */
         #bacflix-chat-widget { position: fixed; bottom: 25px; left: 25px; z-index: 10000; font-family: var(--font-main); direction: rtl; display: flex; flex-direction: column; align-items: flex-start; }
         #bacflix-chat-btn { background: var(--bacflix-red); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); transition: 0.3s; display: flex; align-items: center; justify-content: center; z-index: 2; }
         #bacflix-chat-btn:hover { transform: scale(1.08) translateY(-5px); background: var(--bacflix-red-hover); }
         
         #bacflix-chat-window { display: none; width: 380px; max-width: 90vw; height: 550px; max-height: 80vh; background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; box-shadow: 0 15px 50px rgba(0,0,0,0.7); flex-direction: column; overflow: hidden; margin-bottom: 15px; border: 1px solid var(--border-glass); z-index: 1; transition: all 0.3s ease; }
+        
+        /* وضع ملء الشاشة للمساعد */
         .fullscreen-chat { width: 100vw !important; max-width: 100vw !important; height: 100vh !important; max-height: 100vh !important; bottom: 0 !important; left: 0 !important; border-radius: 0 !important; margin-bottom: 0 !important; border: none !important; position: fixed; z-index: 99999; }
+
         #chat-header { background: rgba(0,0,0,0.2); padding: 15px 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); }
         #mode-bar { padding: 8px 20px; background: rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 11px; border-bottom: 1px solid var(--border-glass); }
         .toggle-mode-btn { background: #111; color: #ccc; border: 1px solid #333; padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: bold; }
@@ -170,75 +172,9 @@
         #send-btn { background: var(--bacflix-red); color: white; border: none; padding: 10px 18px; border-radius: 24px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; white-space: nowrap; }
         .icon-btn { background: transparent; color: #ccc; border: 1px solid #333; border-radius: 50%; width: 40px; height: 40px; min-width: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .icon-btn:hover { background: #222; color: white; border-color: var(--bacflix-red); }
-
-        /* ======================================================== */
-        /* ستايلات إضافة المشاهدة (BACFLIX WATCH)                   */
-        /* ======================================================== */
-        #app-watch .teacher-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; cursor: pointer; position: relative; display: flex; flex-direction: column; justify-content: space-between;} 
-        #app-watch .teacher-card:hover { transform: translateY(-5px); border-color: var(--bacflix-red); box-shadow: 0 10px 30px rgba(229, 9, 20, 0.2); }
-        #app-watch .teacher-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; border: 3px solid #333; transition: 0.3s;} 
-        #app-watch .teacher-card:hover .teacher-avatar { border-color: var(--bacflix-red); transform: scale(1.05); }
-        #app-watch .fav-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); border: 1px solid #444; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 10;} 
-        #app-watch .fav-btn:hover { background: rgba(0,0,0,0.8); transform: scale(1.1); } 
-        #app-watch .fav-btn.active { color: #facc15; border-color: #facc15; background: rgba(250, 204, 21, 0.1); } 
-        #app-watch .fav-btn:not(.active) { color: #666; }
         
-        #app-watch .video-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 12px; overflow: hidden; transition: all 0.3s; cursor: pointer; position: relative; display: flex; flex-direction: column;} 
-        #app-watch .video-card:hover { transform: translateY(-5px); border-color: var(--bacflix-red); box-shadow: 0 10px 30px rgba(229, 9, 20, 0.2); }
-        #app-watch .thumbnail-container { position: relative; width: 100%; padding-top: 56.25%; background: #000; overflow: hidden; } 
-        #app-watch .thumbnail-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.3s;} 
-        #app-watch .video-card:hover .thumbnail-container img { opacity: 1; transform: scale(1.05); }
-        #app-watch .vote-control { display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid #333; padding: 4px 8px; border-radius: 6px; } 
-        #app-watch .vote-control button { font-size: 14px; cursor: pointer; transition: 0.2s; background: transparent; border: none; color: #888; outline: none; } 
-        #app-watch .vote-control button:hover { transform: scale(1.2); } 
-        #app-watch .vote-control .voted-up { color: #4ade80 !important; } 
-        #app-watch .vote-control .voted-down { color: #f87171 !important; } 
-        #app-watch .vote-control span { font-weight: bold; color: white; min-width: 20px; text-align: center; font-size: 12px; }
-
-        /* نافذة السينما الخاصة بـ Watch */
-        #watch-cinemaModal { position: fixed; inset: 0; background: #000; z-index: 9990; display: none; flex-direction: column; overflow: hidden; } 
-        .watch-cinema-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #0d1117; border-bottom: 1px solid #333; flex-shrink: 0;} 
-        .watch-cinema-body { display: flex; flex: 1; flex-direction: column; overflow: hidden; } 
-        @media (min-width: 1024px) { .watch-cinema-body { flex-direction: row; } }
-        .watch-video-section { flex: 1; display: flex; flex-direction: column; background: #000; padding: 0; position: relative; overflow-y: auto; transition: all 0.3s ease;} 
-        @media (min-width: 1024px) { .watch-video-section { padding: 20px; } } 
-        #watch-player-wrapper { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); } 
-        @media (min-width: 1024px) { #watch-player-wrapper { border-radius: 12px; overflow: hidden; } }
-        .watch-episode-controls { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 15px; background: #111; border-top: 1px solid #333; } 
-        @media (min-width: 1024px) { .watch-episode-controls { border-radius: 8px; border: 1px solid #333; margin-top: 15px; } } 
-        .watch-ep-btn { background: #222; color: white; border: 1px solid #444; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; gap: 8px; align-items: center;} 
-        .watch-ep-btn:hover:not(:disabled) { background: var(--bacflix-red); border-color: var(--bacflix-red); } 
-        .watch-ep-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .watch-playlist-sidebar { width: 100%; max-height: 40vh; background: #0d1117; border-top: 1px solid #333; display: flex; flex-direction: column; transition: all 0.3s ease; } 
-        @media (min-width: 1024px) { .watch-playlist-sidebar { width: 350px; max-height: none; height: 100%; border-top: none; border-left: 1px solid #333; } } 
-        .watch-hidden-playlist { display: none !important; } 
-        .watch-playlist-header { padding: 15px; background: #161b22; font-weight: bold; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; } 
-        .watch-playlist-drawer { flex: 1; overflow-y: auto; padding: 10px; }
-        .watch-playlist-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid #1f2937; margin-bottom: 4px;} 
-        .watch-playlist-item:last-child { border-bottom: none; } 
-        .watch-playlist-item:hover { background: #161b22; } 
-        .watch-playlist-item.active { background: rgba(229, 9, 20, 0.1); border: 1px solid var(--bacflix-red); } 
-        .watch-playlist-item.active .watch-index-num { color: var(--bacflix-red); }
-        
-        #watch-nextEpOverlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 50; display: none; flex-direction: column; justify-content: center; align-items: center; color: white; } 
-        .watch-countdown-circle { width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--bacflix-red); display: flex; justify-content: center; align-items: center; font-size: 30px; font-weight: bold; margin-bottom: 20px; }
-        
-        .watch-toggle-checkbox:checked { right: 0; border-color: var(--bacflix-red); } 
-        .watch-toggle-checkbox:checked + .watch-toggle-label { background-color: var(--bacflix-red); }
-        .watch-confetti { position: fixed; width: 10px; height: 10px; background-color: #f00; z-index: 99999; opacity: 0; animation: watchFall 3s ease-in-out forwards; } 
-        @keyframes watchFall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
-
-        /* مساعد المشاهدة الذكي (داخل السينما) */
-        #watch-aiFabBtn { position: absolute; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: var(--bacflix-red); color: white; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 20px rgba(229,9,20,0.5); z-index: 9999; transition: transform 0.2s; border: none; outline: none; } 
-        #watch-aiFabBtn:hover { transform: scale(1.1); } 
-        #watch-aiChatWindow { position: absolute; bottom: 90px; left: 20px; width: 360px; max-width: calc(100vw - 40px); height: 500px; max-height: calc(100vh - 120px); background: #161b22; border: 1px solid #333; border-radius: 12px; z-index: 10000; display: none; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.8); overflow: hidden; transition: 0.3s; }
-        .watch-chat-input-area { padding: 10px; background: #111; border-top: 1px solid #333; display: flex; flex-direction: column; gap: 8px; }
-        .watch-prompt-chips-container { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; } 
-        .watch-prompt-chips-container::-webkit-scrollbar { height: 0px; } 
-        .watch-prompt-chip { background: #2a2a2a; color: #aaa; font-size: 10px; padding: 4px 10px; border-radius: 12px; white-space: nowrap; cursor: pointer; transition: 0.2s; border: 1px solid #444; } 
-        .watch-prompt-chip:hover { background: var(--bacflix-red); color: white; border-color: var(--bacflix-red); }
-        .watch-mic-active { background: rgba(229, 9, 20, 0.2) !important; border-color: var(--bacflix-red) !important; color: var(--bacflix-red) !important; animation: watchMicPulse 1.5s infinite; } 
-        @keyframes watchMicPulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        /* توجيه الرياضيات للمساعد */
+        .message mjx-container, .message .MathJax, .message .MathJax_Display { direction: ltr !important; text-align: left !important; display: inline-block; }
     </style>
 </head>
 <body>
@@ -249,7 +185,7 @@
             <h2 class="text-4xl font-black italic text-white mb-2 tracking-wider">BAC<span style="color: var(--bacflix-red);">FLIX</span></h2>
             <p class="text-red-400 mb-6 text-sm font-bold">يرجى تسجيل الدخول</p>
             <div class="bg-black/30 border border-white/10 p-5 rounded-xl mb-6 text-gray-300 text-sm leading-relaxed">
-                هذه المنصة مخصصة للأعضاء فقط. يرجى تسجيل الدخول بحسابك في المنتدى لتتمكن من الوصول.
+                هذه المنصة مخصصة للأعضاء فقط. يرجى تسجيل الدخول بحسابك في المنتدى لتتمكن من الوصول للمنصة الشاملة.
             </div>
             <a href="https://bacflix.yoo7.com/login?redirect=%2Fh139-page%2F" class="btn-primary" style="text-decoration:none;">تسجيل الدخول</a>
         </div>
@@ -270,6 +206,50 @@
             </select>
             <button class="btn-primary mt-2" id="btn-check-auth" onclick="verifyUser()">دخول المنصة</button>
             <p id="auth-msg" class="text-xs text-green-500 mt-4 font-bold hidden"></p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="paymentModal" style="display: none; z-index: 10001;">
+        <div class="glass-panel w-[90%] max-w-[500px] text-center flex flex-col" style="max-height: 85vh;">
+            <h2 class="text-2xl font-bold text-white mb-2">متجر الباقات</h2>
+            <p class="text-xs text-gray-400 mb-4 border-b border-white/10 pb-4">اختر الباقة المناسبة لك لتفعيل حسابك</p>
+            
+            <div id="packagesContainer" class="flex flex-col gap-3 overflow-y-auto mb-4 p-1">
+                <p class="text-gray-500 text-sm">جاري تحميل الباقات من السيرفر...</p>
+            </div>
+
+            <div id="paymentInfoStep" class="hidden flex-col text-right">
+                <button onclick="backToPackages()" class="text-gray-400 text-xs mb-3 hover:text-white transition text-right w-fit">⟵ العودة للباقات</button>
+                <div class="bg-black/40 p-4 rounded-xl border border-white/5 mb-4">
+                    <p class="text-sm text-green-400 mb-2 font-bold border-b border-white/10 pb-2 text-center">لقد اخترت: <span id="selectedPkgName" class="text-white"></span></p>
+                    
+                    <p class="text-xs text-gray-500 mb-1 mt-3">الدفع عبر بريدي موب (RIP):</p>
+                    <div class="flex justify-between items-center bg-black/60 p-2 rounded-lg border border-white/10 mb-3">
+                        <span id="displayRip" class="text-yellow-400 font-mono text-sm tracking-widest select-all">جاري التحميل...</span>
+                        <button onclick="copyText('displayRip')" class="text-[10px] btn-secondary !py-1 !px-2 !min-h-0">نسخ</button>
+                    </div>
+
+                    <p class="text-xs text-gray-500 mb-1">الدفع في مكتب البريد (CCP):</p>
+                    <div class="flex justify-between items-center bg-black/60 p-2 rounded-lg border border-white/10 mb-3">
+                        <div class="text-yellow-400 font-mono text-sm tracking-widest select-all" dir="ltr">
+                            <span id="displayCcp">...</span> Clé: <span id="displayCcpKey" class="text-red-400">..</span>
+                        </div>
+                        <button onclick="copyCcpFull()" class="text-[10px] btn-secondary !py-1 !px-2 !min-h-0">نسخ</button>
+                    </div>
+
+                    <p class="text-xs text-gray-500 mb-1">الاسم واللقب:</p>
+                    <p id="displayAccName" class="text-sm text-white font-bold text-center bg-black/60 p-2 rounded-lg border border-white/10">جاري التحميل...</p>
+                </div>
+                
+                <p class="text-xs text-gray-400 mb-3 leading-relaxed">يرجى تحويل مبلغ <b id="selectedPkgPrice" class="text-green-400"></b> دج، ثم إرسال وصل الدفع عبر أحد الروابط أدناه لاستلام الكود فوراً.</p>
+
+                <div class="flex gap-2">
+                    <a id="tgLink" href="#" target="_blank" class="flex-1 bg-[#2481cc] hover:bg-[#1d6ba8] text-white font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-1" style="text-decoration: none;">تليجرام</a>
+                    <a id="waLink" href="#" target="_blank" class="flex-1 bg-[#25D366] hover:bg-[#1fad53] text-white font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-1" style="text-decoration: none;">واتساب</a>
+                </div>
+            </div>
+
+            <button class="btn-secondary py-3 mt-auto w-full" onclick="document.getElementById('paymentModal').style.display='none'">إغلاق المتجر</button>
         </div>
     </div>
 
@@ -297,44 +277,6 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="watch-progressModal" style="position: absolute;">
-        <div class="glass-panel w-full max-w-3xl">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white flex items-center gap-2"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg> تقدمي في المراجعة</h2>
-                <button onclick="document.getElementById('watch-progressModal').style.display='none'" class="text-red-500 hover:text-white text-xl font-bold transition">✖</button>
-            </div>
-            <div id="watch-progressStats" class="grid grid-cols-2 md:grid-cols-2 gap-4 mb-6"></div>
-            <div class="overflow-y-auto max-h-[50vh] rounded-lg border border-gray-800">
-                <table class="w-full text-right text-sm text-gray-300">
-                    <thead class="text-xs uppercase bg-gray-900 text-gray-400"><tr><th class="px-4 py-3">الدورة</th><th class="px-4 py-3">الأستاذ</th><th class="px-4 py-3 text-center">الإنجاز</th><th class="px-4 py-3">النسبة</th></tr></thead>
-                    <tbody id="watch-progressTableBody"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="watch-addChannelModal" style="position: absolute;">
-        <div class="glass-panel w-full max-w-lg flex flex-col">
-            <h2 class="text-xl font-bold text-white mb-2">اقتراح قناة أستاذ</h2>
-            <div class="bg-blue-900/30 border border-blue-800 text-blue-200 text-xs p-3 rounded mb-4">ابحث باسم الأستاذ ليتم اعتماد قناته.</div>
-            <div class="flex gap-2 mb-4"><input type="text" id="watch-channelSearchInput" placeholder="اكتب اسم الأستاذ..." class="flex-1" onkeypress="if(event.key === 'Enter') watch_searchChannelsForAdd()"><button onclick="watch_searchChannelsForAdd()" class="btn-primary w-auto px-6" id="watch-searchChannelBtn">بحث</button></div>
-            <div id="watch-channelSearchResults" class="flex-col gap-2 overflow-y-auto mb-4 hidden max-h-[250px]"></div>
-            <button onclick="document.getElementById('watch-addChannelModal').style.display='none'" class="btn-secondary py-2 px-6 rounded-lg transition mt-auto">إغلاق</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="watch-addPlaylistModal" style="position: absolute;">
-        <div class="glass-panel w-full max-w-lg flex flex-col">
-            <h2 class="text-xl font-bold text-white mb-2">اقتراح دورة يدوياً</h2>
-            <div class="bg-red-900/30 border border-red-800 text-red-200 text-xs p-3 rounded mb-4">أضف الرابط ليرى المدير الدورة ويعتمدها إذا كانت مناسبة.</div>
-            <input type="text" id="watch-playlistUrlInput" placeholder="مثال: https://www.youtube.com/playlist..." class="mb-4" dir="ltr">
-            <div class="flex gap-3 mt-4">
-                <button onclick="watch_submitUserPlaylist()" class="btn-primary flex-1" id="watch-submitPlaylistBtn">إرسال للمدير</button>
-                <button onclick="document.getElementById('watch-addPlaylistModal').style.display='none'" class="btn-secondary py-2 px-4 rounded-lg flex-1 transition">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
     <header class="floating-nav no-print">
         <div class="flex items-center gap-4">
             <a href="https://bacflix.yoo7.com/" class="nav-logo" style="text-decoration:none;">BAC<span>FLIX</span></a>
@@ -345,7 +287,6 @@
         </div>
         <nav class="nav-links-container">
             <div onclick="switchApp('academy')" class="nav-link active" id="btn-academy"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg> الأكاديمية</div>
-            <div onclick="switchApp('watch'); if(typeof watch_onEnter === 'function') watch_onEnter();" class="nav-link" id="btn-watch"><svg class="nav-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> المشاهدة</div>
             <div onclick="switchApp('lab')" class="nav-link" id="btn-lab"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 2v2M15 2v2M10 20v-6a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v6M22 10v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6M5 10V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4"/></svg> المختبر</div>
             <div onclick="switchApp('quiz')" class="nav-link" id="btn-quiz"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> الكويزات</div>
             <div onclick="switchApp('cards')" class="nav-link" id="btn-cards"><svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg> البطاقات</div>
@@ -373,6 +314,7 @@
                         <h3 class="text-white font-bold mb-4 text-sm">تفعيل بطاقة الشحن</h3>
                         <input type="text" id="voucherInput" class="voucher-input mb-4" placeholder="الكود هنا" autocomplete="off" dir="ltr" maxlength="19">
                         <button id="redeemBtn" class="btn-primary" onclick="processActivationCode()">تأكيد الشحن</button>
+                        <button onclick="document.getElementById('paymentModal').style.display='flex'" class="text-blue-400 text-xs mt-3 underline hover:text-blue-300 transition w-full text-center bg-transparent border-none cursor-pointer font-bold">لا تملك كوداً؟ اضغط هنا لطلب واحد</button>
                         <div id="voucherMsg" class="mt-3 text-xs text-center font-bold"></div>
                     </div>
                     <div class="glass-panel !p-4">
@@ -398,67 +340,6 @@
             </div>
         </div>
 
-        <div id="app-watch" class="app-window">
-            
-            <div id="watch-resumeBanner" class="bg-gray-800 border-b border-gray-700 p-3 mb-6 hidden items-center justify-between cursor-pointer hover:bg-gray-700 transition rounded-lg" onclick="watch_resumeVideo()">
-                <div class="flex items-center gap-3">
-                    <div class="bg-[--bacflix-red] text-white p-2 rounded-full"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
-                    <div>
-                        <div class="text-xs text-gray-400">مواصلة المشاهدة مع هذا الأستاذ</div>
-                        <div class="text-sm font-bold text-white"><span id="watch-resumeTitle">...</span> - <span id="watch-resumeLesson" class="text-gray-300 font-normal">...</span></div>
-                    </div>
-                </div>
-                <div class="text-xs font-bold text-[--bacflix-red]">إكمال ❯</div>
-            </div>
-
-            <div class="glass-panel !p-6 mb-8 border border-[#30363d]">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-[#30363d] pb-6 gap-4">
-                    <div>
-                        <h1 class="text-4xl font-black tracking-wider text-white mb-1">BAC<span style="color: var(--bacflix-red);">FLIX</span> <span class="text-gray-400 font-light text-xl">WATCH</span></h1>
-                        <p class="text-gray-500 text-sm">مكتبة الدورات المنتقاة بعناية لطلاب البكالوريا.</p>
-                    </div>
-                    <div class="flex items-center gap-2 flex-wrap justify-center">
-                        <button onclick="watch_showProgressDashboard()" class="bg-purple-600 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-purple-700 transition shadow-lg flex items-center gap-1"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg> تقدمي</button>
-                        <button onclick="watch_openAddPlaylistModal()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-blue-700 transition shadow-lg flex items-center gap-1"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 5v14M5 12h14"></path></svg> اقترح دورة</button>
-                        <button onclick="watch_openAddChannelModal()" class="bg-green-600 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-green-700 transition shadow-lg flex items-center gap-1"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> اقترح أستاذ</button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
-                    <div>
-                        <label class="block mb-2 text-gray-400 text-xs font-bold">المادة (حسب شعبتك الحالية)</label>
-                        <select id="watch-subject" onchange="watch_loadTeachers()"><option value="">جاري التحميل...</option></select>
-                    </div>
-                    <div>
-                        <button class="btn-primary py-3" onclick="watch_loadTeachers()"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> استعراض الدورات</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="watch-loadingState" style="display: none;" class="flex-col items-center justify-center py-20 text-center">
-                <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-red-600 mb-4 mx-auto"></div>
-                <h3 class="text-xl font-bold text-white mb-2" id="watch-loadingText">جاري العمل...</h3>
-            </div>
-
-            <div id="watch-navigationPath" class="hidden mb-6 text-sm font-bold text-gray-400 bg-[#111] p-3 rounded-lg border border-[#333] items-center justify-between gap-2 flex-wrap">
-                <div class="flex items-center gap-2">
-                    <span class="text-[--bacflix-red]">المادة:</span> <span id="watch-pathSubject">...</span> 
-                    <span id="watch-pathArrow" class="hidden">›</span> <span id="watch-pathChannel" class="text-white hidden">...</span>
-                    <button id="watch-backToChannelsBtn" class="hidden btn-secondary !py-1 !px-2 text-xs" onclick="watch_showChannelsView()">العودة للأساتذة</button>
-                </div>
-                <div id="watch-favoritesFilterDiv" class="flex items-center gap-2">
-                    <span class="text-xs text-gray-400">المفضلين فقط</span>
-                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                        <input type="checkbox" id="watch-favFilterCheckbox" class="watch-toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer z-10" onchange="watch_applyFilters()"/>
-                        <label for="watch-favFilterCheckbox" class="watch-toggle-label block overflow-hidden h-5 rounded-full bg-gray-700 cursor-pointer"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div id="watch-channelsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"></div>
-            <div id="watch-playlistsGrid" class="hidden grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
-
-        </div>
         <div id="app-lab" class="app-window">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-3 no-print">
@@ -518,7 +399,7 @@
                                 <label class="block mb-1 text-gray-400 text-xs text-[--bacflix-red] font-bold">الصعوبة (ميزة ذكية)</label>
                                 <select id="quiz-difficulty" class="border-l-4 border-[--bacflix-red]">
                                     <option value="تكيفي" selected>تحديد آلي للمستوى (Adaptive)</option>
-                                    <option value="سهل ومباشر">مراجعة خفيفة (سهل)</option>
+                                    <option value="سهل ومباشر">مراجعة خ خفيفة (سهل)</option>
                                     <option value="مستوى بكالوريا">مستوى بكالوريا (متوسط)</option>
                                     <option value="تحدي وصعب جدا وتحليلي">تحدي للعباقرة (صعب)</option>
                                 </select>
@@ -674,93 +555,9 @@
         <button id="bacflix-chat-btn" onclick="chat_toggle()"><svg class="nav-icon" style="width:24px;height:24px; stroke:white;" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
     </div>
 
-    <div id="watch-cinemaModal">
-        <div class="watch-cinema-header">
-            <div class="flex items-center gap-4">
-                <button onclick="watch_closeCinema()" class="text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg font-bold transition flex items-center gap-2"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> إنهاء الدورة</button>
-                <h2 id="watch-cinemaTitle" class="text-lg font-bold text-white hidden md:block">عنوان الدورة</h2>
-            </div>
-            <div class="text-[--bacflix-red] font-black italic text-xl tracking-wider">BACFLIX</div>
-        </div>
-        
-        <div class="watch-cinema-body">
-            <div id="watch-videoSection" class="watch-video-section">
-                <div id="watch-player-wrapper">
-                    <div id="watch-ytplayer"></div> 
-                    <div id="watch-nextEpOverlay">
-                        <h3 class="text-2xl font-bold mb-4">الدرس القادم يبدأ خلال...</h3>
-                        <div class="watch-countdown-circle" id="watch-countdownTimer">5</div>
-                        <div class="flex gap-4 mt-6">
-                            <button onclick="watch_playNextVideo()" class="bg-white text-black font-bold px-6 py-2 rounded-lg hover:bg-gray-200">تشغيل الآن</button>
-                            <button onclick="watch_cancelAutoPlay()" class="border border-white text-white font-bold px-6 py-2 rounded-lg hover:bg-white/20">إلغاء</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="watch-episode-controls">
-                    <div class="flex items-center gap-4 text-sm font-bold text-gray-300 w-full lg:w-auto">
-                        <span class="bg-[--bacflix-red] text-white px-2 py-1 rounded text-xs shadow-lg shadow-red-900/50 whitespace-nowrap">يُعرض الآن</span>
-                        <span id="watch-currentEpisodeTitle" class="truncate max-w-[200px] sm:max-w-[400px]">...</span>
-                    </div>
-                    <div class="flex gap-2 w-full lg:w-auto justify-between lg:justify-end mt-2 lg:mt-0">
-                        <button onclick="watch_markCurrentVideoWatched()" class="watch-ep-btn bg-green-900/50 hover:bg-green-800 text-green-300 border-green-800" title="تأشير كمكتمل">✅ فهمت الدرس</button>
-                        <button onclick="watch_togglePlaylist()" class="watch-ep-btn bg-gray-800 hover:bg-gray-700 text-gray-300 border-gray-700 px-3" title="وضع المسرح (إظهار/إخفاء القائمة)"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></button>
-                        <button id="watch-prevBtn" onclick="watch_playPrevVideo()" class="watch-ep-btn flex-1 lg:flex-none justify-center">‹ السابق</button>
-                        <button id="watch-nextBtn" onclick="watch_playNextVideo()" class="watch-ep-btn flex-1 lg:flex-none justify-center">الموالي ›</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="watch-playlist-sidebar-container" class="watch-playlist-sidebar">
-                <div class="watch-playlist-header">
-                    <span class="flex items-center gap-2"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg> قائمة الحلقات</span>
-                    <div class="flex gap-2 items-center"><span id="watch-playlistCountBadge" class="text-[10px] bg-[--bacflix-red] px-2 py-1 rounded-full text-white">0</span><button onclick="watch_togglePlaylist()" class="lg:hidden text-gray-400 hover:text-white">✖</button></div>
-                </div>
-                <div id="watch-playlist-drawer" class="watch-playlist-drawer"></div>
-            </div>
-
-            <button id="watch-aiFabBtn" onclick="watch_toggleChat()" title="المساعد الذكي (يتحكم بالفيديو)"><svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></button>
-
-            <div id="watch-aiChatWindow">
-                <div class="chat-header">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-[--bacflix-red] rounded-full flex items-center justify-center text-white"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
-                        <div>
-                            <div class="font-bold text-white text-xs">المساعد الخارق</div>
-                            <div class="text-[9px] text-green-500 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span> يتحكم في المشغل</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <label class="flex items-center gap-1 text-[10px] text-gray-300 cursor-pointer hover:text-yellow-500 transition" title="طرح أسئلة توجيهية"><input type="checkbox" id="watch-challengeModeToggle" class="accent-yellow-500"> التحدي</label>
-                        <button onclick="watch_toggleChat()" class="text-gray-400 hover:text-white"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-                    </div>
-                </div>
-                
-                <div id="watch-chat-messages" style="flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth;"></div>
-
-                <div class="watch-chat-input-area">
-                    <div class="watch-prompt-chips-container">
-                        <button class="watch-prompt-chip" onclick="watch_sendPromptChip('لخّص لي هذا الدرس بأهم النقاط')">لخّص الدرس</button>
-                        <button class="watch-prompt-chip" onclick="watch_sendPromptChip('أعطني تمريناً تدريبياً مع الحل حول ما تم شرحه للتو')">تمرين تدريبي</button>
-                        <button class="watch-prompt-chip" onclick="watch_sendPromptChip('لم أفهم هذه الفكرة، اشرحها لي كأنني مبتدئ')">اشرح ببساطة</button>
-                    </div>
-                    <div id="watch-file-preview" class="hidden text-[11px] text-gray-300 bg-[#222] p-2 rounded flex justify-between items-center border border-[#444]">
-                        <span id="watch-file-name" class="truncate flex items-center gap-1"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg> <span class="fn-text"></span></span>
-                        <button onclick="watch_removeAttachment()" class="text-red-500 hover:text-red-400 font-bold ml-2"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-                    </div>
-                    <div class="flex gap-2 items-center w-full">
-                        <button id="watch-mic-btn" class="icon-btn" onclick="watch_toggleSpeechRecognition()"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></button>
-                        <label class="icon-btn cursor-pointer"><input type="file" id="watch-chatFile" class="hidden" accept="image/*,application/pdf" onchange="watch_handleFileSelect(event)"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></label>
-                        <input type="text" id="watch-chat-input" placeholder="تحدث، اكتب، أو الصق (Ctrl+V)..." onkeypress="watch_handleChatEnter(event)" class="flex-1 bg-[#222] text-white p-2 rounded outline-none border border-[#444] text-sm">
-                        <button id="watch-send-btn" onclick="watch_sendChatMessage()" class="bg-[--bacflix-red] text-white px-4 py-2 rounded font-bold hover:bg-[#b80710] transition text-sm">إرسال</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
     <script>
-        // الكود الأصلي للمنصة الشاملة
         const BacflixSecurity = (function() {
             let _isToolsActive = false; 
             const _SECRET_KEY = "BACFLIX_SECURE_" + Math.random().toString(36).substr(2, 9); 
@@ -793,7 +590,8 @@
         let currentStream = null;
         let globalChatHistory = [];
         let userDataCache = { credits: 0, subscriptionEnd: 0 };
-        
+        let globalContactSettings = { rip: '', ccp: '', ccpKey: '', name: '', wa: '', tg: '' };
+        let isFullscreenChat = false;
         let currentQuizPoolKey = null;
         let currentQuizFirebaseId = null;
 
@@ -813,7 +611,7 @@
         });
 
         // ---------------------------------------------------------
-        // الإحصائيات الشاملة وسجل الكويزات التكيفي
+        // الإحصائيات الشاملة
         // ---------------------------------------------------------
         function initStats() {
             if(!currentUser) return null;
@@ -927,119 +725,91 @@
         }
 
         // ---------------------------------------------------------
-        // إدارة الحسابات (Firebase / Forum)
+        // إدارة الحسابات والاتصال
         // ---------------------------------------------------------
         function getForumUsername() {
             try {
-                if (typeof _userdata !== "undefined" && _userdata.session_logged_in == 1) {
-                    return _userdata.username;
-                } else if (window.parent && typeof window.parent._userdata !== "undefined" && window.parent._userdata.session_logged_in == 1) {
-                    return window.parent._userdata.username;
-                }
+                if (typeof _userdata !== "undefined" && _userdata.session_logged_in == 1) return _userdata.username;
+                if (window.parent && typeof window.parent._userdata !== "undefined" && window.parent._userdata.session_logged_in == 1) return window.parent._userdata.username;
             } catch (e) {}
-            return null;
+            let match = document.cookie.match(new RegExp('(^| )forum_user=([^;]+)'));
+            if (match) return decodeURIComponent(match[2]);
+            return null; 
         }
 
-        async function verifyUser() {
-            const forumUser = getForumUsername();
-            if (!forumUser) return;
+        function loadContactSettings() {
+            if(!window.cloudDb) return;
+            window.cloudDb.ref('bacflix_settings/contact').on('value', snap => {
+                if(snap.exists()) {
+                    globalContactSettings = snap.val();
+                    document.getElementById('displayRip').innerText = globalContactSettings.rip || 'غير متوفر';
+                    document.getElementById('displayCcp').innerText = globalContactSettings.ccp || 'غير متوفر';
+                    document.getElementById('displayCcpKey').innerText = globalContactSettings.ccpKey || '';
+                    document.getElementById('displayAccName').innerText = globalContactSettings.name || 'غير متوفر';
+                }
+            });
+        }
 
-            const phone = document.getElementById('regPhone').value.trim();
-            const stream = document.getElementById('regStream').value;
-            const msg = document.getElementById('auth-msg');
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text);
+            alert('تم النسخ بنجاح!');
+        }
 
-            if(phone.length < 8 || !stream) {
-                msg.innerText = "الرجاء إكمال رقم الهاتف واختيار الشعبة."; 
-                msg.classList.remove('hidden'); 
-                return;
+        function copyCcpFull() {
+            const ccp = globalContactSettings.ccp || '';
+            const key = globalContactSettings.ccpKey || '';
+            if(ccp) {
+                navigator.clipboard.writeText(`${ccp} Clé: ${key}`);
+                alert('تم نسخ رقم الـ CCP والمفتاح بنجاح!');
             }
-            
-            document.getElementById('btn-check-auth').innerText = "جاري الاتصال..."; 
-            document.getElementById('btn-check-auth').disabled = true;
+        }
 
-            try {
-                if(!window.cloudDb) window.cloudDb = firebase.database();
-                const userRef = window.cloudDb.ref('bacflix_users/' + forumUser);
-                const snap = await userRef.once('value');
+        function loadStudentPackages() {
+            if(!window.cloudDb) return;
+            window.cloudDb.ref('bacflix_packages').on('value', snap => {
+                const container = document.getElementById('packagesContainer');
+                if(!snap.exists()) { container.innerHTML = '<p class="text-gray-500 text-sm">لا توجد باقات متوفرة حالياً.</p>'; return; }
                 
-                if(!snap.exists()) {
-                    let freeHour = Date.now() + (60 * 60 * 1000);
-                    await userRef.set({ name: forumUser, phone: phone, stream: stream, credits: 0, subscriptionEnd: freeHour });
-                }
-
-                location.reload();
-            } catch(e) {
-                msg.innerText = "حدث خطأ في الاتصال. حاول مجددا."; 
-                msg.classList.remove('hidden');
-                document.getElementById('btn-check-auth').innerText = "دخول المنصة"; 
-                document.getElementById('btn-check-auth').disabled = false;
-            }
+                let html = '';
+                const pkgs = snap.val();
+                let arr = Object.values(pkgs).sort((a,b) => a.price - b.price);
+                
+                arr.forEach(p => {
+                    html += `
+                    <div class="bg-black/40 border border-white/10 hover:border-blue-500 transition p-4 rounded-xl flex justify-between items-center text-right cursor-pointer" onclick="selectPackageToBuy('${p.name}', ${p.price})">
+                        <div>
+                            <h4 class="text-white font-bold text-sm mb-1">${p.name}</h4>
+                            <div class="flex gap-2 text-[10px] text-gray-400 font-bold">
+                                <span class="bg-blue-900/30 text-blue-400 px-2 py-0.5 rounded">المدة: ${p.days} يوم</span>
+                                <span class="bg-yellow-900/30 text-yellow-500 px-2 py-0.5 rounded">رصيد: ${p.credits} ن</span>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-green-400 font-black text-lg">${p.price} دج</div>
+                            <div class="text-[10px] bg-white text-black px-2 py-0.5 rounded-full font-bold mt-1 inline-block">اطلب الآن</div>
+                        </div>
+                    </div>`;
+                });
+                container.innerHTML = html;
+            });
         }
 
-        function logoutGlobalUser() {
-            location.reload();
-        }
-
-        async function processActivationCode() {
-            let codeInputId = 'voucherInput';
-            let msgId = 'voucherMsg';
-            let btnId = 'redeemBtn';
+        function selectPackageToBuy(name, price) {
+            document.getElementById('packagesContainer').style.display = 'none';
+            document.getElementById('paymentInfoStep').style.display = 'flex';
             
-            let rawCode = document.getElementById(codeInputId).value.replace(/-/g, '').toUpperCase();
-            const msg = document.getElementById(msgId);
-            const btn = document.getElementById(btnId);
+            document.getElementById('selectedPkgName').innerText = name;
+            document.getElementById('selectedPkgPrice').innerText = price;
 
-            if(rawCode.length !== 16) {
-                msg.innerHTML = "<span class='text-red-400'>الكود غير مكتمل.</span>"; return;
-            }
+            const msg = encodeURIComponent(`مرحباً، أريد شراء "${name}" بسعر ${price} دج.\nاسم حسابي في المنصة هو: ${currentUser}`);
+            document.getElementById('waLink').href = `https://wa.me/${globalContactSettings.wa}?text=${msg}`;
+            document.getElementById('tgLink').href = `https://t.me/${globalContactSettings.tg}?text=${msg}`;
+        }
 
-            let code = rawCode.match(/.{1,4}/g).join('-');
-
-            btn.disabled = true; btn.innerText = "جاري التفعيل..."; msg.innerHTML = "";
-
-            try {
-                if(!window.cloudDb) window.cloudDb = firebase.database();
-                const codeRef = window.cloudDb.ref('bacflix_codes/' + code);
-                const codeSnap = await codeRef.once('value');
-
-                if(codeSnap.exists() && codeSnap.val().status === 'active') {
-                    const codeData = codeSnap.val();
-                    
-                    let userRef = window.cloudDb.ref('bacflix_users/' + currentUser);
-                    let userSnap = await userRef.once('value');
-                    let uData = userSnap.val() || { credits: 0, subscriptionEnd: 0 };
-
-                    let updates = { 
-                        lastCodeUsed: code,
-                        lastVoucherPrice: parseFloat(codeData.price) || 0,
-                        lastVoucherCredits: parseFloat(codeData.credits) || 1
-                    };
-
-                    if (codeData.credits && codeData.credits > 0) {
-                        updates.credits = (parseFloat(uData.credits) || 0) + parseFloat(codeData.credits);
-                    } else {
-                        updates.credits = uData.credits || 0; 
-                    }
-
-                    if (codeData.days && codeData.days > 0) {
-                        let currentEnd = uData.subscriptionEnd > Date.now() ? uData.subscriptionEnd : Date.now();
-                        updates.subscriptionEnd = currentEnd + (codeData.days * 24 * 60 * 60 * 1000);
-                    } else {
-                        updates.subscriptionEnd = uData.subscriptionEnd || 0;
-                    }
-
-                    await codeRef.update({ status: 'used', usedBy: currentUser, activationDate: Date.now() });
-                    await userRef.update(updates);
-
-                    msg.innerHTML = "<span class='text-green-400'>تم التفعيل بنجاح!</span>";
-                    document.getElementById(codeInputId).value = '';
-                    setTimeout(() => { msg.innerHTML = ""; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }, 3000);
-
-                } else {
-                    msg.innerHTML = "<span class='text-red-400'>الكود خاطئ أو مستخدم.</span>";
-                    btn.disabled = false; btn.innerText = "تأكيد الشحن";
-                }
-            } catch(e) { msg.innerHTML = "<span class='text-red-400'>خطأ في الاتصال.</span>"; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }
+        function backToPackages() {
+            document.getElementById('paymentInfoStep').style.display = 'none';
+            document.getElementById('packagesContainer').style.display = 'flex';
         }
 
         function checkAuth() {
@@ -1073,17 +843,40 @@
                     return; 
                 }
 
-                document.getElementById('authModal').style.display = 'none'; 
-                
                 userDataCache = snap.val();
                 currentUser = forumUser; 
+
+                let needsUpdate = false;
+                let autoUpdates = {};
+                if (userDataCache.credits === undefined) { autoUpdates.credits = 0; needsUpdate = true; }
+                if (userDataCache.subscriptionEnd === undefined) { autoUpdates.subscriptionEnd = 0; needsUpdate = true; }
+                if (userDataCache.isBanned === undefined) { autoUpdates.isBanned = false; needsUpdate = true; }
+                
+                if (needsUpdate) {
+                    window.cloudDb.ref(`bacflix_users/${currentUser}`).update(autoUpdates);
+                    userDataCache = { ...userDataCache, ...autoUpdates };
+                }
+
+                if (userDataCache.isBanned === true) {
+                    document.body.innerHTML = `
+                    <div style="background:#0a0a0a; height:100vh; width:100vw; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; z-index:999999; position:fixed; top:0; right:0;">
+                        <div style="background:rgba(229,9,20,0.1); border:1px solid rgba(229,9,20,0.3); padding:40px; border-radius:20px; max-width:400px;">
+                            <svg style="margin: 0 auto 20px auto; width:64px; height:64px; stroke:#E50914;" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                            <h1 style="color:#E50914; font-size:1.5rem; font-weight:900; margin-bottom:10px;">تم تعليق حسابك</h1>
+                            <p style="color:#cbd5e1; font-size:13px; line-height:1.6; margin-bottom:20px;">عذراً، لقد تم تعليق حسابك من قبل الإدارة ولم يعد بإمكانك الوصول إلى المنصة وميزاتها.<br>يرجى التواصل مع الدعم الفني للمزيد من التفاصيل.</p>
+                            <a href="https://bacflix.yoo7.com/" style="background:#E50914; color:white; text-decoration:none; padding:10px 20px; border-radius:10px; font-weight:bold; font-size:13px; display:inline-block;">العودة للمنتدى</a>
+                        </div>
+                    </div>`;
+                    return;
+                }
+
+                document.getElementById('authModal').style.display = 'none'; 
                 currentStream = userDataCache.stream;
 
                 document.getElementById('sidebarUserName').innerText = currentUser;
                 document.getElementById('sidebarStreamName').innerText = currentStream;
 
                 initStats();
-
                 loadCurriculum().then(() => {
                     ['lab', 'quiz', 'cards'].forEach(prefix => updateDropdowns(prefix, false));
                 });
@@ -1113,7 +906,99 @@
                 if(!BacflixSecurity.isActive() && activeApp !== 'academy') {
                     switchApp('academy');
                 }
+
+                loadContactSettings();
+                loadStudentPackages();
             });
+        }
+
+        async function verifyUser() {
+            const forumUser = getForumUsername();
+            if (!forumUser) return;
+
+            const phone = document.getElementById('regPhone').value.trim();
+            const stream = document.getElementById('regStream').value;
+            const msg = document.getElementById('auth-msg');
+
+            if(phone.length < 8 || !stream) {
+                msg.innerText = "الرجاء إكمال رقم الهاتف واختيار الشعبة."; 
+                msg.classList.remove('hidden'); 
+                return;
+            }
+            
+            document.getElementById('btn-check-auth').innerText = "جاري الاتصال..."; 
+            document.getElementById('btn-check-auth').disabled = true;
+
+            try {
+                if(!window.cloudDb) window.cloudDb = firebase.database();
+                const userRef = window.cloudDb.ref('bacflix_users/' + forumUser);
+                const snap = await userRef.once('value');
+                
+                if(!snap.exists()) {
+                    let freeHour = Date.now() + (60 * 60 * 1000);
+                    await userRef.set({ name: forumUser, phone: phone, stream: stream, credits: 0, subscriptionEnd: freeHour, isBanned: false });
+                }
+                location.reload();
+            } catch(e) {
+                msg.innerText = "حدث خطأ في الاتصال. حاول مجددا."; 
+                msg.classList.remove('hidden');
+                document.getElementById('btn-check-auth').innerText = "دخول المنصة"; 
+                document.getElementById('btn-check-auth').disabled = false;
+            }
+        }
+
+        function logoutGlobalUser() { location.reload(); }
+
+        async function processActivationCode() {
+            let rawCode = document.getElementById('voucherInput').value.replace(/-/g, '').toUpperCase();
+            const msg = document.getElementById('voucherMsg');
+            const btn = document.getElementById('redeemBtn');
+
+            if(rawCode.length !== 16) { msg.innerHTML = "<span class='text-red-400'>الكود غير مكتمل.</span>"; return; }
+            let code = rawCode.match(/.{1,4}/g).join('-');
+            btn.disabled = true; btn.innerText = "جاري التفعيل..."; msg.innerHTML = "";
+
+            try {
+                if(!window.cloudDb) window.cloudDb = firebase.database();
+                const codeRef = window.cloudDb.ref('bacflix_codes/' + code);
+                const codeSnap = await codeRef.once('value');
+
+                if(codeSnap.exists() && codeSnap.val().status === 'active') {
+                    const codeData = codeSnap.val();
+                    let userRef = window.cloudDb.ref('bacflix_users/' + currentUser);
+                    let userSnap = await userRef.once('value');
+                    let uData = userSnap.val() || { credits: 0, subscriptionEnd: 0 };
+
+                    let updates = { 
+                        lastCodeUsed: code,
+                        lastVoucherPrice: parseFloat(codeData.price) || 0,
+                        lastVoucherCredits: parseFloat(codeData.credits) || 1
+                    };
+
+                    if (codeData.credits && codeData.credits > 0) {
+                        updates.credits = (parseFloat(uData.credits) || 0) + parseFloat(codeData.credits);
+                    } else {
+                        updates.credits = uData.credits || 0; 
+                    }
+
+                    if (codeData.days && codeData.days > 0) {
+                        let currentEnd = uData.subscriptionEnd > Date.now() ? uData.subscriptionEnd : Date.now();
+                        updates.subscriptionEnd = currentEnd + (codeData.days * 24 * 60 * 60 * 1000);
+                    } else {
+                        updates.subscriptionEnd = uData.subscriptionEnd || 0;
+                    }
+
+                    await codeRef.update({ status: 'used', usedBy: currentUser, activationDate: Date.now() });
+                    await userRef.update(updates);
+
+                    msg.innerHTML = "<span class='text-green-400'>تم التفعيل بنجاح!</span>";
+                    document.getElementById('voucherInput').value = '';
+                    setTimeout(() => { msg.innerHTML = ""; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }, 3000);
+                } else {
+                    msg.innerHTML = "<span class='text-red-400'>الكود خاطئ أو مستخدم.</span>";
+                    btn.disabled = false; btn.innerText = "تأكيد الشحن";
+                }
+            } catch(e) { msg.innerHTML = "<span class='text-red-400'>خطأ في الاتصال.</span>"; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }
         }
 
         async function fetchFromGemini(contentsArray, systemInstruction = null) {
@@ -1148,12 +1033,12 @@
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById('btn-' + app).classList.add('active');
             
-            const titles = { 'academy': 'المساعد الإداري', 'lab': 'المختبر (التحليل)', 'quiz': 'التقييم (الشرح)', 'cards': 'البطاقات (المراجعة)', 'stats': 'المحلل الأكاديمي', 'watch': 'أداة المشاهدة' };
-            document.getElementById('chat-title-text').innerText = titles[app] || '';
+            const titles = { 'academy': 'المساعد الإداري', 'lab': 'المختبر (التحليل)', 'quiz': 'التقييم (الشرح)', 'cards': 'البطاقات (المراجعة)', 'stats': 'المحلل الأكاديمي' };
+            document.getElementById('chat-title-text').innerText = titles[app];
             document.querySelector('.main-viewport').scrollTop = 0;
             
             if(app === 'stats') renderStats();
-            if(app !== 'academy' && app !== 'stats' && app !== 'watch') {
+            if(app !== 'academy' && app !== 'stats') {
                 updateDropdowns(app, true);
             }
         }
@@ -1164,7 +1049,7 @@
                 const snap = await window.cloudDb.ref('bacflix_curriculum_pro').once('value');
                 if (snap.exists()) { 
                     cloudCurriculum = snap.val(); 
-                    if(activeApp !== 'academy' && activeApp !== 'stats' && activeApp !== 'watch') updateDropdowns(activeApp, false);
+                    if(activeApp !== 'academy' && activeApp !== 'stats') updateDropdowns(activeApp, false);
                 }
             } catch(e) {}
         }
@@ -1380,42 +1265,6 @@
             });
         }
 
-        function generateStorageKey(mode, subject, stream, topics, difficulty) {
-            const topicKey = topics.split(' و ').sort().join('_').substring(0, 40);
-            return `bacflix_${mode}_${subject}_${stream}_${topicKey}_${difficulty}`.replace(/\s+/g, '_');
-        }
-
-        async function fetchFromCloudPool(poolKey) {
-            if(!window.cloudDb) window.cloudDb = firebase.database();
-            try {
-                const snapshot = await window.cloudDb.ref('bacflix_pool/' + poolKey).once('value');
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    return Object.keys(data).map(key => ({ id: key, content: data[key] })); 
-                }
-                return [];
-            } catch (error) { return []; }
-        }
-
-        function saveToCloudPool(poolKey, content) {
-            if(!window.cloudDb) window.cloudDb = firebase.database();
-            const newRef = window.cloudDb.ref('bacflix_pool/' + poolKey).push();
-            newRef.set(content);
-            return newRef.key;
-        }
-
-        function markQuizAsSeen(examId) {
-            if (!currentUser || !examId) return;
-            const key = `bacflix_quiz_seen_${currentUser}`;
-            let seen = JSON.parse(localStorage.getItem(key)) || [];
-            if (!seen.includes(examId)) { seen.push(examId); localStorage.setItem(key, JSON.stringify(seen)); }
-        }
-
-        function getSeenQuizzes() {
-            if (!currentUser) return [];
-            return JSON.parse(localStorage.getItem(`bacflix_quiz_seen_${currentUser}`)) || [];
-        }
-
         // ===================================
         // محرك المختبر (Lab)
         // ===================================
@@ -1496,25 +1345,26 @@
                 appliedDifficulty = getAdaptiveDifficulty(subj);
             }
 
-            const poolKey = generateStorageKey('quiz', subj, stream, topicsData.namesString, `${appliedDifficulty}_${count}`);
-            currentQuizPoolKey = poolKey;
+            const poolKey = `bacflix_quiz_${subj}_${stream}_${topicsData.namesString}_${appliedDifficulty}_${count}`.replace(/\s+/g, '_');
 
             if (!forceNew) {
                 loadingText.innerText = "جاري البحث عن كويز في السحابة...";
-                const cloudTopics = await fetchFromCloudPool(poolKey);
-                const seenExams = getSeenQuizzes();
-                const unseenTopics = cloudTopics.filter(topic => !seenExams.includes(topic.id));
-                
-                if (unseenTopics.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * unseenTopics.length);
-                    const chosenTopic = unseenTopics[randomIndex];
-                    currentQuizFirebaseId = chosenTopic.id;
-                    markQuizAsSeen(chosenTopic.id);
-                    
-                    displayQuizContent(chosenTopic.content, timeVal, subj);
-                    if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
-                    return; 
-                }
+                try {
+                    const snap = await window.cloudDb.ref('bacflix_pool/' + poolKey).once('value');
+                    if (snap.exists()) {
+                        const cloudTopics = Object.keys(snap.val()).map(key => ({ id: key, content: snap.val()[key] }));
+                        const seenExams = JSON.parse(localStorage.getItem(`bacflix_quiz_seen_${currentUser}`)) || [];
+                        const unseenTopics = cloudTopics.filter(topic => !seenExams.includes(topic.id));
+                        
+                        if (unseenTopics.length > 0) {
+                            const chosenTopic = unseenTopics[Math.floor(Math.random() * unseenTopics.length)];
+                            seenExams.push(chosenTopic.id); localStorage.setItem(`bacflix_quiz_seen_${currentUser}`, JSON.stringify(seenExams));
+                            displayQuizContent(chosenTopic.content, timeVal, subj);
+                            if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
+                            return; 
+                        }
+                    }
+                } catch(e) {}
             }
 
             loadingText.innerText = `يتم الآن بناء كويز جديد كلياً... (${appliedDifficulty})`;
@@ -1530,9 +1380,11 @@
                 let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
                 let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
                 
-                const newExamId = saveToCloudPool(poolKey, jsonStr);
-                currentQuizFirebaseId = newExamId; 
-                markQuizAsSeen(newExamId);
+                const newRef = window.cloudDb.ref('bacflix_pool/' + poolKey).push();
+                newRef.set(jsonStr);
+                
+                let seen = JSON.parse(localStorage.getItem(`bacflix_quiz_seen_${currentUser}`)) || [];
+                seen.push(newRef.key); localStorage.setItem(`bacflix_quiz_seen_${currentUser}`, JSON.stringify(seen));
                 
                 displayQuizContent(jsonStr, timeVal, subj);
                 if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
@@ -1548,7 +1400,6 @@
         function displayQuizContent(jsonString, timeVal, subj) {
             try {
                 quiz_data = JSON.parse(jsonString);
-                
                 document.getElementById('quiz-loadingState').classList.add('hidden'); document.getElementById('quiz-loadingState').classList.remove('flex');
                 let area = document.getElementById('quiz-questionsArea'); area.innerHTML = '';
                 quiz_data.forEach((q, i) => {
@@ -1595,13 +1446,12 @@
             window.cloudDb.ref('bacflix_ratings').push({
                 user: currentUser, rating: ratingType, subject: document.getElementById('quiz-subject').value,
                 questionText: questionData.question, date: new Date().toISOString()
-            }).catch(err => console.error(err));
+            });
         }
 
         function quiz_evaluate(timeUp) {
             clearInterval(quiz_interval); document.getElementById('quiz-timerDisplay').classList.remove('warning');
-            let score = 0;
-            let wrongAnswersDetails = [];
+            let score = 0; let wrongAnswersDetails = [];
 
             quiz_data.forEach((q, i) => {
                 let checked = document.querySelector(`input[name="q${i}"]:checked`);
@@ -1624,10 +1474,7 @@
             });
             
             const percentage = Math.round((score / quiz_data.length) * 100);
-            
-            updateStat('quizzesTaken', 1);
-            updateStat('quizTotalQuestions', quiz_data.length);
-            updateStat('quizCorrectAnswers', score);
+            updateStat('quizzesTaken', 1); updateStat('quizTotalQuestions', quiz_data.length); updateStat('quizCorrectAnswers', score);
             
             const currentSubj = document.getElementById('quiz-subject').value;
             const selectedTopics = Array.from(document.querySelectorAll('.topic-cb-quiz:checked')).map(cb => cb.value).join(' و ');
@@ -1641,18 +1488,13 @@
             setTimeout(()=>renderMathAndGraphs('quiz-questionsArea'), 100);
 
             let botGreeting = "";
-            if (percentage < 50) {
-                botGreeting = `مرحباً بك! لاحظت أنك واجهت بعض الصعوبة في كويز ${currentSubj}. لا تقلق، الأخطاء هي أفضل طريق للتعلم! هل تريدني أن أشرح لك الأسئلة التي أخطأت فيها؟`;
-            } else if (percentage >= 75) {
-                botGreeting = `عمل ممتاز! لقد تألقت في كويز ${currentSubj}. هل هناك أي نقطة معينة تود التعمق فيها أكثر؟`;
-            } else {
-                botGreeting = `نتيجة جيدة جداً في كويز ${currentSubj}. أنت في الطريق الصحيح! هل نراجع معاً الأسئلة التي ضاعت منك لتحصل على العلامة الكاملة المرة القادمة؟`;
-            }
+            if (percentage < 50) botGreeting = `مرحباً بك! لاحظت أنك واجهت بعض الصعوبة في كويز ${currentSubj}. لا تقلق، الأخطاء هي أفضل طريق للتعلم! هل تريدني أن أشرح لك الأسئلة التي أخطأت فيها؟`;
+            else if (percentage >= 75) botGreeting = `عمل ممتاز! لقد تألقت في كويز ${currentSubj}. هل هناك أي نقطة معينة تود التعمق فيها أكثر؟`;
+            else botGreeting = `نتيجة جيدة جداً في كويز ${currentSubj}. أنت في الطريق الصحيح! هل نراجع معاً الأسئلة التي ضاعت منك لتحصل على العلامة الكاملة المرة القادمة؟`;
 
             let hiddenPrompt = `[ملاحظة نظامية مخفية - لا ترد عليها]: الطالب أنهى للتو كويز في ${currentSubj} وحصل على ${score} من ${quiz_data.length}. لقد بادرت أنت بسؤاله وعرضت المساعدة.\n`;
             if (wrongAnswersDetails.length > 0) {
-                hiddenPrompt += `\nإليك الأسئلة التي أخطأ فيها الطالب لتعرف الإجابات الصحيحة:\n${wrongAnswersDetails.join('\n')}\n`;
-                hiddenPrompt += `\nبناءً على رده القادم، قم بإدارة الحوار بذكاء وتدرج في الشرح.`;
+                hiddenPrompt += `\nإليك الأسئلة التي أخطأ فيها الطالب لتعرف الإجابات الصحيحة:\n${wrongAnswersDetails.join('\n')}\nبناءً على رده القادم، قم بإدارة الحوار بذكاء وتدرج في الشرح.`;
             } else {
                 hiddenPrompt += `\nالطالب أجاب على جميع الأسئلة بشكل صحيح! شجعه واستعد لأي استفسار.`;
             }
@@ -1703,8 +1545,7 @@
 
         async function cards_fetchAndStart() {
             const subj = document.getElementById('cards-subject').value; const stream = currentStream; const count = document.getElementById('cards-count').value;
-            const diff = document.getElementById('cards-difficulty').value;
-            const extra = document.getElementById('cards-extraRules').value;
+            const diff = document.getElementById('cards-difficulty').value; const extra = document.getElementById('cards-extraRules').value;
             const topicsData = getSelectedTopicsData('cards', subj); if(!topicsData) return alert("اختر محورا.");
             
             document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.add('hidden');
@@ -1713,8 +1554,7 @@
             const prompt = `ألف ${count} بطاقات مراجعة ذكية (سؤال وجواب قصير جداً للحفظ) في مادة ${subj} شعبة ${stream}. مستوى الصعوبة: ${diff}.
             تغطي المحاور التالية: ${topicsData.detailsString}
             ${extra ? '\nتوجيهات إضافية: ' + extra : ''}
-            استخدم MathJax للمعادلات العلمية $...$.
-            الإخراج JSON Array فقط (دون أي نص خارجي): [{"front":"السؤال (وجه البطاقة)","back":"الجواب (ظهر البطاقة)"}]`;
+            استخدم MathJax للمعادلات العلمية $...$. الإخراج JSON Array فقط (دون أي نص خارجي): [{"front":"السؤال (وجه البطاقة)","back":"الجواب (ظهر البطاقة)"}]`;
             try {
                 let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
                 let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
@@ -1745,7 +1585,7 @@
             }; reader.readAsDataURL(file);
         }
 
-        async function cards_submitManual() {
+        function cards_submitManual() {
             const subj = document.getElementById('cards-subject').value;
             const front = document.getElementById('manualFront').value; const back = document.getElementById('manualBack').value;
             if(!front||!back) return alert("أكمل الفراغات");
@@ -1769,18 +1609,13 @@
         function cards_flip() { if(cards_isFlipped) return; cards_isFlipped=true; document.getElementById('cards-activeCard').classList.add('is-flipped'); document.getElementById('cards-hint').style.display='none'; setTimeout(()=>document.getElementById('cards-rating').classList.remove('hidden'), 400); }
         
         function cards_rate(rate, e) { 
-            e.stopPropagation(); 
-            updateStat('cardsReviewed', 1);
-            if(rate === 'easy') updateStat('cardsEasy', 1);
-            else if(rate === 'good') updateStat('cardsGood', 1);
-            else updateStat('cardsHard', 1);
-
-            cards_index++; 
-            cards_show(); 
+            e.stopPropagation(); updateStat('cardsReviewed', 1);
+            if(rate === 'easy') updateStat('cardsEasy', 1); else if(rate === 'good') updateStat('cardsGood', 1); else updateStat('cardsHard', 1);
+            cards_index++; cards_show(); 
         }
 
         // ===================================
-        // المساعد الذكي الخارجي
+        // المساعد الذكي
         // ===================================
         let isSocraticMode = false; let attachedFileBase64 = null, attachedFileMimeType = null, attachedFileName = null; let speechRecognition, isRecording = false; let isFullscreenChat = false;
 
@@ -1793,15 +1628,9 @@
         function toggleFullscreenChat() {
             const win = document.getElementById('bacflix-chat-window');
             const maxBtn = document.getElementById('maximize-btn');
-            if (!isFullscreenChat) { 
-                win.classList.add('fullscreen-chat'); 
-                maxBtn.innerHTML = 'تصغير'; 
-                isFullscreenChat = true; 
-            } else { 
-                win.classList.remove('fullscreen-chat'); 
-                maxBtn.innerHTML = 'تكبير'; 
-                isFullscreenChat = false; 
-            }
+            isFullscreenChat = !isFullscreenChat;
+            if (isFullscreenChat) { win.classList.add('fullscreen-chat'); maxBtn.innerHTML = 'تصغير'; } 
+            else { win.classList.remove('fullscreen-chat'); maxBtn.innerHTML = 'تكبير'; }
         }
 
         function chat_clear() { document.getElementById('chat-body').innerHTML = '<div class="message bot-msg" dir="auto">تم مسح ذاكرة الجلسة. كيف يمكنني مساعدتك الآن؟</div>'; globalChatHistory = []; removeAttachment(); }
@@ -1875,7 +1704,7 @@
         function MicBtnPulse(active) { const btn = document.getElementById('mic-btn'); if(active) btn.classList.add('animate-pulse', 'border-red-500', 'text-red-500'); else btn.classList.remove('animate-pulse', 'border-red-500', 'text-red-500'); }
 
         async function chat_send() {
-            const inp = document.getElementById('chat-input'); const text = inp.value.trim();
+            const inp = document.getElementById('chat-input'); const text = input.value.trim();
             if(!text && !attachedFileBase64) return;
             inp.value = ''; const chatBody = document.getElementById('chat-body'); document.getElementById('send-btn').disabled = true; MicBtnPulse(false);
 
@@ -1937,368 +1766,6 @@
         }
 
         window.onload = checkAuth;
-
-        // =========================================================================
-        // BACFLIX WATCH - PLUGIN LOGIC (تم الدمج بالكامل مع الكود الأصلي)
-        // =========================================================================
-        let watch_loadedChannels = [];
-        let watch_curatedPlaylists = {};
-        let watch_currentTeacherId = null;
-        let watch_currentTeacherName = null;
-        let watch_ytPlayer;
-        let watch_playlistVideos = [];
-        let watch_currentVideoIndex = 0;
-        let watch_autoPlayTimer;
-        let watch_currentPlaylistData = null;
-        let watch_currentPlaylistId = null;
-        let watch_chatHistory = []; 
-        let watch_isChatOpen = false; 
-        let watch_attachedFileBase64 = null; 
-        let watch_attachedMimeType = null; 
-        let watch_speechRecognition = null; 
-        let watch_isRecording = false;
-
-        const WATCH_YOUTUBE_API_KEYS = [ "AIzaSyCrUmCjenb2u9n-JqqPagPqZniLJdR6cbw", "AIzaSyCWUGCh7SL_g8aKQjggc2kcnfYI1da5_aU" ];
-
-        function watch_onEnter() {
-            if(!currentUser || !cloudCurriculum) return;
-            const subjEl = document.getElementById('watch-subject');
-            if (subjEl.options.length <= 1) {
-                let subjects = new Set();
-                if (cloudCurriculum[currentStream]) Object.keys(cloudCurriculum[currentStream]).forEach(s => subjects.add(s)); 
-                if (cloudCurriculum["مواد مشتركة"]) Object.keys(cloudCurriculum["مواد مشتركة"]).forEach(s => subjects.add(s));
-                
-                subjEl.innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>';
-                Array.from(subjects).forEach(s => subjEl.innerHTML += `<option value="${s}">${s}</option>`);
-            }
-            watch_renderResumeBanner();
-        }
-
-        function watch_sanitizePath(str) { return str.replace(/[.#$\[\]]/g, '').substring(0, 50).replace(/\s+/g, '_'); }
-
-        async function watch_fetchFromYouTube(urlTemplate) {
-            let keysToTry = [...WATCH_YOUTUBE_API_KEYS].sort(() => 0.5 - Math.random()); let lastErr = "";
-            for (const key of keysToTry) {
-                try {
-                    const res = await fetch(urlTemplate.replace("{KEY}", key)); const data = await res.json();
-                    if (res.ok) return data; else { lastErr = data.error?.message || res.status; if (res.status === 403 && lastErr.toLowerCase().includes("quota")) continue; else throw new Error(lastErr); }
-                } catch (e) { lastErr = e.message; }
-            }
-            throw new Error("استُنفدت مفاتيح يوتيوب.");
-        }
-
-        function watch_openAddChannelModal() {
-            const subject = document.getElementById('watch-subject').value; if(!subject) return alert("الرجاء اختيار المادة أولاً.");
-            document.getElementById('watch-channelSearchResults').innerHTML = ''; document.getElementById('watch-channelSearchResults').classList.add('hidden');
-            document.getElementById('watch-channelSearchInput').value = ''; document.getElementById('watch-addChannelModal').style.display = 'flex';
-        }
-        
-        async function watch_searchChannelsForAdd() {
-            let input = document.getElementById('watch-channelSearchInput').value.trim(); if(!input) return alert("يرجى إدخال اسم الأستاذ أو رابط قناته.");
-            const btn = document.getElementById('watch-searchChannelBtn'); const resultsContainer = document.getElementById('watch-channelSearchResults');
-            btn.disabled = true; btn.innerText = "جاري..."; resultsContainer.innerHTML = ''; resultsContainer.classList.add('hidden');
-            if (input.includes('[youtube.com/](https://youtube.com/)')) { const match = input.match(/@([a-zA-Z0-9_.-]+)/); if (match) input = match[0]; }
-            try {
-                const searchQ = encodeURIComponent(input);
-                const data = await watch_fetchFromYouTube(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchQ}&type=channel&maxResults=5&key={KEY}`);
-                if (!data.items || data.items.length === 0) throw new Error("لم يتم العثور على قنوات بهذا الاسم.");
-                resultsContainer.classList.remove('hidden'); resultsContainer.classList.add('flex');
-                data.items.forEach(item => {
-                    const title = item.snippet.channelTitle; const thumb = item.snippet.thumbnails?.default?.url; const cid = item.snippet.channelId;
-                    resultsContainer.innerHTML += `<div class="flex justify-between items-center bg-[#1a1a1a] p-3 rounded-lg border border-[#333] hover:border-[--bacflix-red] transition"><div class="flex items-center gap-3"><img src="${thumb}" class="w-10 h-10 rounded-full object-cover"><span class="text-white text-sm font-bold truncate max-w-[150px] sm:max-w-xs" title="${title}">${title}</span></div><button onclick="watch_confirmChannelAdd('${cid}', '${title.replace(/'/g, "\\'")}', '${thumb}')" class="bg-[--bacflix-red] text-white text-xs px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition">اقتراح</button></div>`;
-                });
-            } catch (e) { alert(e.message); } finally { btn.disabled = false; btn.innerText = "بحث"; }
-        }
-        
-        async function watch_confirmChannelAdd(channelId, channelName, thumb) {
-            const subject = document.getElementById('watch-subject').value;
-            const newChannelData = { channelId, channelName, thumb, suggestedBy: currentUser, timestamp: Date.now() };
-            try { await window.cloudDb.ref(`bacflix_pending_channels/${watch_sanitizePath(subject)}/${channelId}`).set(newChannelData); alert(`تم إرسال اقتراحك للمدير لاعتماده.`); document.getElementById('watch-addChannelModal').style.display='none'; } 
-            catch (e) { alert("حدث خطأ أثناء الإرسال."); }
-        }
-
-        function watch_openAddPlaylistModal() {
-            const subject = document.getElementById('watch-subject').value; if(!subject) return alert("الرجاء اختيار المادة أولاً.");
-            document.getElementById('watch-addPlaylistModal').style.display = 'flex';
-        }
-        
-        async function watch_submitUserPlaylist() {
-            const url = document.getElementById('watch-playlistUrlInput').value.trim();
-            const match = url.match(/[?&]list=([^#\&\?]+)/); const playlistId = match && match[1] ? match[1] : null; if(!playlistId) return alert("رابط غير صحيح!");
-            const btn = document.getElementById('watch-submitPlaylistBtn'); btn.disabled = true; btn.innerText = "جاري الفحص...";
-            try {
-                const data = await watch_fetchFromYouTube(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${playlistId}&key={KEY}`);
-                if (!data.items || data.items.length === 0) throw new Error("القائمة غير متوفرة أو خاصة.");
-                const snippet = data.items[0].snippet; const thumbUrl = snippet.thumbnails?.high?.url || snippet.thumbnails?.medium?.url || snippet.thumbnails?.default?.url || '[https://via.placeholder.com/640x360.png?text=BACFLIX](https://via.placeholder.com/640x360.png?text=BACFLIX)';
-                const newPlaylistData = { playlistId: playlistId, title: snippet.title, channel: snippet.channelTitle, channelId: snippet.channelId, thumb: thumbUrl, suggestedBy: currentUser, timestamp: Date.now() };
-                const subject = document.getElementById('watch-subject').value;
-                const pendingPath = `bacflix_pending_playlists/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}/${playlistId}`;
-                await window.cloudDb.ref(pendingPath).set(newPlaylistData);
-                alert(`تم إرسال الدورة للمدير ليقوم بمراجعتها ونشرها.`); document.getElementById('watch-addPlaylistModal').style.display='none'; document.getElementById('watch-playlistUrlInput').value=''; 
-            } catch (e) { alert(e.message); } finally { btn.disabled = false; btn.innerText = "إرسال للمدير"; }
-        }
-
-        function watch_renderResumeBanner() {
-            if(!currentUser) return; const allResumes = JSON.parse(localStorage.getItem(`bacflix_resumes_${currentUser}`)) || {}; const banner = document.getElementById('watch-resumeBanner');
-            if (watch_currentTeacherId && allResumes[watch_currentTeacherId] && banner) {
-                banner.style.display = 'flex'; document.getElementById('watch-resumeTitle').innerText = allResumes[watch_currentTeacherId].title; document.getElementById('watch-resumeLesson').innerText = allResumes[watch_currentTeacherId].lessonTitle;
-            } else if (banner) { banner.style.display = 'none'; }
-        }
-
-        function watch_resumeVideo() {
-            if(!watch_currentTeacherId) return; const rData = (JSON.parse(localStorage.getItem(`bacflix_resumes_${currentUser}`)) || {})[watch_currentTeacherId];
-            if (rData) { watch_prepareCinema(rData.playlistId, rData.title, rData.channel, 'false', rData.videoIndex, rData.time); }
-        }
-
-        setInterval(() => {
-            if (watch_ytPlayer && typeof watch_ytPlayer.getPlayerState === 'function' && watch_ytPlayer.getPlayerState() === 1 && watch_currentPlaylistId && watch_currentTeacherId) {
-                const cTime = Math.floor(watch_ytPlayer.getCurrentTime());
-                if (cTime > 5) {
-                    const subj = document.getElementById('watch-subject').value;
-                    const rData = { playlistId: watch_currentPlaylistId, videoIndex: watch_currentVideoIndex, videoId: watch_playlistVideos[watch_currentVideoIndex].id, time: cTime, title: watch_currentPlaylistData.title, lessonTitle: watch_currentPlaylistData.currentLesson, channel: watch_currentPlaylistData.channel, stream: currentStream, subject: subj };
-                    let allResumes = JSON.parse(localStorage.getItem(`bacflix_resumes_${currentUser}`)) || {}; allResumes[watch_currentTeacherId] = rData; localStorage.setItem(`bacflix_resumes_${currentUser}`, JSON.stringify(allResumes));
-                }
-            }
-        }, 5000);
-
-        function watch_fireConfetti() {
-            for(let i=0; i<50; i++){
-                let conf = document.createElement('div'); conf.className = 'watch-confetti'; conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.backgroundColor = ['#E50914', '#2563eb', '#16a34a', '#facc15', '#fff'][Math.floor(Math.random() * 5)]; conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                document.body.appendChild(conf); setTimeout(()=>conf.remove(), 4000);
-            }
-        }
-
-        function watch_markCurrentVideoWatched() {
-            if(!watch_currentPlaylistId || !watch_playlistVideos[watch_currentVideoIndex]) return; const vidId = watch_playlistVideos[watch_currentVideoIndex].id;
-            let progress = JSON.parse(localStorage.getItem(`bacflix_progress_${currentUser}`)) || {};
-            if(!progress[watch_currentPlaylistId]) { progress[watch_currentPlaylistId] = { title: watch_currentPlaylistData.title, channel: watch_currentPlaylistData.channel, watched: [], total: watch_playlistVideos.length }; }
-            progress[watch_currentPlaylistId].total = watch_playlistVideos.length; 
-            if(!progress[watch_currentPlaylistId].watched.includes(vidId)) {
-                progress[watch_currentPlaylistId].watched.push(vidId); localStorage.setItem(`bacflix_progress_${currentUser}`, JSON.stringify(progress)); watch_renderPlaylistMenu(); 
-                if(progress[watch_currentPlaylistId].watched.length === watch_playlistVideos.length) { watch_fireConfetti(); alert("ألف مبروك! لقد أتممت الدورة بالكامل."); }
-            }
-        }
-
-        function watch_showProgressDashboard() {
-            const modal = document.getElementById('watch-progressModal'); const tbody = document.getElementById('watch-progressTableBody'); const statsDiv = document.getElementById('watch-progressStats');
-            let progress = JSON.parse(localStorage.getItem(`bacflix_progress_${currentUser}`)) || {}; let totalWatched = 0; let totalCourses = Object.keys(progress).length; tbody.innerHTML = '';
-            if(totalCourses === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-500">لم تبدأ بأي دورة بعد.</td></tr>'; statsDiv.innerHTML = ''; } 
-            else {
-                for(let pid in progress) {
-                    let p = progress[pid]; let wCount = p.watched.length; let tCount = p.total; let pct = Math.round((wCount / tCount) * 100) || 0; totalWatched += wCount;
-                    tbody.innerHTML += `<tr class="border-b border-gray-800 hover:bg-gray-800/50 transition"><td class="px-4 py-3 font-bold text-white">${p.title}</td><td class="px-4 py-3 text-gray-400 text-xs">${p.channel}</td><td class="px-4 py-3 text-xs text-center">${wCount} / ${tCount} درس</td><td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-full bg-gray-800 rounded-full h-2 border border-gray-700"><div class="bg-[--bacflix-red] h-1.5 rounded-full mt-[1px] ml-[1px]" style="width: ${pct}%"></div></div><span class="text-xs font-bold ${pct===100 ? 'text-green-500' : 'text-gray-300'}">${pct}%</span></div></td></tr>`;
-                }
-                statsDiv.innerHTML = `<div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-center shadow-inner"><div class="text-gray-400 text-xs mb-1">الدورات المفتوحة</div><div class="text-2xl font-bold text-white">${totalCourses}</div></div><div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-center shadow-inner"><div class="text-gray-400 text-xs mb-1">الدروس المنجزة إجمالاً</div><div class="text-2xl font-bold text-green-500">${totalWatched}</div></div>`;
-            }
-            modal.style.display = 'flex';
-        }
-
-        function watch_applyFilters() { if(document.getElementById('watch-playlistsGrid').style.display === 'grid') { if (watch_currentTeacherId === 'manual') { watch_showManualPlaylists(true); } else { watch_selectTeacher(watch_currentTeacherId, watch_currentTeacherName, true); } } else { watch_renderChannelsGrid(); } }
-
-        async function watch_loadTeachers() {
-            const subject = document.getElementById('watch-subject').value; if(!subject) return; document.getElementById('watch-favFilterCheckbox').checked = false;
-            const channelsGrid = document.getElementById('watch-channelsGrid'); const playlistsGrid = document.getElementById('watch-playlistsGrid'); const loading = document.getElementById('watch-loadingState'); const navPath = document.getElementById('watch-navigationPath');
-            channelsGrid.innerHTML = ''; playlistsGrid.innerHTML = ''; channelsGrid.style.display = 'grid'; playlistsGrid.style.display = 'none'; navPath.style.display = 'flex'; document.getElementById('watch-pathSubject').innerText = subject; document.getElementById('watch-pathArrow').style.display = 'none'; document.getElementById('watch-pathChannel').style.display = 'none'; document.getElementById('watch-backToChannelsBtn').style.display = 'none';
-            loading.style.display = 'flex'; document.getElementById('watch-loadingText').innerText = "جاري تحميل الدورات...";
-            try {
-                const cachePath = `bacflix_curated_playlists/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}`; const snap = await window.cloudDb.ref(cachePath).once('value'); watch_curatedPlaylists = snap.exists() ? snap.val() : {}; const playlistsArray = Object.values(watch_curatedPlaylists); let teachersDict = {};
-                playlistsArray.forEach(pl => { if(!teachersDict[pl.channelId]) { teachersDict[pl.channelId] = { channelId: pl.channelId, channelName: pl.channel, thumb: pl.channelThumb || '[https://via.placeholder.com/80](https://via.placeholder.com/80)', plCount: 1, totalVotes: pl.votes || 0 }; } else { teachersDict[pl.channelId].plCount++; teachersDict[pl.channelId].totalVotes += (pl.votes || 0); } });
-                const channelsSnap = await window.cloudDb.ref(`bacflix_approved_channels/${watch_sanitizePath(subject)}`).once('value');
-                if (channelsSnap.exists()) { const approvedChannels = channelsSnap.val(); for (let cid in approvedChannels) { if (!teachersDict[cid]) { teachersDict[cid] = { channelId: cid, channelName: approvedChannels[cid].channelName, thumb: approvedChannels[cid].thumb, plCount: 0, totalVotes: approvedChannels[cid].votes || 0 }; } else { teachersDict[cid].totalVotes += (approvedChannels[cid].votes || 0); } } }
-                watch_loadedChannels = Object.values(teachersDict); loading.style.display = 'none'; watch_renderChannelsGrid(); watch_currentTeacherId = null; watch_renderResumeBanner();
-            } catch (err) { console.error(err); loading.style.display = 'none'; }
-        }
-
-        function watch_renderChannelsGrid() {
-            const grid = document.getElementById('watch-channelsGrid'); grid.innerHTML = '';
-            if(watch_loadedChannels.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500 text-lg">لم يتم اعتماد أي دورات في هذا القسم بعد. ⏳</div>`; return; }
-            watch_loadedChannels.sort((a, b) => b.totalVotes - a.totalVotes);
-            let favs = JSON.parse(localStorage.getItem(`bacflix_fav_channels_${currentUser}`)) || []; const showFavsOnly = document.getElementById('watch-favFilterCheckbox').checked; let displayChannels = watch_loadedChannels; if (showFavsOnly) { displayChannels = watch_loadedChannels.filter(c => favs.includes(c.channelId)); }
-            if (!showFavsOnly) { grid.innerHTML += `<div class="teacher-card bg-blue-900/10 border-blue-900" onclick="watch_showManualPlaylists()"><div class="teacher-avatar flex items-center justify-center bg-blue-600 text-3xl font-black border-blue-500"><svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div><h3 class="text-white font-bold text-sm mb-1 truncate text-blue-300">دورات الطلبة</h3><div class="text-[10px] text-gray-500 bg-[#0d1117] px-2 py-1 rounded inline-block mt-auto">إضافات معتمدة يدوياً</div></div>`; }
-            displayChannels.forEach(ch => {
-                if (ch.channelId === 'manual') return; 
-                const isFav = favs.includes(ch.channelId); const favClass = isFav ? 'active' : ''; const opacityClass = ch.plCount === 0 ? 'opacity-50 hover:opacity-100' : ''; const currentVote = localStorage.getItem(`vote_ch_${ch.channelId}`); const upClass = currentVote == 1 ? 'voted-up' : ''; const downClass = currentVote == -1 ? 'voted-down' : '';
-                grid.innerHTML += `<div class="teacher-card flex flex-col justify-between ${opacityClass}" onclick="watch_selectTeacher('${ch.channelId}', '${ch.channelName.replace(/'/g, "\\'")}')"><div class="fav-btn ${favClass}" onclick="watch_toggleFavoriteChannel('${ch.channelId}', event)" title="إضافة للمفضلة"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div class="flex-1"><img src="${ch.thumb}" class="teacher-avatar" alt="${ch.channelName}" onerror="this.src='https://via.placeholder.com/80'"><h3 class="text-white font-bold text-sm mb-1 truncate" title="${ch.channelName}">${ch.channelName}</h3><div class="text-[10px] text-gray-400 bg-[#0d1117] px-2 py-1 rounded inline-block mt-1">${ch.plCount} دورات معتمدة</div></div><div class="mt-4 border-t border-[#333] pt-3 flex justify-center"><div class="vote-control" onclick="event.stopPropagation()"><button onclick="watch_voteChannel('${ch.channelId}', 1, event)" class="${upClass}" title="أعجبني"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></button><span id="watch-score-ch-${ch.channelId}">${ch.totalVotes || 0}</span><button onclick="watch_voteChannel('${ch.channelId}', -1, event)" class="${downClass}" title="لم يعجبني"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></button></div></div></div>`;
-            });
-        }
-
-        function watch_toggleFavoriteChannel(channelId, event) { event.stopPropagation(); let favs = JSON.parse(localStorage.getItem(`bacflix_fav_channels_${currentUser}`)) || []; if(favs.includes(channelId)) favs = favs.filter(c => c !== channelId); else favs.push(channelId); localStorage.setItem(`bacflix_fav_channels_${currentUser}`, JSON.stringify(favs)); watch_renderChannelsGrid(); }
-
-        function watch_selectTeacher(channelId, channelName, isFromFilter = false) {
-            watch_currentTeacherId = channelId; watch_currentTeacherName = channelName; watch_renderResumeBanner();
-            if (!isFromFilter) { document.getElementById('watch-favFilterCheckbox').checked = false; }
-            document.getElementById('watch-channelsGrid').style.display = 'none'; const pGrid = document.getElementById('watch-playlistsGrid'); pGrid.style.display = 'grid'; pGrid.innerHTML = '';
-            document.getElementById('watch-pathArrow').style.display = 'inline'; document.getElementById('watch-pathChannel').style.display = 'inline'; document.getElementById('watch-pathChannel').innerText = channelName; document.getElementById('watch-backToChannelsBtn').style.display = 'block';
-            let teacherPlaylists = Object.values(watch_curatedPlaylists).filter(pl => pl.channelId === channelId); teacherPlaylists.sort((a, b) => (b.votes || 0) - (a.votes || 0));
-            let favs = JSON.parse(localStorage.getItem(`bacflix_fav_playlists_${currentUser}`)) || []; const showFavsOnly = document.getElementById('watch-favFilterCheckbox').checked;
-            if (showFavsOnly) { teacherPlaylists = teacherPlaylists.filter(pl => favs.includes(pl.playlistId)); }
-            if (teacherPlaylists.length === 0) { pGrid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500">لا توجد دورات لعرضها هنا.</div>`; return; }
-            teacherPlaylists.forEach(pl => {
-                const isFav = favs.includes(pl.playlistId); const favClass = isFav ? 'active' : ''; const currentVote = localStorage.getItem(`vote_pl_curated_${pl.playlistId}`); const upClass = currentVote == 1 ? 'voted-up' : ''; const downClass = currentVote == -1 ? 'voted-down' : '';
-                pGrid.innerHTML += `<div class="video-card flex flex-col justify-between"><div class="fav-btn ${favClass}" onclick="watch_toggleFavoritePlaylist('${pl.playlistId}', event)" title="إضافة للمفضلة"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div class="thumbnail-container" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'false')"><img src="${pl.thumb}" alt="Thumbnail" loading="lazy" onerror="this.src='https://via.placeholder.com/640x360.png?text=No+Image'"><div class="absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity bg-black/40"><svg viewBox="0 0 24 24" width="40" height="40" stroke="currentColor" stroke-width="2" fill="white"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div></div><div class="p-4 flex-1 flex flex-col justify-between"><div><div class="text-[10px] text-gray-500 mb-1 flex justify-between"><span>${pl.channel}</span></div><h3 class="text-white font-bold text-sm line-clamp-2 leading-relaxed cursor-pointer hover:text-[--bacflix-red] transition" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'false')" title="${pl.title}">${pl.title}</h3></div><div class="flex justify-between items-center border-t border-[#333] pt-3 mt-3"><div class="vote-control" onclick="event.stopPropagation()"><button onclick="watch_votePlaylist('${pl.playlistId}', 1, false, event)" class="${upClass}"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></button><span id="watch-score-pl-${pl.playlistId}">${pl.votes || 0}</span><button onclick="watch_votePlaylist('${pl.playlistId}', -1, false, event)" class="${downClass}"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></button></div><span class="text-xs text-[--bacflix-red] font-bold cursor-pointer flex items-center gap-1" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'false')">شاهد <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span></div></div></div>`;
-            });
-        }
-
-        async function watch_showManualPlaylists(isFromFilter = false) {
-            watch_currentTeacherId = 'manual'; watch_currentTeacherName = 'دورات الطلبة'; watch_renderResumeBanner();
-            if (!isFromFilter) { document.getElementById('watch-favFilterCheckbox').checked = false; }
-            const subject = document.getElementById('watch-subject').value;
-            document.getElementById('watch-channelsGrid').style.display = 'none'; const pGrid = document.getElementById('watch-playlistsGrid'); pGrid.style.display = 'grid'; pGrid.innerHTML = '';
-            document.getElementById('watch-pathArrow').style.display = 'inline'; document.getElementById('watch-pathChannel').style.display = 'inline'; document.getElementById('watch-pathChannel').innerText = watch_currentTeacherName; document.getElementById('watch-backToChannelsBtn').style.display = 'block'; document.getElementById('watch-loadingState').style.display = 'flex';
-            try {
-                const cachePath = `bacflix_manual_playlists/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}`; const snap = await window.cloudDb.ref(cachePath).once('value'); let manualPlaylists = [];
-                if (snap.exists()) { const pObj = snap.val(); manualPlaylists = Object.keys(pObj).map(k => pObj[k]); manualPlaylists.sort((a, b) => (b.votes || 0) - (a.votes || 0)); }
-                document.getElementById('watch-loadingState').style.display = 'none'; let favs = JSON.parse(localStorage.getItem(`bacflix_fav_playlists_${currentUser}`)) || []; const showFavsOnly = document.getElementById('watch-favFilterCheckbox').checked;
-                if (showFavsOnly) { manualPlaylists = manualPlaylists.filter(pl => favs.includes(pl.playlistId)); }
-                if(manualPlaylists.length === 0) { pGrid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500">لا توجد دورات هنا.</div>`; return; }
-                manualPlaylists.forEach(pl => {
-                    const isFav = favs.includes(pl.playlistId); const favClass = isFav ? 'active' : ''; const currentVote = localStorage.getItem(`vote_pl_manual_${pl.playlistId}`); const upClass = currentVote == 1 ? 'voted-up' : ''; const downClass = currentVote == -1 ? 'voted-down' : '';
-                    pGrid.innerHTML += `<div class="video-card flex flex-col justify-between"><div class="fav-btn ${favClass}" onclick="watch_toggleFavoritePlaylist('${pl.playlistId}', event)" title="إضافة للمفضلة"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div class="thumbnail-container" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'true')"><img src="${pl.thumb}" alt="Thumbnail" loading="lazy" onerror="this.src='https://via.placeholder.com/640x360.png?text=No+Image'"><div class="absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity bg-black/40"><svg viewBox="0 0 24 24" width="40" height="40" stroke="currentColor" stroke-width="2" fill="white"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div></div><div class="p-4 flex-1 flex flex-col justify-between"><div><div class="text-[10px] text-gray-500 mb-1 flex justify-between"><span>${pl.channel}</span></div><h3 class="text-white font-bold text-sm line-clamp-2 leading-relaxed cursor-pointer hover:text-[--bacflix-red] transition" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'true')" title="${pl.title}">${pl.title}</h3></div><div class="flex justify-between items-center border-t border-[#333] pt-3 mt-3"><div class="vote-control" onclick="event.stopPropagation()"><button onclick="watch_votePlaylist('${pl.playlistId}', 1, true, event)" class="${upClass}"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></button><span id="watch-score-pl-${pl.playlistId}">${pl.votes || 0}</span><button onclick="watch_votePlaylist('${pl.playlistId}', -1, true, event)" class="${downClass}"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></button></div><span class="text-xs text-[--bacflix-red] font-bold cursor-pointer flex items-center gap-1" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'true')">شاهد <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span></div></div></div>`;
-                });
-            } catch (e) { document.getElementById('watch-loadingState').style.display = 'none'; }
-        }
-
-        function watch_toggleFavoritePlaylist(playlistId, event) {
-            event.stopPropagation(); let favs = JSON.parse(localStorage.getItem(`bacflix_fav_playlists_${currentUser}`)) || [];
-            if(favs.includes(playlistId)) favs = favs.filter(id => id !== playlistId); else favs.push(playlistId);
-            localStorage.setItem(`bacflix_fav_playlists_${currentUser}`, JSON.stringify(favs)); watch_applyFilters();
-        }
-
-        async function watch_voteChannel(channelId, type, event) {
-            event.stopPropagation(); const subject = document.getElementById('watch-subject').value; const storageKey = `vote_ch_${channelId}`; const currentVote = localStorage.getItem(storageKey);
-            if (currentVote == type) { alert("لقد قمت بهذا التصويت مسبقاً."); return; } let increment = type; if (currentVote) { increment = type * 2; } localStorage.setItem(storageKey, type);
-            const scoreEl = document.getElementById(`watch-score-ch-${channelId}`); scoreEl.innerText = parseInt(scoreEl.innerText) + increment; event.target.parentElement.querySelectorAll('button').forEach(b => b.className=''); event.target.classList.add(type == 1 ? 'voted-up' : 'voted-down');
-            try { await window.cloudDb.ref(`bacflix_approved_channels/${watch_sanitizePath(subject)}/${channelId}/votes`).transaction((curr) => (curr || 0) + increment); } catch (e) {}
-        }
-
-        async function watch_votePlaylist(playlistId, type, isManual, event) {
-            event.stopPropagation(); const subject = document.getElementById('watch-subject').value; const storageKey = isManual ? `vote_pl_manual_${playlistId}` : `vote_pl_curated_${playlistId}`; const currentVote = localStorage.getItem(storageKey);
-            if (currentVote == type) { alert("لقد قمت بهذا التصويت مسبقاً."); return; } let increment = type; if (currentVote) { increment = type * 2; } localStorage.setItem(storageKey, type);
-            const scoreEl = document.getElementById(`watch-score-pl-${playlistId}`); scoreEl.innerText = parseInt(scoreEl.innerText) + increment; event.target.parentElement.querySelectorAll('button').forEach(b => b.className=''); event.target.classList.add(type == 1 ? 'voted-up' : 'voted-down');
-            const pathType = isManual ? 'bacflix_manual_playlists' : 'bacflix_curated_playlists';
-            try { await window.cloudDb.ref(`${pathType}/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}/${playlistId}/votes`).transaction((curr) => (curr || 0) + increment); } catch (e) {}
-        }
-
-        function watch_showChannelsView() {
-            document.getElementById('watch-favFilterCheckbox').checked = false; document.getElementById('watch-channelsGrid').style.display = 'grid'; document.getElementById('watch-playlistsGrid').style.display = 'none'; document.getElementById('watch-pathArrow').style.display = 'none'; document.getElementById('watch-pathChannel').style.display = 'none'; document.getElementById('watch-backToChannelsBtn').style.display = 'none'; watch_currentTeacherId = null; watch_renderResumeBanner(); watch_renderChannelsGrid(); 
-        }
-
-        function onYouTubeIframeAPIReady() { watch_ytPlayer = new YT.Player('watch-ytplayer', { height: '100%', width: '100%', playerVars: { 'autoplay': 1, 'rel': 0, 'modestbranding': 1, 'origin': window.location.origin }, events: { 'onStateChange': watch_onPlayerStateChange } }); }
-        function watch_togglePlaylist() { const sidebar = document.getElementById('watch-playlist-sidebar-container'); if(sidebar) sidebar.classList.toggle('watch-hidden-playlist'); }
-
-        document.addEventListener('keydown', function(e) {
-            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return; if (document.getElementById('watch-cinemaModal').style.display !== 'flex' || !watch_ytPlayer || typeof watch_ytPlayer.getPlayerState !== 'function') return;
-            if (e.code === 'Space') { e.preventDefault(); if (watch_ytPlayer.getPlayerState() === 1) watch_ytPlayer.pauseVideo(); else watch_ytPlayer.playVideo(); } 
-            else if (e.code === 'ArrowRight') { watch_ytPlayer.seekTo(watch_ytPlayer.getCurrentTime() + 10, true); } 
-            else if (e.code === 'ArrowLeft') { watch_ytPlayer.seekTo(watch_ytPlayer.getCurrentTime() - 10, true); } 
-            else if (e.code === 'KeyF' || e.key === 'f') { const playerEl = document.getElementById('watch-player-wrapper'); if (!document.fullscreenElement) { playerEl.requestFullscreen?.() || playerEl.webkitRequestFullscreen?.(); } else { document.exitFullscreen?.(); } }
-        });
-
-        async function watch_prepareCinema(playlistId, title, channel, isManualStr, forceIndex = 0, forceTime = 0) {
-            watch_currentPlaylistId = playlistId; watch_currentPlaylistData = { title, channel }; document.getElementById('watch-cinemaTitle').innerText = title; document.getElementById('watch-cinemaModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; document.getElementById('watch-currentEpisodeTitle').innerText = "جاري التحميل..."; document.getElementById('watch-playlist-drawer').innerHTML = ''; 
-            const sidebar = document.getElementById('watch-playlist-sidebar-container'); if(sidebar) sidebar.classList.remove('watch-hidden-playlist'); watch_isChatOpen = false; document.getElementById('watch-aiChatWindow').style.display = 'none'; document.getElementById('watch-chat-messages').innerHTML = `<div class="message bot-msg" dir="auto">أنت تشاهد <b>"${title}"</b> للأستاذ <b>"${channel}"</b>.<br>يمكنك سؤالي عن أي شيء!</div>`; watch_chatHistory = []; 
-            try {
-                let vids = null; if(watch_curatedPlaylists[playlistId] && watch_curatedPlaylists[playlistId].videos) { vids = watch_curatedPlaylists[playlistId].videos; } 
-                else { const subject = document.getElementById('watch-subject').value; const pathType = isManualStr === 'true' ? 'bacflix_manual_playlists' : 'bacflix_curated_playlists'; const snap = await window.cloudDb.ref(`${pathType}/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}/${playlistId}/videos`).once('value'); if(snap.exists()) vids = snap.val(); }
-                if(!vids || vids.length === 0) { alert("الحلقات غير متوفرة."); watch_closeCinema(); return; }
-                watch_playlistVideos = vids; document.getElementById('watch-playlistCountBadge').innerText = watch_playlistVideos.length; watch_currentVideoIndex = forceIndex || 0; watch_playCurrentVideo(forceTime); watch_renderPlaylistMenu(); 
-            } catch(e) { console.error(e); watch_closeCinema(); }
-        }
-
-        function watch_playCurrentVideo(startTime = 0) {
-            if(!watch_ytPlayer || !watch_playlistVideos[watch_currentVideoIndex]) return;
-            const vid = watch_playlistVideos[watch_currentVideoIndex]; document.getElementById('watch-currentEpisodeTitle').innerText = `${watch_currentVideoIndex + 1}. ${vid.title}`;
-            document.getElementById('watch-prevBtn').disabled = watch_currentVideoIndex === 0; document.getElementById('watch-nextBtn').disabled = watch_currentVideoIndex === watch_playlistVideos.length - 1;
-            const overlay = document.getElementById('watch-nextEpOverlay'); if(overlay) overlay.style.display = 'none'; watch_currentPlaylistData.currentLesson = vid.title;
-            if (watch_ytPlayer.loadVideoById) watch_ytPlayer.loadVideoById({videoId: vid.id, startSeconds: startTime}); watch_updatePlaylistMenuSelection(); 
-        }
-
-        function watch_playNextVideo() { watch_cancelAutoPlay(); if(watch_currentVideoIndex < watch_playlistVideos.length - 1) { watch_currentVideoIndex++; watch_playCurrentVideo(); } }
-        function watch_playPrevVideo() { watch_cancelAutoPlay(); if(watch_currentVideoIndex > 0) { watch_currentVideoIndex--; watch_playCurrentVideo(); } }
-        function watch_cancelAutoPlay() { clearInterval(watch_autoPlayTimer); const overlay = document.getElementById('watch-nextEpOverlay'); if(overlay) overlay.style.display = 'none'; }
-
-        function watch_renderPlaylistMenu() {
-            const drawer = document.getElementById('watch-playlist-drawer'); drawer.innerHTML = ''; let progress = JSON.parse(localStorage.getItem(`bacflix_progress_${currentUser}`)) || {}; let watchedList = progress[watch_currentPlaylistId]?.watched || [];
-            watch_playlistVideos.forEach((vid, index) => {
-                let isWatched = watchedList.includes(vid.id); let checkmark = isWatched ? `<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none" class="text-green-500 ml-1"><polyline points="20 6 9 17 4 12"></polyline></svg>` : '';
-                drawer.innerHTML += `<div id="watch-pl-item-${index}" class="watch-playlist-item" onclick="watch_jumpToVideo(${index})"><span class="font-bold text-xs w-6 text-center text-gray-500 watch-index-num">${index + 1}</span><span class="text-xs truncate flex-1 flex items-center" title="${vid.title}">${vid.title} ${checkmark}</span><span id="watch-pl-badge-${index}" class="text-[10px] bg-white text-red-600 px-1 rounded font-bold hidden shadow-lg shadow-white/50">الآن</span></div>`;
-            });
-            watch_updatePlaylistMenuSelection();
-        }
-
-        function watch_jumpToVideo(index) { watch_cancelAutoPlay(); watch_currentVideoIndex = index; watch_playCurrentVideo(); }
-
-        function watch_updatePlaylistMenuSelection() { watch_playlistVideos.forEach((vid, index) => { const item = document.getElementById(`watch-pl-item-${index}`); const badge = document.getElementById(`watch-pl-badge-${index}`); if (item) { if (index === watch_currentVideoIndex) { item.classList.add('active'); if(badge) badge.style.display = 'block'; item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } else { item.classList.remove('active'); if(badge) badge.style.display = 'none'; } } }); }
-
-        function watch_onPlayerStateChange(event) {
-            if (event && event.data === 0) {
-                watch_markCurrentVideoWatched(); 
-                if (watch_currentVideoIndex < watch_playlistVideos.length - 1) {
-                    const overlay = document.getElementById('watch-nextEpOverlay'); const timerText = document.getElementById('watch-countdownTimer');
-                    if(overlay) { overlay.style.display = 'flex'; let timeLeft = 5; timerText.innerText = timeLeft; watch_autoPlayTimer = setInterval(() => { timeLeft--; timerText.innerText = timeLeft; if(timeLeft <= 0) { clearInterval(watch_autoPlayTimer); watch_playNextVideo(); } }, 1000); }
-                }
-            }
-        }
-
-        function watch_closeCinema() {
-            if(watch_ytPlayer && typeof watch_ytPlayer.stopVideo === 'function') { try { watch_ytPlayer.stopVideo(); } catch(e){} }
-            watch_cancelAutoPlay(); document.getElementById('watch-cinemaModal').style.display = 'none'; document.body.style.overflow = 'auto'; 
-            watch_playlistVideos = []; watch_currentVideoIndex = 0; watch_currentPlaylistId = null; watch_removeAttachment(); watch_isChatOpen = false; document.getElementById('watch-aiChatWindow').style.display = 'none'; watch_renderResumeBanner(); 
-        }
-
-        function watch_toggleChat() { const chatWindow = document.getElementById('watch-aiChatWindow'); watch_isChatOpen = !watch_isChatOpen; chatWindow.style.display = watch_isChatOpen ? 'flex' : 'none'; }
-
-        function watch_initSpeechRecognition() {
-            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (window.SpeechRecognition) {
-                watch_speechRecognition = new window.SpeechRecognition(); watch_speechRecognition.lang = 'ar-DZ'; watch_speechRecognition.continuous = false; watch_speechRecognition.interimResults = false; let voiceDetected = false; 
-                watch_speechRecognition.onstart = function() { watch_isRecording = true; voiceDetected = false; document.getElementById('watch-mic-btn').classList.add('watch-mic-active'); document.getElementById('watch-chat-input').placeholder = "تحدث الآن..."; };
-                watch_speechRecognition.onresult = function(event) { document.getElementById('watch-chat-input').value += (document.getElementById('watch-chat-input').value ? ' ' : '') + event.results[0][0].transcript; voiceDetected = true; };
-                watch_speechRecognition.onerror = function(e) { watch_stopSpeechRecognition(); }; watch_speechRecognition.onend = function() { watch_stopSpeechRecognition(); if (voiceDetected && document.getElementById('watch-chat-input').value.trim() !== '') { watch_sendChatMessage(); } };
-            } else { document.getElementById('watch-mic-btn').style.display = 'none'; alert("متصفحك لا يدعم الإدخال الصوتي."); }
-        }
-
-        function watch_toggleSpeechRecognition() { if (!watch_speechRecognition) watch_initSpeechRecognition(); if (watch_speechRecognition) { if (watch_isRecording) { watch_speechRecognition.stop(); } else { try { watch_speechRecognition.start(); } catch (e) {} } } }
-        function watch_stopSpeechRecognition() { watch_isRecording = false; document.getElementById('watch-mic-btn').classList.remove('watch-mic-active'); document.getElementById('watch-chat-input').placeholder = "تحدث، اكتب، أو الصق صورة هنا (Ctrl+V)..."; }
-
-        function watch_handleFileSelect(event) {
-            const file = event.target.files[0]; if (!file) return; const reader = new FileReader();
-            reader.onload = (e) => { watch_attachedFileBase64 = e.target.result.split(',')[1]; watch_attachedMimeType = file.type; document.getElementById('watch-file-preview').style.display = 'flex'; document.querySelector('#watch-file-name .fn-text').innerText = file.name; }; reader.readAsDataURL(file);
-        }
-        function watch_removeAttachment() { watch_attachedFileBase64 = null; watch_attachedMimeType = null; document.getElementById('watch-chatFile').value = ''; document.getElementById('watch-file-preview').style.display = 'none'; }
-
-        function watch_sendPromptChip(text) { document.getElementById('watch-chat-input').value = text; watch_sendChatMessage(); }
-
-        document.getElementById('watch-chat-input').addEventListener('paste', function(e) {
-            let items = (e.clipboardData || e.originalEvent.clipboardData).items;
-            for (let index in items) { let item = items[index]; if (item.kind === 'file' && item.type.startsWith('image/')) { e.preventDefault(); let blob = item.getAsFile(); if (!blob) return; const reader = new FileReader(); reader.onload = (event) => { watch_attachedFileBase64 = event.target.result.split(',')[1]; watch_attachedMimeType = blob.type; document.getElementById('watch-file-preview').style.display = 'flex'; document.querySelector('#watch-file-name .fn-text').innerText = "صورة_ملصقة_" + Math.floor(Math.random() * 1000) + ".png"; }; reader.readAsDataURL(blob); break; } }
-        });
-
-        async function watch_sendChatMessage() {
-            const input = document.getElementById('watch-chat-input'); const text = input.value.trim(); const sendBtn = document.getElementById('watch-send-btn');
-            if (!text && !watch_attachedFileBase64) return; sendBtn.disabled = true; sendBtn.innerText = "..."; 
-            let userMsgDisplay = text; if(watch_attachedFileBase64) { userMsgDisplay += `<br><div class="bg-[#333] p-2 rounded text-xs mt-1 border border-[#444] text-gray-300 flex items-center gap-1"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg> تم إرفاق صورة للتمرين</div>`; }
-            watch_appendMessage(userMsgDisplay || `<div class="bg-[#333] p-2 rounded text-xs border border-[#444] text-gray-300">صورة مرفقة</div>`, 'user-msg'); input.value = ''; const loadingMsg = watch_appendMessage('أقوم بالتحليل...', 'bot-msg');
-            const subject = document.getElementById('watch-subject').value; const isChallenge = document.getElementById('watch-challengeModeToggle').checked;
-            let currentTimeInfo = ""; if (watch_ytPlayer && typeof watch_ytPlayer.getCurrentTime === 'function') { let timeInSeconds = Math.floor(watch_ytPlayer.getCurrentTime()); let m = Math.floor(timeInSeconds / 60); let s = timeInSeconds % 60; currentTimeInfo = `\n[تنبيه مخفي: الطالب يطرح السؤال وهو في الدقيقة ${m}:${s < 10 ? '0'+s : s} من الفيديو.]`; }
-
-            let systemPromptText = `أنت مساعد بيداغوجي ذكي في منصة BACFLIX. الطالب يتابع دورة للأستاذ "${watch_currentPlaylistData?.channel}" بعنوان: "${watch_currentPlaylistData?.title}".${currentTimeInfo} الدرس الحالي: "${watch_currentPlaylistData?.currentLesson}". اشرح بدقة تتوافق مع شعبة ${currentStream} ومادة ${subject}. استخدم MathJax للرياضيات. للتحكم ضمن الأكواد: [PAUSE], [PLAY], [SEEK:60], [FULLSCREEN].`;
-            if (isChallenge) { systemPromptText += `\n[تنبيه هام]: الطالب فعّل "وضع التحدي". يمنع إعطاؤه الإجابة المباشرة. وجهه ليستنتج الحل بنفسه.`; }
-
-            let userParts = []; if (text) userParts.push({ text: text }); if (watch_attachedFileBase64) { userParts.push({ inlineData: { mimeType: watch_attachedMimeType, data: watch_attachedFileBase64 } }); watch_removeAttachment(); } watch_chatHistory.push({ role: "user", parts: userParts });
-
-            try {
-                let reply = await fetchFromGemini(watch_chatHistory, systemPromptText); reply = reply.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
-                if (reply.includes('[PAUSE]')) { if (watch_ytPlayer && typeof watch_ytPlayer.pauseVideo === 'function') watch_ytPlayer.pauseVideo(); reply = reply.replace('[PAUSE]', ''); }
-                if (reply.includes('[PLAY]')) { if (watch_ytPlayer && typeof watch_ytPlayer.playVideo === 'function') watch_ytPlayer.playVideo(); reply = reply.replace('[PLAY]', ''); }
-                if (reply.includes('[FULLSCREEN]')) { const playerEl = document.getElementById('watch-player-wrapper'); if (playerEl.requestFullscreen) playerEl.requestFullscreen(); else if (playerEl.webkitRequestFullscreen) playerEl.webkitRequestFullscreen(); reply = reply.replace('[FULLSCREEN]', ''); }
-                const seekMatch = reply.match(/\[SEEK:\s*(\d+)\s*\]/i); if (seekMatch) { if (watch_ytPlayer && typeof watch_ytPlayer.seekTo === 'function') watch_ytPlayer.seekTo(parseInt(seekMatch[1]), true); reply = reply.replace(seekMatch[0], ''); }
-                loadingMsg.remove(); watch_chatHistory.push({ role: "model", parts: [{ text: reply }] }); const msgEl = watch_appendMessage(marked.parse(reply), 'bot-msg'); setTimeout(() => { if (window.MathJax) MathJax.typesetPromise([msgEl]).catch(()=>{}); }, 50);
-            } catch (error) { loadingMsg.remove(); watch_chatHistory.pop(); watch_appendMessage("عذراً، حدث خطأ في الاتصال.", 'bot-msg'); } sendBtn.disabled = false; sendBtn.innerText = "إرسال";
-        }
-        function watch_appendMessage(text, className) { const chatBody = document.getElementById('watch-chat-messages'); const msgDiv = document.createElement('div'); msgDiv.className = `message ${className}`; msgDiv.setAttribute('dir', 'auto'); msgDiv.innerHTML = text; chatBody.appendChild(msgDiv); chatBody.scrollTop = chatBody.scrollHeight; return msgDiv; }
-        function watch_handleChatEnter(e) { if (e.key === 'Enter') watch_sendChatMessage(); }
     </script>
 </body>
 </html>
