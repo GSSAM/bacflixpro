@@ -1,0 +1,2304 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BACFLIX | المنصة التعليمية الشاملة</title>
+
+    <script src="https://bacflix.yoo7.com/16962.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };</script>
+    <script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="https://unpkg.com/d3@3/d3.min.js"></script>
+    <script src="https://unpkg.com/function-plot@1/dist/function-plot.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root { 
+            --bacflix-red: #E50914; 
+            --bacflix-red-hover: #b80710;
+            --bg-base: #000000; 
+            --bg-glass: rgba(15, 15, 15, 0.85); 
+            --border-glass: rgba(229, 9, 20, 0.15);
+            --font-main: 'Noto Kufi Arabic', sans-serif; 
+            --font-math: 'Amiri', serif; 
+        }
+        
+        html, body { overflow: hidden !important; margin: 0 !important; padding: 0 !important; width: 100%; height: 100%; font-family: var(--font-main); color: #e2e8f0; }
+        
+        #bacflix-app-root {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh;
+            z-index: 2147483647; background: var(--bg-base);
+            background-image: radial-gradient(circle at top right, #1a0505 0%, var(--bg-base) 60%);
+            overflow: hidden; direction: rtl;
+        }
+
+        .floating-nav {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+            background: var(--bg-glass); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass); border-radius: 50px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 16px; z-index: 1000; width: 96%; max-width: 900px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .nav-logo { font-size: 20px; font-weight: 900; font-style: italic; color: white; letter-spacing: -1px; }
+        .nav-logo span { color: var(--bacflix-red); }
+
+        .nav-links-container { display: flex; gap: 5px; overflow-x: auto; padding: 2px 0; }
+        .nav-links-container::-webkit-scrollbar { display: none; } 
+        
+        .nav-link { 
+            padding: 10px 18px; cursor: pointer; display: flex; align-items: center; gap: 8px; 
+            color: #94a3b8; transition: all 0.3s ease; border-radius: 30px; 
+            font-size: 13px; font-weight: bold; white-space: nowrap; 
+        }
+        .nav-link:hover { color: #fff; background: rgba(255,255,255,0.05); } 
+        .nav-link.active { color: white; background: var(--bacflix-red); box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4); }
+        .nav-icon { width: 16px; height: 16px; stroke-width: 2; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        .main-viewport { margin-top: 90px; height: calc(100vh - 90px); overflow-y: auto; scroll-behavior: smooth; padding-bottom: 40px; padding-top: 15px; }
+        .app-window { display: none; padding: 10px; animation: fadeInUp 0.3s ease-out; } 
+        .app-window.active { display: block; }
+
+        .glass-panel {
+            background: var(--bg-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass); border-radius: 20px; padding: 20px;
+            box-shadow: 0 8px 32px rgba(229, 9, 20, 0.03);
+        }
+
+        select, input[type="text"], input[type="number"], input[type="tel"], textarea { 
+            background-color: #0a0a0a; color: white; 
+            border: 1px solid #222; border-radius: 10px; padding: 12px 14px; 
+            width: 100%; font-family: var(--font-main); font-size: 13px; outline: none; 
+            transition: all 0.3s; margin-bottom: 12px; box-sizing: border-box; min-height: 44px;
+        }
+        select:focus, input:focus, textarea:focus { border-color: var(--bacflix-red); box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2); }
+
+        .btn-primary { 
+            background: var(--bacflix-red); color: white; font-weight: bold; padding: 12px 20px; 
+            border-radius: 10px; transition: all 0.3s; width: 100%; cursor: pointer; border: none; 
+            display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.2); white-space: nowrap; 
+        }
+        .btn-primary:hover:not(:disabled) { background: var(--bacflix-red-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4); } 
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        .btn-secondary { 
+            background: #111; color: #ccc; padding: 10px 16px; border-radius: 10px; 
+            transition: all 0.3s; cursor: pointer; border: 1px solid #333; 
+            display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: bold; white-space: nowrap;
+        }
+        .btn-secondary:hover { background: #222; color: white; border-color: var(--bacflix-red);}
+
+        ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: var(--bacflix-red); }
+
+        .credit-badge { 
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 100%); 
+            border: 1px solid var(--border-glass); padding: 25px; border-radius: 20px; 
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; 
+        }
+        .credit-badge::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--bacflix-red), #ff4d4d); }
+        
+        .voucher-input { text-align: center; font-family: monospace; font-size: 1.2rem; letter-spacing: 3px; background: rgba(0,0,0,0.3); border: 1px dashed #333; padding: 14px; color: #fff; }
+
+        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; max-height: 200px; overflow-y: auto; padding-left: 5px; }
+        .checkbox-label { display: flex; align-items: start; gap: 8px; font-size: 12px; color: #cbd5e1; cursor: pointer; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 8px; border: 1px solid #222; transition: 0.2s;}
+        .checkbox-label:hover { border-color: var(--bacflix-red); background: rgba(229, 9, 20, 0.05); } 
+        .checkbox-label input[type="checkbox"] { accent-color: var(--bacflix-red); width: 16px; height: 16px; margin-top: 2px; cursor: pointer; flex-shrink: 0;}
+        
+        .paper, .quiz-container, .card-face, .message { unicode-bidi: isolate; }
+        mjx-container, .MathJax, .MathJax_Display { direction: ltr !important; text-align: left !important; display: inline-block; }
+        .exam-content p, .explanation-box p, .message p { line-height: 2; text-align: right; }
+        
+        .paper { background: #ffffff; color: #0f172a; width: 100%; padding: 2cm; border-radius: 16px; font-family: var(--font-math); font-size: 17px; line-height: 1.9; word-wrap: break-word; overflow-x: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); box-sizing: border-box; }
+        .official-header { text-align: center; border-bottom: 2px solid #cbd5e1; padding-bottom: 15px; margin-bottom: 25px; }
+        .exam-content table { width: 100%; border-collapse: collapse; margin: 15px 0; text-align: center; direction: ltr; font-size: 15px;} .exam-content th, .exam-content td { border: 1px solid #94a3b8; padding: 10px; }
+        .graph-container, .mermaid-container { display: flex; justify-content: center; margin: 15px 0; direction: ltr; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; }
+        
+        .quiz-container { background: #ffffff; color: #0f172a; padding: 2rem; border-radius: 16px; font-family: var(--font-math); font-size: 17px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .timer-badge { background: #fef2f2; color: var(--bacflix-red); border: 1px solid #fca5a5; padding: 6px 16px; border-radius: 50px; font-family: monospace; font-size: 16px; display: flex; align-items: center; gap: 6px; font-weight: bold;}
+        .timer-badge.warning { animation: pulseRed 1s infinite; }
+        .question-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .option-label { display: flex; align-items: center; padding: 12px 16px; background: white; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 10px; font-family: var(--font-main); font-size: 14px; border: 1px solid #cbd5e1;}
+        .option-label:hover { border-color: var(--bacflix-red); background: #fef2f2; } .option-label input[type="radio"] { width: 18px; height: 18px; accent-color: var(--bacflix-red); margin-left: 10px;}
+        .correct-answer { background-color: #ecfdf5 !important; border-color: #10b981 !important; } .wrong-answer { background-color: #fef2f2 !important; border-color: #ef4444 !important; }
+        .explanation-box { background: #fffbeb; border-right: 4px solid #f59e0b; padding: 15px; margin-top: 15px; border-radius: 8px; display: none; font-size: 14px;} .explanation-box.visible { display: block; animation: fadeIn 0.5s; }
+
+        .rating-btn { padding: 4px 10px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; font-family: var(--font-main); transition: 0.2s; font-weight: bold; white-space: nowrap;}
+        .rate-clear { background: #e8f5e9; color: #2e7d32; border: 1px solid #4caf50; } .rate-clear:hover { background: #c8e6c9; }
+        .rate-hard { background: #fff3e0; color: #e65100; border: 1px solid #ff9800; } .rate-hard:hover { background: #ffe0b2; }
+        .rate-error { background: #ffebee; color: #c62828; border: 1px solid #ef5350; } .rate-error:hover { background: #ffcdd2; }
+
+        .flashcard-scene { width: 100%; height: 320px; perspective: 1000px; margin: 20px auto; max-width: 500px; }
+        .flashcard { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; font-family: var(--font-math); font-size: 22px; border: 1px solid var(--border-glass); overflow-y: auto;}
+        .card-front { background-color: var(--bg-glass); backdrop-filter: blur(10px); color: #fff; } .card-back { background-color: #f8fafc; color: #0f172a; transform: rotateY(180deg); border-color: #cbd5e1;}
+        .deck-list { max-height: 200px; overflow-y: auto; } .deck-item { background: rgba(0,0,0,0.3); padding: 10px 14px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; border: 1px solid #222; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;} .deck-item:hover { border-color: var(--bacflix-red); }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); z-index: 10000; display: none; justify-content: center; align-items: center; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes chatAlert { 0% { transform: scale(1); box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); } 50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(46, 125, 50, 0.9); background-color: #2e7d32; } 100% { transform: scale(1); box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); } }
+        .chat-alert-active { animation: chatAlert 1.5s infinite !important; }
+        .loader-pulse { animation: pulse 1.5s infinite; } @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        
+        @media print { .floating-nav, #bacflix-chat-widget, .no-print { display: none !important; } .main-viewport { margin: 0; padding: 0; overflow: visible; } .paper { padding: 0; border: none; box-shadow: none; } }
+        @media (max-width: 768px) { .floating-nav { top: 10px; width: 95%; padding: 6px; } .main-viewport { margin-top: 80px; } .paper { padding: 20px; font-size: 15px; } .checkbox-grid { grid-template-columns: 1fr; } }
+
+        /* المساعد الذكي الأساسي */
+        #bacflix-chat-widget { position: fixed; bottom: 25px; left: 25px; z-index: 10000; font-family: var(--font-main); direction: rtl; display: flex; flex-direction: column; align-items: flex-start; }
+        #bacflix-chat-btn { background: var(--bacflix-red); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); transition: 0.3s; display: flex; align-items: center; justify-content: center; z-index: 2; }
+        #bacflix-chat-btn:hover { transform: scale(1.08) translateY(-5px); background: var(--bacflix-red-hover); }
+        
+        #bacflix-chat-window { display: none; width: 380px; max-width: 90vw; height: 550px; max-height: 80vh; background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; box-shadow: 0 15px 50px rgba(0,0,0,0.7); flex-direction: column; overflow: hidden; margin-bottom: 15px; border: 1px solid var(--border-glass); z-index: 1; transition: all 0.3s ease; }
+        .fullscreen-chat { width: 100vw !important; max-width: 100vw !important; height: 100vh !important; max-height: 100vh !important; bottom: 0 !important; left: 0 !important; border-radius: 0 !important; margin-bottom: 0 !important; border: none !important; position: fixed; z-index: 99999; }
+        #chat-header { background: rgba(0,0,0,0.2); padding: 15px 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); }
+        #mode-bar { padding: 8px 20px; background: rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 11px; border-bottom: 1px solid var(--border-glass); }
+        .toggle-mode-btn { background: #111; color: #ccc; border: 1px solid #333; padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        #chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
+        .message { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 13px; line-height: 1.8; word-wrap: break-word; }
+        .user-msg { background: var(--bacflix-red); color: white; align-self: flex-start; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px rgba(229,9,20,0.2);}
+        .bot-msg { background: rgba(20,20,20,0.8); color: #f8fafc; border: 1px solid #333; align-self: flex-end; border-bottom-left-radius: 4px; }
+        #input-area { background: rgba(0,0,0,0.3); border-top: 1px solid var(--border-glass); display: flex; flex-direction: column; padding: 10px; }
+        #chat-footer { display: flex; gap: 8px; align-items: center; }
+        #chat-input { flex: 1; padding: 12px 16px; background: #0a0a0a; border: 1px solid #222; border-radius: 24px; font-size: 13px; margin: 0; color: white; }
+        #send-btn { background: var(--bacflix-red); color: white; border: none; padding: 10px 18px; border-radius: 24px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; white-space: nowrap; }
+        .icon-btn { background: transparent; color: #ccc; border: 1px solid #333; border-radius: 50%; width: 40px; height: 40px; min-width: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .icon-btn:hover { background: #222; color: white; border-color: var(--bacflix-red); }
+
+        /* ======================================================== */
+        /* ستايلات إضافة المشاهدة (BACFLIX WATCH)                   */
+        /* ======================================================== */
+        #app-watch .teacher-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; cursor: pointer; position: relative; display: flex; flex-direction: column; justify-content: space-between;} 
+        #app-watch .teacher-card:hover { transform: translateY(-5px); border-color: var(--bacflix-red); box-shadow: 0 10px 30px rgba(229, 9, 20, 0.2); }
+        #app-watch .teacher-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; border: 3px solid #333; transition: 0.3s;} 
+        #app-watch .teacher-card:hover .teacher-avatar { border-color: var(--bacflix-red); transform: scale(1.05); }
+        #app-watch .fav-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); border: 1px solid #444; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 10;} 
+        #app-watch .fav-btn:hover { background: rgba(0,0,0,0.8); transform: scale(1.1); } 
+        #app-watch .fav-btn.active { color: #facc15; border-color: #facc15; background: rgba(250, 204, 21, 0.1); } 
+        #app-watch .fav-btn:not(.active) { color: #666; }
+        
+        #app-watch .video-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 12px; overflow: hidden; transition: all 0.3s; cursor: pointer; position: relative; display: flex; flex-direction: column;} 
+        #app-watch .video-card:hover { transform: translateY(-5px); border-color: var(--bacflix-red); box-shadow: 0 10px 30px rgba(229, 9, 20, 0.2); }
+        #app-watch .thumbnail-container { position: relative; width: 100%; padding-top: 56.25%; background: #000; overflow: hidden; } 
+        #app-watch .thumbnail-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.3s;} 
+        #app-watch .video-card:hover .thumbnail-container img { opacity: 1; transform: scale(1.05); }
+        #app-watch .vote-control { display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid #333; padding: 4px 8px; border-radius: 6px; } 
+        #app-watch .vote-control button { font-size: 14px; cursor: pointer; transition: 0.2s; background: transparent; border: none; color: #888; outline: none; } 
+        #app-watch .vote-control button:hover { transform: scale(1.2); } 
+        #app-watch .vote-control .voted-up { color: #4ade80 !important; } 
+        #app-watch .vote-control .voted-down { color: #f87171 !important; } 
+        #app-watch .vote-control span { font-weight: bold; color: white; min-width: 20px; text-align: center; font-size: 12px; }
+
+        /* نافذة السينما الخاصة بـ Watch */
+        #watch-cinemaModal { position: fixed; inset: 0; background: #000; z-index: 9990; display: none; flex-direction: column; overflow: hidden; } 
+        .watch-cinema-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #0d1117; border-bottom: 1px solid #333; flex-shrink: 0;} 
+        .watch-cinema-body { display: flex; flex: 1; flex-direction: column; overflow: hidden; } 
+        @media (min-width: 1024px) { .watch-cinema-body { flex-direction: row; } }
+        .watch-video-section { flex: 1; display: flex; flex-direction: column; background: #000; padding: 0; position: relative; overflow-y: auto; transition: all 0.3s ease;} 
+        @media (min-width: 1024px) { .watch-video-section { padding: 20px; } } 
+        #watch-player-wrapper { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); } 
+        @media (min-width: 1024px) { #watch-player-wrapper { border-radius: 12px; overflow: hidden; } }
+        .watch-episode-controls { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 15px; background: #111; border-top: 1px solid #333; } 
+        @media (min-width: 1024px) { .watch-episode-controls { border-radius: 8px; border: 1px solid #333; margin-top: 15px; } } 
+        .watch-ep-btn { background: #222; color: white; border: 1px solid #444; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; gap: 8px; align-items: center;} 
+        .watch-ep-btn:hover:not(:disabled) { background: var(--bacflix-red); border-color: var(--bacflix-red); } 
+        .watch-ep-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .watch-playlist-sidebar { width: 100%; max-height: 40vh; background: #0d1117; border-top: 1px solid #333; display: flex; flex-direction: column; transition: all 0.3s ease; } 
+        @media (min-width: 1024px) { .watch-playlist-sidebar { width: 350px; max-height: none; height: 100%; border-top: none; border-left: 1px solid #333; } } 
+        .watch-hidden-playlist { display: none !important; } 
+        .watch-playlist-header { padding: 15px; background: #161b22; font-weight: bold; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; } 
+        .watch-playlist-drawer { flex: 1; overflow-y: auto; padding: 10px; }
+        .watch-playlist-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid #1f2937; margin-bottom: 4px;} 
+        .watch-playlist-item:last-child { border-bottom: none; } 
+        .watch-playlist-item:hover { background: #161b22; } 
+        .watch-playlist-item.active { background: rgba(229, 9, 20, 0.1); border: 1px solid var(--bacflix-red); } 
+        .watch-playlist-item.active .watch-index-num { color: var(--bacflix-red); }
+        
+        #watch-nextEpOverlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 50; display: none; flex-direction: column; justify-content: center; align-items: center; color: white; } 
+        .watch-countdown-circle { width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--bacflix-red); display: flex; justify-content: center; align-items: center; font-size: 30px; font-weight: bold; margin-bottom: 20px; }
+        
+        .watch-toggle-checkbox:checked { right: 0; border-color: var(--bacflix-red); } 
+        .watch-toggle-checkbox:checked + .watch-toggle-label { background-color: var(--bacflix-red); }
+        .watch-confetti { position: fixed; width: 10px; height: 10px; background-color: #f00; z-index: 99999; opacity: 0; animation: watchFall 3s ease-in-out forwards; } 
+        @keyframes watchFall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+        /* مساعد المشاهدة الذكي (داخل السينما) */
+        #watch-aiFabBtn { position: absolute; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: var(--bacflix-red); color: white; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 20px rgba(229,9,20,0.5); z-index: 9999; transition: transform 0.2s; border: none; outline: none; } 
+        #watch-aiFabBtn:hover { transform: scale(1.1); } 
+        #watch-aiChatWindow { position: absolute; bottom: 90px; left: 20px; width: 360px; max-width: calc(100vw - 40px); height: 500px; max-height: calc(100vh - 120px); background: #161b22; border: 1px solid #333; border-radius: 12px; z-index: 10000; display: none; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.8); overflow: hidden; transition: 0.3s; }
+        .watch-chat-input-area { padding: 10px; background: #111; border-top: 1px solid #333; display: flex; flex-direction: column; gap: 8px; }
+        .watch-prompt-chips-container { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; } 
+        .watch-prompt-chips-container::-webkit-scrollbar { height: 0px; } 
+        .watch-prompt-chip { background: #2a2a2a; color: #aaa; font-size: 10px; padding: 4px 10px; border-radius: 12px; white-space: nowrap; cursor: pointer; transition: 0.2s; border: 1px solid #444; } 
+        .watch-prompt-chip:hover { background: var(--bacflix-red); color: white; border-color: var(--bacflix-red); }
+        .watch-mic-active { background: rgba(229, 9, 20, 0.2) !important; border-color: var(--bacflix-red) !important; color: var(--bacflix-red) !important; animation: watchMicPulse 1.5s infinite; } 
+        @keyframes watchMicPulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+<div id="bacflix-app-root">
+
+    <div class="modal-overlay" id="authModal" style="display: flex; position: absolute;">
+        <div id="auth-guest-warning" class="glass-panel w-[90%] max-w-[420px] text-center hidden">
+            <h2 class="text-4xl font-black italic text-white mb-2 tracking-wider">BAC<span style="color: var(--bacflix-red);">FLIX</span></h2>
+            <p class="text-red-400 mb-6 text-sm font-bold">يرجى تسجيل الدخول</p>
+            <div class="bg-black/30 border border-white/10 p-5 rounded-xl mb-6 text-gray-300 text-sm leading-relaxed">
+                هذه المنصة مخصصة للأعضاء فقط. يرجى تسجيل الدخول بحسابك في المنتدى لتتمكن من الوصول.
+            </div>
+            <a href="https://bacflix.yoo7.com/login?redirect=%2Fh139-page%2F" class="btn-primary" style="text-decoration:none;">تسجيل الدخول</a>
+        </div>
+
+        <div id="auth-step-1" class="glass-panel w-[90%] max-w-[420px] text-center hidden">
+            <h2 class="text-3xl font-black italic text-white mb-2 tracking-wider">BAC<span style="color: var(--bacflix-red);">FLIX</span></h2>
+            <p class="text-gray-400 mb-6 text-xs">إكمال إعدادات الحساب</p>
+            <input type="text" id="regName" placeholder="الاسم الكريم" class="text-center">
+            <input type="tel" id="regPhone" placeholder="رقم الهاتف (للتواصل)" class="text-center" dir="ltr">
+            <select id="regStream" class="text-center">
+                <option value="" disabled selected>-- حدد الشعبة --</option>
+                <option value="علوم تجريبية">علوم تجريبية</option>
+                <option value="رياضيات">رياضيات</option>
+                <option value="تقني رياضي">تقني رياضي</option>
+                <option value="تسيير واقتصاد">تسيير واقتصاد</option>
+                <option value="آداب وفلسفة">آداب وفلسفة</option>
+                <option value="لغات أجنبية">لغات أجنبية</option>
+            </select>
+            <button class="btn-primary mt-2" id="btn-check-auth" onclick="verifyUser()">دخول المنصة</button>
+            <p id="auth-msg" class="text-xs text-green-500 mt-4 font-bold hidden"></p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="fileExtractModal" style="position: absolute;">
+        <div class="glass-panel w-[90%] max-w-[420px] text-right !p-6">
+            <h2 class="text-lg font-bold text-white mb-2 border-b border-white/10 pb-2">استخراج البطاقات من ملف</h2>
+            <p class="text-xs text-red-300 mb-4 bg-red-900/10 p-2 rounded border border-red-900/30">ارفع ملخصا أو صورة وسيقوم المساعد باستخراج البطاقات للمحور المحدد.</p>
+            <div class="mb-5"><input type="file" id="fileToExtract" accept="image/*, application/pdf" class="bg-black/30 p-2 w-full text-xs text-gray-400 border border-white/5 rounded-lg"></div>
+            <div class="flex gap-2">
+                <button class="btn-primary flex-1" onclick="cards_extractFromFile()" id="btn-extract-cards">استخراج</button>
+                <button class="btn-secondary flex-1" onclick="document.getElementById('fileExtractModal').style.display='none'">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="manualCardModal" style="position: absolute;">
+        <div class="glass-panel w-[90%] max-w-[420px] text-right !p-6">
+            <h2 class="text-lg font-bold text-white mb-2 border-b border-white/10 pb-2">إضافة بطاقة يدوية</h2>
+            <div class="mb-3"><label class="block mb-1 text-gray-400 text-xs">السؤال:</label><textarea id="manualFront" rows="2" class="text-xs"></textarea></div>
+            <div class="mb-5"><label class="block mb-1 text-gray-400 text-xs">الإجابة:</label><textarea id="manualBack" rows="2" class="text-xs"></textarea></div>
+            <div class="flex gap-2">
+                <button class="btn-primary flex-1" onclick="cards_submitManual()">حفظ وإضافة</button>
+                <button class="btn-secondary flex-1" onclick="document.getElementById('manualCardModal').style.display='none'">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="watch-progressModal" style="position: absolute;">
+        <div class="glass-panel w-full max-w-3xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg> تقدمي في المراجعة</h2>
+                <button onclick="document.getElementById('watch-progressModal').style.display='none'" class="text-red-500 hover:text-white text-xl font-bold transition">✖</button>
+            </div>
+            <div id="watch-progressStats" class="grid grid-cols-2 md:grid-cols-2 gap-4 mb-6"></div>
+            <div class="overflow-y-auto max-h-[50vh] rounded-lg border border-gray-800">
+                <table class="w-full text-right text-sm text-gray-300">
+                    <thead class="text-xs uppercase bg-gray-900 text-gray-400"><tr><th class="px-4 py-3">الدورة</th><th class="px-4 py-3">الأستاذ</th><th class="px-4 py-3 text-center">الإنجاز</th><th class="px-4 py-3">النسبة</th></tr></thead>
+                    <tbody id="watch-progressTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="watch-addChannelModal" style="position: absolute;">
+        <div class="glass-panel w-full max-w-lg flex flex-col">
+            <h2 class="text-xl font-bold text-white mb-2">اقتراح قناة أستاذ</h2>
+            <div class="bg-blue-900/30 border border-blue-800 text-blue-200 text-xs p-3 rounded mb-4">ابحث باسم الأستاذ ليتم اعتماد قناته.</div>
+            <div class="flex gap-2 mb-4"><input type="text" id="watch-channelSearchInput" placeholder="اكتب اسم الأستاذ..." class="flex-1" onkeypress="if(event.key === 'Enter') watch_searchChannelsForAdd()"><button onclick="watch_searchChannelsForAdd()" class="btn-primary w-auto px-6" id="watch-searchChannelBtn">بحث</button></div>
+            <div id="watch-channelSearchResults" class="flex-col gap-2 overflow-y-auto mb-4 hidden max-h-[250px]"></div>
+            <button onclick="document.getElementById('watch-addChannelModal').style.display='none'" class="btn-secondary py-2 px-6 rounded-lg transition mt-auto">إغلاق</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="watch-addPlaylistModal" style="position: absolute;">
+        <div class="glass-panel w-full max-w-lg flex flex-col">
+            <h2 class="text-xl font-bold text-white mb-2">اقتراح دورة يدوياً</h2>
+            <div class="bg-red-900/30 border border-red-800 text-red-200 text-xs p-3 rounded mb-4">أضف الرابط ليرى المدير الدورة ويعتمدها إذا كانت مناسبة.</div>
+            <input type="text" id="watch-playlistUrlInput" placeholder="مثال: https://www.youtube.com/playlist..." class="mb-4" dir="ltr">
+            <div class="flex gap-3 mt-4">
+                <button onclick="watch_submitUserPlaylist()" class="btn-primary flex-1" id="watch-submitPlaylistBtn">إرسال للمدير</button>
+                <button onclick="document.getElementById('watch-addPlaylistModal').style.display='none'" class="btn-secondary py-2 px-4 rounded-lg flex-1 transition">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="floating-nav no-print">
+        <div class="flex items-center gap-4">
+            <a href="https://bacflix.yoo7.com/" class="nav-logo" style="text-decoration:none;">BAC<span>FLIX</span></a>
+            <div class="hidden md:block border-r border-white/10 pr-4 mr-2">
+                <p class="text-xs font-bold text-white" id="sidebarUserName">طالب</p>
+                <p class="text-[10px] text-gray-400" id="sidebarStreamName">شعبة</p>
+            </div>
+        </div>
+        <nav class="nav-links-container">
+            <div onclick="switchApp('academy')" class="nav-link active" id="btn-academy"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg> الأكاديمية</div>
+            <div onclick="switchApp('watch'); if(typeof watch_onEnter === 'function') watch_onEnter();" class="nav-link" id="btn-watch"><svg class="nav-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> المشاهدة</div>
+            <div onclick="switchApp('lab')" class="nav-link" id="btn-lab"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 2v2M15 2v2M10 20v-6a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v6M22 10v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6M5 10V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4"/></svg> المختبر</div>
+            <div onclick="switchApp('quiz')" class="nav-link" id="btn-quiz"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> الكويزات</div>
+            <div onclick="switchApp('cards')" class="nav-link" id="btn-cards"><svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg> البطاقات</div>
+            <div onclick="switchApp('stats')" class="nav-link" id="btn-stats"><svg class="nav-icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> الإحصائيات</div>
+        </nav>
+        <div class="w-8 h-8 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center cursor-pointer hover:bg-slate-800 transition mr-2" onclick="logoutGlobalUser()" title="تحديث الصفحة"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg></div>
+    </header>
+
+    <main class="main-viewport max-w-[1200px] mx-auto px-4">
+        
+        <div id="app-academy" class="app-window active">
+            <div id="inactiveBanner" style="display:none;" class="bg-red-500/10 border border-red-500/30 text-red-200 p-4 rounded-xl mb-6 text-sm font-bold flex items-center gap-3 backdrop-blur-sm">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                حسابك غير مفعل حاليا. يرجى شحن الرصيد للوصول للحصص وفتح المولدات.
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 flex flex-col gap-6">
+                    <div class="credit-badge">
+                        <p class="text-gray-400 text-xs mb-2 font-bold uppercase tracking-widest">رصيد النقاط</p>
+                        <div id="studentCredits" class="text-6xl font-black text-white">0</div>
+                        <div id="subStatusText" class="mt-4 pt-3 border-t border-white/10 text-[10px] text-gray-500">حالة الأدوات: <span class="text-white">جاري الفحص...</span></div>
+                    </div>
+                    <div class="glass-panel">
+                        <h3 class="text-white font-bold mb-4 text-sm">تفعيل بطاقة الشحن</h3>
+                        <input type="text" id="voucherInput" class="voucher-input mb-4" placeholder="الكود هنا" autocomplete="off" dir="ltr" maxlength="19">
+                        <button id="redeemBtn" class="btn-primary" onclick="processActivationCode()">تأكيد الشحن</button>
+                        <div id="voucherMsg" class="mt-3 text-xs text-center font-bold"></div>
+                    </div>
+                    <div class="glass-panel !p-4">
+                        <h4 class="text-gray-400 font-bold text-xs mb-3 border-b border-white/10 pb-2">التوقيت الأسبوعي</h4>
+                        <div id="studentTimetableContainer" class="flex flex-col gap-2 max-h-[250px] overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 flex flex-col gap-8">
+                    <div>
+                        <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span> الحصص المباشرة</h2>
+                        <div id="liveSessionsContainer" class="flex flex-col gap-4">
+                            <div class="glass-panel text-center text-gray-500 py-10 loader-pulse">جاري الفحص...</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">أرشيف التسجيلات</h2>
+                        <div id="recordedSessionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="glass-panel col-span-full text-center text-gray-500 py-10 loader-pulse">جاري التحميل...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="app-watch" class="app-window">
+            
+            <div id="watch-resumeBanner" class="bg-gray-800 border-b border-gray-700 p-3 mb-6 hidden items-center justify-between cursor-pointer hover:bg-gray-700 transition rounded-lg" onclick="watch_resumeVideo()">
+                <div class="flex items-center gap-3">
+                    <div class="bg-[--bacflix-red] text-white p-2 rounded-full"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    <div>
+                        <div class="text-xs text-gray-400">مواصلة المشاهدة مع هذا الأستاذ</div>
+                        <div class="text-sm font-bold text-white"><span id="watch-resumeTitle">...</span> - <span id="watch-resumeLesson" class="text-gray-300 font-normal">...</span></div>
+                    </div>
+                </div>
+                <div class="text-xs font-bold text-[--bacflix-red]">إكمال ❯</div>
+            </div>
+
+            <div class="glass-panel !p-6 mb-8 border border-[#30363d]">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-[#30363d] pb-6 gap-4">
+                    <div>
+                        <h1 class="text-4xl font-black tracking-wider text-white mb-1">BAC<span style="color: var(--bacflix-red);">FLIX</span> <span class="text-gray-400 font-light text-xl">WATCH</span></h1>
+                        <p class="text-gray-500 text-sm">مكتبة الدورات المنتقاة بعناية لطلاب البكالوريا.</p>
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap justify-center">
+                        <button onclick="watch_showProgressDashboard()" class="bg-purple-600 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-purple-700 transition shadow-lg flex items-center gap-1"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg> تقدمي</button>
+                        <button onclick="watch_openAddPlaylistModal()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-blue-700 transition shadow-lg flex items-center gap-1"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 5v14M5 12h14"></path></svg> اقترح دورة</button>
+                        <button onclick="watch_openAddChannelModal()" class="bg-green-600 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-green-700 transition shadow-lg flex items-center gap-1"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> اقترح أستاذ</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                    <div>
+                        <label class="block mb-2 text-gray-400 text-xs font-bold">المادة (حسب شعبتك الحالية)</label>
+                        <select id="watch-subject" onchange="watch_loadTeachers()"><option value="">جاري التحميل...</option></select>
+                    </div>
+                    <div>
+                        <button class="btn-primary py-3" onclick="watch_loadTeachers()"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> استعراض الدورات</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="watch-loadingState" style="display: none;" class="flex-col items-center justify-center py-20 text-center">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-red-600 mb-4 mx-auto"></div>
+                <h3 class="text-xl font-bold text-white mb-2" id="watch-loadingText">جاري العمل...</h3>
+            </div>
+
+            <div id="watch-navigationPath" class="hidden mb-6 text-sm font-bold text-gray-400 bg-[#111] p-3 rounded-lg border border-[#333] items-center justify-between gap-2 flex-wrap">
+                <div class="flex items-center gap-2">
+                    <span class="text-[--bacflix-red]">المادة:</span> <span id="watch-pathSubject">...</span> 
+                    <span id="watch-pathArrow" class="hidden">›</span> <span id="watch-pathChannel" class="text-white hidden">...</span>
+                    <button id="watch-backToChannelsBtn" class="hidden btn-secondary !py-1 !px-2 text-xs" onclick="watch_showChannelsView()">العودة للأساتذة</button>
+                </div>
+                <div id="watch-favoritesFilterDiv" class="flex items-center gap-2">
+                    <span class="text-xs text-gray-400">المفضلين فقط</span>
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" id="watch-favFilterCheckbox" class="watch-toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer z-10" onchange="watch_applyFilters()"/>
+                        <label for="watch-favFilterCheckbox" class="watch-toggle-label block overflow-hidden h-5 rounded-full bg-gray-700 cursor-pointer"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="watch-channelsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"></div>
+            <div id="watch-playlistsGrid" class="hidden grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+        </div>
+        <div id="app-lab" class="app-window">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-3 no-print">
+                    <div class="glass-panel !p-5">
+                        <h3 class="text-sm font-bold mb-4 border-b border-white/10 pb-2 text-red-400">محرك التوليد</h3>
+                        <div class="space-y-3">
+                            <div><label class="block mb-1 text-gray-400 text-xs">النوع</label><select id="lab-toolMode"><option value="exam">موضوع بكالوريا</option><option value="lesson">ملخص درس</option></select></div>
+                            <div><label class="block mb-1 text-gray-400 text-xs">المادة</label><select id="lab-subject" onchange="updateDropdowns('lab')"></select></div>
+                            <div><label class="block mb-1 text-gray-400 text-xs">المحاور</label><div id="lab-topicContainer" class="checkbox-grid"></div></div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label class="block text-xs text-gray-400 mb-1">المستوى</label><select id="lab-difficulty"><option value="سهل ومباشر">سهل</option><option value="مستوى بكالوريا" selected>متوسط</option><option value="تحدي وصعب جدا">صعب</option></select></div>
+                                <div><label class="block text-xs text-gray-400 mb-1">المدة</label><select id="lab-time"><option value="60">1 سا</option><option value="120">2 سا</option><option value="210" selected>3.5 سا</option></select></div>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-400 text-xs">مرفقات</label>
+                                <div class="checkbox-grid bg-black/20 p-2 rounded-xl border border-white/5" style="grid-template-columns: 1fr;">
+                                    <label class="checkbox-label"><input type="checkbox" class="lab-extra-cb" value="رسم منحنى بياني بـ functionplot"> منحنى الدالة</label>
+                                    <label class="checkbox-label"><input type="checkbox" class="lab-extra-cb" value="مخطط توضيحي بـ mermaid"> مخطط</label>
+                                </div>
+                            </div>
+                            <div><label class="block mb-1 text-gray-400 text-xs">توجيهات (اختياري)</label><textarea id="lab-extraRules" rows="2" class="!mb-1" placeholder="مثال: ركز على وحدة كذا..."></textarea></div>
+                            <button class="btn-primary mt-2" onclick="lab_generateContent()">بناء المحتوى</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-9">
+                    <div id="lab-loadingState" class="hidden flex-col items-center justify-center py-24 text-center"><div class="animate-spin rounded-full h-12 w-12 border-t-4 border-red-600 mb-4"></div><h3 class="text-xl font-bold text-white loader-pulse">جاري التحليل والبناء...</h3></div>
+                    <div id="lab-examWrapper" class="hidden flex-col gap-5">
+                        <div class="flex justify-end no-print gap-3">
+                            <button class="btn-secondary py-1 px-4 text-xs" onclick="window.print()">طباعة</button>
+                            <button class="btn-secondary !bg-green-700 hover:!bg-green-600 border-none text-white py-1 px-4 text-xs" onclick="lab_toggleSolution()">الحل النموذجي</button>
+                        </div>
+                        <div class="paper" id="lab-mainExamPaper">
+                            <div class="official-header"><h3 class="text-sm">الجمهورية الجزائرية الديمقراطية الشعبية</h3><h2 class="text-xl font-bold mt-2">امتحان بكالوريا التعليم الثانوي</h2><h3 class="text-sm mt-2 text-gray-600">مادة: <span id="lab-printSubject"></span> | الشعبة: <span id="lab-printStream"></span></h3></div>
+                            <div class="exam-content" id="lab-examContent"></div>
+                        </div>
+                        <div class="paper hidden bg-green-50 border-t-4 border-green-600" id="lab-correctionSection"><h2 class="text-2xl font-bold text-green-900 text-center mb-6">التصحيح النموذجي</h2><div class="exam-content" id="lab-correctionContent"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="app-quiz" class="app-window">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-3 no-print">
+                    <div class="glass-panel !p-5">
+                        <h3 class="text-sm font-bold mb-4 border-b border-white/10 pb-2 text-red-400">إعداد التقييم</h3>
+                        <div class="space-y-3">
+                            <div><label class="block mb-1 text-gray-400 text-xs">المادة</label><select id="quiz-subject" onchange="updateDropdowns('quiz')"></select></div>
+                            <div><label class="block mb-1 text-gray-400 text-xs">المحاور</label><div id="quiz-topicContainer" class="checkbox-grid"></div></div>
+                            <div><label class="block mb-1 text-gray-400 text-xs">النمط</label><select id="quiz-type"><option value="شامل (QCM وصحيح/خطأ)">متنوع</option><option value="أسئلة متعددة الخيارات (QCM) فقط">خيارات فقط</option></select></div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label class="block text-xs text-gray-400 mb-1">العدد</label><select id="quiz-count"><option value="5">5</option><option value="10" selected>10</option></select></div>
+                                <div><label class="block text-xs text-gray-400 mb-1">المدة</label><select id="quiz-timer"><option value="0">مفتوح</option><option value="10" selected>10 د</option></select></div>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-gray-400 text-xs text-[--bacflix-red] font-bold">الصعوبة (ميزة ذكية)</label>
+                                <select id="quiz-difficulty" class="border-l-4 border-[--bacflix-red]">
+                                    <option value="تكيفي" selected>تحديد آلي للمستوى (Adaptive)</option>
+                                    <option value="سهل ومباشر">مراجعة خفيفة (سهل)</option>
+                                    <option value="مستوى بكالوريا">مستوى بكالوريا (متوسط)</option>
+                                    <option value="تحدي وصعب جدا وتحليلي">تحدي للعباقرة (صعب)</option>
+                                </select>
+                            </div>
+                            <div><label class="block mb-1 text-gray-400 text-xs">توجيهات (اختياري)</label><textarea id="quiz-extraRules" rows="2" class="!mb-1" placeholder="مثال: ركز على أسئلة الفهم..."></textarea></div>
+                            
+                            <div class="border-t border-[#333] pt-3 mt-2">
+                                <label class="checkbox-label" style="background: rgba(229,9,20,0.1); border-color: var(--bacflix-red);">
+                                    <input type="checkbox" id="forceNewExam">
+                                    <span class="text-white font-bold text-[11px]">(تجاهل السحابة / توليد جديد كلياً)</span>
+                                </label>
+                            </div>
+
+                            <button class="btn-primary mt-2" id="quiz-generateBtn" onclick="quiz_generate()">بدء الاختبار</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-9">
+                    <div id="quiz-emptyState" class="h-[50vh] flex flex-col items-center justify-center text-gray-400 glass-panel text-center text-lg">الرجاء ضبط الإعدادات لبدء التقييم التكيفي</div>
+                    <div id="quiz-loadingState" class="hidden flex-col items-center justify-center py-24 text-center"><div class="animate-spin rounded-full h-12 w-12 border-t-4 border-red-600 mb-4"></div><h3 class="text-xl font-bold text-white loader-pulse" id="quiz-loadingText">تجهيز الأسئلة...</h3></div>
+                    <div id="quiz-wrapper" class="hidden">
+                        <div class="quiz-container">
+                            <div class="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
+                                <span id="quiz-title" class="font-bold text-xl text-slate-800"></span>
+                                <div class="timer-badge" id="quiz-timerDisplay"><span id="quiz-timeText">00:00</span></div>
+                            </div>
+                            <div id="quiz-questionsArea"></div>
+                            <button class="btn-primary !w-full !py-4 mt-6 text-lg shadow-xl" id="quiz-submitBtn" onclick="quiz_evaluate(false)">إنهاء وعرض النتيجة</button>
+                            <div id="quiz-finalScore" class="text-center p-6 rounded-xl font-bold text-3xl mt-6 hidden shadow-inner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="app-cards" class="app-window">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-4">
+                    <div class="glass-panel !p-5 mb-5">
+                        <h3 class="text-sm font-bold mb-4 border-b border-white/10 pb-2 text-red-400">مكتبة البطاقات</h3>
+                        <div class="space-y-3">
+                            <div><label class="block mb-1 text-gray-400 text-xs">المادة</label><select id="cards-subject" onchange="updateDropdowns('cards')"></select></div>
+                            <div><label class="block mb-1 text-gray-400 text-xs">المحاور</label><div id="cards-topicContainer" class="checkbox-grid"></div></div>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label class="block text-xs text-gray-400 mb-1">العدد</label><select id="cards-count"><option value="10">10</option><option value="20">20</option><option value="30">30</option></select></div>
+                                <div><label class="block text-xs text-gray-400 mb-1">المستوى</label><select id="cards-difficulty"><option value="سهل (مفاهيم أساسية)">سهل</option><option value="مستوى بكالوريا" selected>متوسط</option><option value="صعب (استنتاجات دقيقة)">صعب</option></select></div>
+                            </div>
+                            <div><label class="block mb-1 text-gray-400 text-xs">توجيهات (اختياري)</label><textarea id="cards-extraRules" rows="2" class="!mb-1" placeholder="مثال: ركز على التواريخ..."></textarea></div>
+
+                            <button class="btn-primary mt-2 w-full" onclick="cards_fetchAndStart()">توليد البطاقات</button>
+                            
+                            <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
+                                <button class="btn-secondary flex-1 py-2 text-[11px]" onclick="document.getElementById('fileExtractModal').style.display='flex'">استخراج من ملف</button>
+                                <button class="btn-secondary flex-1 py-2 text-[11px]" onclick="document.getElementById('manualCardModal').style.display='flex'">إضافة يدوية</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-panel !p-5 !bg-black/40">
+                        <h3 class="text-sm font-bold mb-3 text-white">حزمي المحفوظة</h3>
+                        <div id="cards-localDecks" class="deck-list"></div>
+                    </div>
+                </div>
+                <div class="lg:col-span-8">
+                    <div id="cards-emptyState" class="h-[50vh] flex flex-col items-center justify-center text-gray-400 glass-panel text-center text-lg">اختر حزمة لبدء الجلسة</div>
+                    <div id="cards-loadingState" class="hidden flex-col items-center justify-center py-24 text-center"><div class="animate-spin rounded-full h-12 w-12 border-t-4 border-red-600 mb-4"></div><h3 class="text-xl font-bold text-white loader-pulse">مزامنة البيانات...</h3></div>
+                    <div id="cards-wrapper" class="hidden glass-panel !p-8">
+                        <div class="flex justify-between items-center mb-6"><h3 id="cards-topicTitle" class="text-xl font-bold text-white"></h3><span id="cards-counter" class="text-sm font-bold bg-white/10 text-red-400 px-4 py-1.5 rounded-full"></span></div>
+                        <div class="flashcard-scene" onclick="cards_flip()"><div class="flashcard" id="cards-activeCard"><div class="card-face card-front" id="cards-front"></div><div class="card-face card-back" id="cards-back"></div></div></div>
+                        <div class="text-center text-gray-400 text-sm mt-4" id="cards-hint">انقر للقلب</div>
+                        <div class="flex justify-center gap-4 mt-8 hidden" id="cards-rating">
+                            <button class="btn-primary !bg-[#30363d] hover:!bg-[#444] w-auto px-8" onclick="cards_rate('hard', event)">صعب</button>
+                            <button class="btn-primary !bg-orange-600 hover:!bg-orange-500 w-auto px-8" onclick="cards_rate('good', event)">متوسط</button>
+                            <button class="btn-primary !bg-green-700 hover:!bg-green-600 w-auto px-8" onclick="cards_rate('easy', event)">سهل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="app-stats" class="app-window">
+            <header class="mb-6 border-b border-[#30363d] pb-4 no-print">
+                <h2 class="text-2xl font-black text-white">إحصائيات التعلم وتحليل الذكاء الاصطناعي</h2>
+                <p class="text-gray-500 text-xs">تتبع تقدمك في جميع المولدات، وراجع نقاط ضعفك، واحصل على نصائح مخصصة</p>
+            </header>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-panel text-center">
+                    <p class="text-gray-400 text-xs font-bold mb-2">المواضيع المولدة (المختبر)</p>
+                    <div id="statVal_lab" class="text-4xl font-black text-white">0</div>
+                </div>
+                <div class="glass-panel text-center">
+                    <p class="text-gray-400 text-xs font-bold mb-2">متوسط التقييم (الكويزات)</p>
+                    <div id="statVal_quizScore" class="text-4xl font-black text-red-400">0%</div>
+                    <p class="text-[10px] text-gray-500 mt-2">من أصل <span id="statVal_quizCount">0</span> اختبارات</p>
+                </div>
+                <div class="glass-panel text-center">
+                    <p class="text-gray-400 text-xs font-bold mb-2">بطاقات تمت مراجعتها</p>
+                    <div id="statVal_cards" class="text-4xl font-black text-green-400">0</div>
+                    <div class="flex justify-center gap-2 mt-2 text-[10px] font-bold">
+                        <span class="text-green-500">سهل: <span id="statVal_cardsEasy">0</span></span>
+                        <span class="text-orange-500">متوسط: <span id="statVal_cardsGood">0</span></span>
+                        <span class="text-red-500">صعب: <span id="statVal_cardsHard">0</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass-panel !p-6 border-t-4 border-red-600">
+                    <h3 class="text-lg font-bold text-white mb-3">تحليل الأداء الأكاديمي الشامل (AI)</h3>
+                    <p class="text-xs text-gray-400 mb-5">يقوم المساعد البيداغوجي بتحليل بياناتك السابقة ليقدم لك نصائح دراسية ويوجهك للتركيز على نقاط ضعفك.</p>
+                    <button class="btn-primary w-fit px-8" id="btn-analyze-stats" onclick="generateAIStatsAnalysis()">تحليل أدائي الآن</button>
+                    <div id="ai-analysis-result" class="mt-6 text-sm text-gray-300 leading-relaxed hidden bg-black/30 p-5 rounded-xl border border-[#333]"></div>
+                </div>
+                <div class="glass-panel !p-6 bg-black/40">
+                    <h3 class="text-lg font-bold text-[--bacflix-red] mb-3 border-b border-[#333] pb-2">سجل نقاط الضعف (الكويزات)</h3>
+                    <ul id="weakLessonsList" class="text-sm text-gray-300 space-y-3 list-none">
+                        <li class="text-gray-500">قم بإجراء اختبارات التقييم ليقوم النظام بتحديد محاور الضعف لديك.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="bacflix-chat-widget" class="no-print">
+        <div id="bacflix-chat-window">
+            <div id="chat-header">
+                <span id="chat-title-text" class="truncate font-bold">المساعد الذكي</span>
+                <div class="flex gap-2">
+                    <button class="btn-secondary !py-1 !px-3 !bg-red-500/10 border-red-500/30 text-red-200 hover:!bg-red-600 hover:text-white" onclick="forceReviewAndFix()">تصحيح الورقة</button>
+                    <button class="btn-secondary !py-1 !px-3" onclick="chat_clear()">مسح</button>
+                    <button class="btn-secondary !py-1 !px-3" id="maximize-btn" onclick="toggleFullscreenChat()">تكبير</button>
+                    <button class="btn-secondary !py-1 !px-3" onclick="chat_toggle()">طي</button>
+                </div>
+            </div>
+            <div id="mode-bar">
+                <span style="color: #64748b;">النمط:</span>
+                <button id="socratic-toggle-btn" class="toggle-mode-btn" onclick="toggleSocraticMode()">شرح مباشر</button>
+            </div>
+            <div id="chat-body"></div>
+            <div id="input-area">
+                <div id="attachment-preview"><span id="attachment-name"></span><span style="cursor:pointer; color:#ef4444;" onclick="removeAttachment()">حذف</span></div>
+                <div id="chat-footer">
+                    <input type="file" id="chat-file-input" accept="image/*, application/pdf" style="display: none;" onchange="handleFileSelection(event)">
+                    <button class="icon-btn" onclick="document.getElementById('chat-file-input').click()"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
+                    <button class="icon-btn" id="mic-btn" onclick="toggleSpeechRecognition()"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
+                    <input type="text" id="chat-input" placeholder="اكتب سؤالك هنا..." onkeypress="if(event.key==='Enter') chat_send()">
+                    <button id="send-btn" onclick="chat_send()">إرسال</button>
+                </div>
+            </div>
+        </div>
+        <button id="bacflix-chat-btn" onclick="chat_toggle()"><svg class="nav-icon" style="width:24px;height:24px; stroke:white;" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
+    </div>
+
+    <div id="watch-cinemaModal">
+        <div class="watch-cinema-header">
+            <div class="flex items-center gap-4">
+                <button onclick="watch_closeCinema()" class="text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg font-bold transition flex items-center gap-2"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> إنهاء الدورة</button>
+                <h2 id="watch-cinemaTitle" class="text-lg font-bold text-white hidden md:block">عنوان الدورة</h2>
+            </div>
+            <div class="text-[--bacflix-red] font-black italic text-xl tracking-wider">BACFLIX</div>
+        </div>
+        
+        <div class="watch-cinema-body">
+            <div id="watch-videoSection" class="watch-video-section">
+                <div id="watch-player-wrapper">
+                    <div id="watch-ytplayer"></div> 
+                    <div id="watch-nextEpOverlay">
+                        <h3 class="text-2xl font-bold mb-4">الدرس القادم يبدأ خلال...</h3>
+                        <div class="watch-countdown-circle" id="watch-countdownTimer">5</div>
+                        <div class="flex gap-4 mt-6">
+                            <button onclick="watch_playNextVideo()" class="bg-white text-black font-bold px-6 py-2 rounded-lg hover:bg-gray-200">تشغيل الآن</button>
+                            <button onclick="watch_cancelAutoPlay()" class="border border-white text-white font-bold px-6 py-2 rounded-lg hover:bg-white/20">إلغاء</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="watch-episode-controls">
+                    <div class="flex items-center gap-4 text-sm font-bold text-gray-300 w-full lg:w-auto">
+                        <span class="bg-[--bacflix-red] text-white px-2 py-1 rounded text-xs shadow-lg shadow-red-900/50 whitespace-nowrap">يُعرض الآن</span>
+                        <span id="watch-currentEpisodeTitle" class="truncate max-w-[200px] sm:max-w-[400px]">...</span>
+                    </div>
+                    <div class="flex gap-2 w-full lg:w-auto justify-between lg:justify-end mt-2 lg:mt-0">
+                        <button onclick="watch_markCurrentVideoWatched()" class="watch-ep-btn bg-green-900/50 hover:bg-green-800 text-green-300 border-green-800" title="تأشير كمكتمل">✅ فهمت الدرس</button>
+                        <button onclick="watch_togglePlaylist()" class="watch-ep-btn bg-gray-800 hover:bg-gray-700 text-gray-300 border-gray-700 px-3" title="وضع المسرح (إظهار/إخفاء القائمة)"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></button>
+                        <button id="watch-prevBtn" onclick="watch_playPrevVideo()" class="watch-ep-btn flex-1 lg:flex-none justify-center">‹ السابق</button>
+                        <button id="watch-nextBtn" onclick="watch_playNextVideo()" class="watch-ep-btn flex-1 lg:flex-none justify-center">الموالي ›</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="watch-playlist-sidebar-container" class="watch-playlist-sidebar">
+                <div class="watch-playlist-header">
+                    <span class="flex items-center gap-2"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg> قائمة الحلقات</span>
+                    <div class="flex gap-2 items-center"><span id="watch-playlistCountBadge" class="text-[10px] bg-[--bacflix-red] px-2 py-1 rounded-full text-white">0</span><button onclick="watch_togglePlaylist()" class="lg:hidden text-gray-400 hover:text-white">✖</button></div>
+                </div>
+                <div id="watch-playlist-drawer" class="watch-playlist-drawer"></div>
+            </div>
+
+            <button id="watch-aiFabBtn" onclick="watch_toggleChat()" title="المساعد الذكي (يتحكم بالفيديو)"><svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></button>
+
+            <div id="watch-aiChatWindow">
+                <div class="chat-header">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-[--bacflix-red] rounded-full flex items-center justify-center text-white"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+                        <div>
+                            <div class="font-bold text-white text-xs">المساعد الخارق</div>
+                            <div class="text-[9px] text-green-500 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span> يتحكم في المشغل</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="flex items-center gap-1 text-[10px] text-gray-300 cursor-pointer hover:text-yellow-500 transition" title="طرح أسئلة توجيهية"><input type="checkbox" id="watch-challengeModeToggle" class="accent-yellow-500"> التحدي</label>
+                        <button onclick="watch_toggleChat()" class="text-gray-400 hover:text-white"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                    </div>
+                </div>
+                
+                <div id="watch-chat-messages" style="flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth;"></div>
+
+                <div class="watch-chat-input-area">
+                    <div class="watch-prompt-chips-container">
+                        <button class="watch-prompt-chip" onclick="watch_sendPromptChip('لخّص لي هذا الدرس بأهم النقاط')">لخّص الدرس</button>
+                        <button class="watch-prompt-chip" onclick="watch_sendPromptChip('أعطني تمريناً تدريبياً مع الحل حول ما تم شرحه للتو')">تمرين تدريبي</button>
+                        <button class="watch-prompt-chip" onclick="watch_sendPromptChip('لم أفهم هذه الفكرة، اشرحها لي كأنني مبتدئ')">اشرح ببساطة</button>
+                    </div>
+                    <div id="watch-file-preview" class="hidden text-[11px] text-gray-300 bg-[#222] p-2 rounded flex justify-between items-center border border-[#444]">
+                        <span id="watch-file-name" class="truncate flex items-center gap-1"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg> <span class="fn-text"></span></span>
+                        <button onclick="watch_removeAttachment()" class="text-red-500 hover:text-red-400 font-bold ml-2"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                    </div>
+                    <div class="flex gap-2 items-center w-full">
+                        <button id="watch-mic-btn" class="icon-btn" onclick="watch_toggleSpeechRecognition()"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></button>
+                        <label class="icon-btn cursor-pointer"><input type="file" id="watch-chatFile" class="hidden" accept="image/*,application/pdf" onchange="watch_handleFileSelect(event)"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></label>
+                        <input type="text" id="watch-chat-input" placeholder="تحدث، اكتب، أو الصق (Ctrl+V)..." onkeypress="watch_handleChatEnter(event)" class="flex-1 bg-[#222] text-white p-2 rounded outline-none border border-[#444] text-sm">
+                        <button id="watch-send-btn" onclick="watch_sendChatMessage()" class="bg-[--bacflix-red] text-white px-4 py-2 rounded font-bold hover:bg-[#b80710] transition text-sm">إرسال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        // الكود الأصلي للمنصة الشاملة
+        const BacflixSecurity = (function() {
+            let _isToolsActive = false; 
+            const _SECRET_KEY = "BACFLIX_SECURE_" + Math.random().toString(36).substr(2, 9); 
+            
+            return {
+                isActive: function() { return _isToolsActive; },
+                setActive: function(status, key) {
+                    if (key === _SECRET_KEY) {
+                        _isToolsActive = status;
+                    } else {
+                        console.error("محاولة غير مصرح بها.");
+                    }
+                },
+                getKey: function() { return _SECRET_KEY; }
+            };
+        })();
+
+        setInterval(function() {
+            const before = new Date().getTime();
+            debugger; 
+            const after = new Date().getTime();
+            if (after - before > 100) {
+                document.getElementById('bacflix-app-root').innerHTML = "<div class='glass-panel' style='position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;'><h1 style='color:#ef4444;'>تنبيه أمني</h1><p>يرجى إغلاق أدوات المطور (F12) لاستخدام المنصة.</p></div>";
+            }
+        }, 1000);
+
+        let activeApp = 'academy'; 
+        let cloudCurriculum = {};
+        let currentUser = null; 
+        let currentStream = null;
+        let globalChatHistory = [];
+        let userDataCache = { credits: 0, subscriptionEnd: 0 };
+        
+        let currentQuizPoolKey = null;
+        let currentQuizFirebaseId = null;
+
+        setTimeout(() => {
+            if (typeof firebaseConfig !== 'undefined' && !firebase.apps.length) { 
+                firebase.initializeApp(firebaseConfig); 
+                window.cloudDb = firebase.database();
+            }
+        }, 100);
+
+        document.querySelectorAll('input[id*="Code"], .voucher-input').forEach(el => {
+            el.addEventListener('input', function (e) {
+                let val = e.target.value.replace(/-/g, '').toUpperCase();
+                if (val.length > 0) val = val.match(/.{1,4}/g).join('-');
+                e.target.value = val;
+            });
+        });
+
+        // ---------------------------------------------------------
+        // الإحصائيات الشاملة وسجل الكويزات التكيفي
+        // ---------------------------------------------------------
+        function initStats() {
+            if(!currentUser) return null;
+            let stats = JSON.parse(localStorage.getItem(`bacflix_stats_${currentUser}`));
+            if(!stats) {
+                stats = { labGenerated: 0, quizzesTaken: 0, quizTotalQuestions: 0, quizCorrectAnswers: 0, cardsReviewed: 0, cardsEasy: 0, cardsGood: 0, cardsHard: 0 };
+                localStorage.setItem(`bacflix_stats_${currentUser}`, JSON.stringify(stats));
+            }
+            return stats;
+        }
+
+        function updateStat(key, value) {
+            let stats = initStats();
+            if(!stats) return;
+            if(stats[key] !== undefined) {
+                stats[key] += value;
+                localStorage.setItem(`bacflix_stats_${currentUser}`, JSON.stringify(stats));
+            }
+        }
+
+        function saveQuizHistory(subject, topics, scorePercentage) {
+            if (!currentUser) return;
+            const key = `bacflix_quiz_history_${currentUser}`;
+            let history = JSON.parse(localStorage.getItem(key)) || [];
+            history.unshift({ date: Date.now(), subject, topics, score: scorePercentage });
+            if(history.length > 50) history.pop();
+            localStorage.setItem(key, JSON.stringify(history));
+        }
+
+        function getAdaptiveDifficulty(subject) {
+            const history = JSON.parse(localStorage.getItem(`bacflix_quiz_history_${currentUser}`)) || [];
+            const subjTests = history.filter(h => h.subject === subject);
+            if (subjTests.length === 0) return "مستوى بكالوريا"; 
+            const recentTests = subjTests.slice(0, 3);
+            const avg = recentTests.reduce((acc, curr) => acc + curr.score, 0) / recentTests.length;
+            if (avg < 50) return "سهل ومباشر"; 
+            if (avg > 80) return "تحدي وصعب جدا وتحليلي"; 
+            return "مستوى بكالوريا";
+        }
+
+        function renderStats() {
+            let stats = initStats();
+            if(!stats) return;
+            
+            document.getElementById('statVal_lab').innerText = stats.labGenerated;
+            document.getElementById('statVal_quizCount').innerText = stats.quizzesTaken;
+            
+            let percent = 0;
+            if(stats.quizTotalQuestions > 0) percent = Math.round((stats.quizCorrectAnswers / stats.quizTotalQuestions) * 100);
+            document.getElementById('statVal_quizScore').innerText = `${percent}%`;
+            
+            document.getElementById('statVal_cards').innerText = stats.cardsReviewed;
+            document.getElementById('statVal_cardsEasy').innerText = stats.cardsEasy;
+            document.getElementById('statVal_cardsGood').innerText = stats.cardsGood;
+            document.getElementById('statVal_cardsHard').innerText = stats.cardsHard;
+
+            const history = JSON.parse(localStorage.getItem(`bacflix_quiz_history_${currentUser}`)) || [];
+            let weakAreas = {};
+            history.forEach(test => {
+                if (test.score < 50) {
+                    const lessonKey = `${test.subject} - ${test.topics}`;
+                    weakAreas[lessonKey] = (weakAreas[lessonKey] || 0) + 1;
+                }
+            });
+
+            const weakListEl = document.getElementById('weakLessonsList');
+            weakListEl.innerHTML = '';
+            const sortedWeakAreas = Object.entries(weakAreas).sort((a, b) => b[1] - a[1]);
+            
+            if (sortedWeakAreas.length === 0 && history.length > 0) {
+                weakListEl.innerHTML = '<li class="text-green-500 font-bold p-2 bg-green-900/20 rounded border border-green-900/50">عمل ممتاز! لا توجد دروس ضعيفة حالياً.</li>';
+            } else if (history.length === 0) {
+                weakListEl.innerHTML = '<li class="text-gray-500">قم بإجراء اختبارات التقييم ليقوم النظام بتحديد محاور الضعف لديك.</li>';
+            } else {
+                sortedWeakAreas.slice(0, 5).forEach(([lesson, count]) => {
+                    weakListEl.innerHTML += `<li class="flex justify-between items-center bg-black/40 p-2 rounded border border-[#333]"><span class="truncate pr-2">${lesson}</span> <span class="text-[10px] bg-red-900/50 text-red-300 px-2 py-1 rounded whitespace-nowrap">أخطأت ${count} مرات</span></li>`;
+                });
+            }
+        }
+
+        async function generateAIStatsAnalysis() {
+            let stats = initStats();
+            if(!stats || (stats.labGenerated === 0 && stats.quizzesTaken === 0 && stats.cardsReviewed === 0)) {
+                return alert("لا توجد بيانات كافية للتحليل. قم بتوليد بعض المواضيع أو إجراء اختبارات أولاً!");
+            }
+
+            const btn = document.getElementById('btn-analyze-stats');
+            const resultDiv = document.getElementById('ai-analysis-result');
+            btn.disabled = true;
+            btn.innerText = "جاري التحليل السحابي...";
+            resultDiv.classList.add('hidden');
+
+            let percent = stats.quizTotalQuestions > 0 ? Math.round((stats.quizCorrectAnswers / stats.quizTotalQuestions) * 100) : 0;
+            
+            const prompt = `أنت موجه بيداغوجي جزائري صارم وداعم. هذه إحصائيات التلميذ في منصة الذكاء الاصطناعي:
+            - المواضيع المولدة (للمراجعة العميقة): ${stats.labGenerated}
+            - الاختبارات المجراة: ${stats.quizzesTaken} (متوسط النجاح: ${percent}%)
+            - البطاقات المراجعة (للحفظ السريع): ${stats.cardsReviewed} (سهل: ${stats.cardsEasy}، متوسط: ${stats.cardsGood}، صعب: ${stats.cardsHard}).
+            بناءً على هذه الأرقام، قدم له تحليلاً قصيراً جداً، حدد مستواه بشكل عام، وقدم نصيحة واحدة مركزة لتحسين أدائه للبكالوريا. استخدم لغة محفزة وصارمة في نفس الوقت.`;
+
+            try {
+                let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+                res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
+                resultDiv.innerHTML = marked.parse(res);
+                resultDiv.classList.remove('hidden');
+            } catch(e) {
+                alert("حدث خطأ أثناء الاتصال بالمحلل السحابي.");
+            }
+            btn.disabled = false;
+            btn.innerText = "تحديث التحليل الأكاديمي";
+        }
+
+        // ---------------------------------------------------------
+        // إدارة الحسابات (Firebase / Forum)
+        // ---------------------------------------------------------
+        function getForumUsername() {
+            try {
+                if (typeof _userdata !== "undefined" && _userdata.session_logged_in == 1) {
+                    return _userdata.username;
+                } else if (window.parent && typeof window.parent._userdata !== "undefined" && window.parent._userdata.session_logged_in == 1) {
+                    return window.parent._userdata.username;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        async function verifyUser() {
+            const forumUser = getForumUsername();
+            if (!forumUser) return;
+
+            const phone = document.getElementById('regPhone').value.trim();
+            const stream = document.getElementById('regStream').value;
+            const msg = document.getElementById('auth-msg');
+
+            if(phone.length < 8 || !stream) {
+                msg.innerText = "الرجاء إكمال رقم الهاتف واختيار الشعبة."; 
+                msg.classList.remove('hidden'); 
+                return;
+            }
+            
+            document.getElementById('btn-check-auth').innerText = "جاري الاتصال..."; 
+            document.getElementById('btn-check-auth').disabled = true;
+
+            try {
+                if(!window.cloudDb) window.cloudDb = firebase.database();
+                const userRef = window.cloudDb.ref('bacflix_users/' + forumUser);
+                const snap = await userRef.once('value');
+                
+                if(!snap.exists()) {
+                    let freeHour = Date.now() + (60 * 60 * 1000);
+                    await userRef.set({ name: forumUser, phone: phone, stream: stream, credits: 0, subscriptionEnd: freeHour });
+                }
+
+                location.reload();
+            } catch(e) {
+                msg.innerText = "حدث خطأ في الاتصال. حاول مجددا."; 
+                msg.classList.remove('hidden');
+                document.getElementById('btn-check-auth').innerText = "دخول المنصة"; 
+                document.getElementById('btn-check-auth').disabled = false;
+            }
+        }
+
+        function logoutGlobalUser() {
+            location.reload();
+        }
+
+        async function processActivationCode() {
+            let codeInputId = 'voucherInput';
+            let msgId = 'voucherMsg';
+            let btnId = 'redeemBtn';
+            
+            let rawCode = document.getElementById(codeInputId).value.replace(/-/g, '').toUpperCase();
+            const msg = document.getElementById(msgId);
+            const btn = document.getElementById(btnId);
+
+            if(rawCode.length !== 16) {
+                msg.innerHTML = "<span class='text-red-400'>الكود غير مكتمل.</span>"; return;
+            }
+
+            let code = rawCode.match(/.{1,4}/g).join('-');
+
+            btn.disabled = true; btn.innerText = "جاري التفعيل..."; msg.innerHTML = "";
+
+            try {
+                if(!window.cloudDb) window.cloudDb = firebase.database();
+                const codeRef = window.cloudDb.ref('bacflix_codes/' + code);
+                const codeSnap = await codeRef.once('value');
+
+                if(codeSnap.exists() && codeSnap.val().status === 'active') {
+                    const codeData = codeSnap.val();
+                    
+                    let userRef = window.cloudDb.ref('bacflix_users/' + currentUser);
+                    let userSnap = await userRef.once('value');
+                    let uData = userSnap.val() || { credits: 0, subscriptionEnd: 0 };
+
+                    let updates = { 
+                        lastCodeUsed: code,
+                        lastVoucherPrice: parseFloat(codeData.price) || 0,
+                        lastVoucherCredits: parseFloat(codeData.credits) || 1
+                    };
+
+                    if (codeData.credits && codeData.credits > 0) {
+                        updates.credits = (parseFloat(uData.credits) || 0) + parseFloat(codeData.credits);
+                    } else {
+                        updates.credits = uData.credits || 0; 
+                    }
+
+                    if (codeData.days && codeData.days > 0) {
+                        let currentEnd = uData.subscriptionEnd > Date.now() ? uData.subscriptionEnd : Date.now();
+                        updates.subscriptionEnd = currentEnd + (codeData.days * 24 * 60 * 60 * 1000);
+                    } else {
+                        updates.subscriptionEnd = uData.subscriptionEnd || 0;
+                    }
+
+                    await codeRef.update({ status: 'used', usedBy: currentUser, activationDate: Date.now() });
+                    await userRef.update(updates);
+
+                    msg.innerHTML = "<span class='text-green-400'>تم التفعيل بنجاح!</span>";
+                    document.getElementById(codeInputId).value = '';
+                    setTimeout(() => { msg.innerHTML = ""; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }, 3000);
+
+                } else {
+                    msg.innerHTML = "<span class='text-red-400'>الكود خاطئ أو مستخدم.</span>";
+                    btn.disabled = false; btn.innerText = "تأكيد الشحن";
+                }
+            } catch(e) { msg.innerHTML = "<span class='text-red-400'>خطأ في الاتصال.</span>"; btn.disabled = false; btn.innerText = "تأكيد الشحن"; }
+        }
+
+        function checkAuth() {
+            const forumUser = getForumUsername();
+            
+            if (!forumUser) {
+                document.getElementById('authModal').style.display = 'flex';
+                document.getElementById('auth-step-1').classList.add('hidden');
+                const guestWarning = document.getElementById('auth-guest-warning');
+                if(guestWarning) guestWarning.classList.remove('hidden');
+                return;
+            }
+
+            if(!window.cloudDb) window.cloudDb = firebase.database();
+            
+            window.cloudDb.ref(`bacflix_users/${forumUser}`).on('value', snap => {
+                if (!snap.exists()) {
+                    document.getElementById('authModal').style.display = 'flex'; 
+                    document.getElementById('auth-step-1').classList.remove('hidden');
+                    const guestWarning = document.getElementById('auth-guest-warning');
+                    if(guestWarning) guestWarning.classList.add('hidden');
+                    
+                    const nameField = document.getElementById('regName');
+                    nameField.value = forumUser; 
+                    nameField.readOnly = true;   
+                    nameField.classList.add('opacity-60', 'cursor-not-allowed', 'bg-black/30');
+                    
+                    const msg = document.getElementById('auth-msg');
+                    msg.innerHTML = `مرحباً بك! أكمل البيانات للحصول على هديتك (ساعة تفعيل مجانية).`;
+                    msg.classList.remove('hidden');
+                    return; 
+                }
+
+                document.getElementById('authModal').style.display = 'none'; 
+                
+                userDataCache = snap.val();
+                currentUser = forumUser; 
+                currentStream = userDataCache.stream;
+
+                document.getElementById('sidebarUserName').innerText = currentUser;
+                document.getElementById('sidebarStreamName').innerText = currentStream;
+
+                initStats();
+
+                loadCurriculum().then(() => {
+                    ['lab', 'quiz', 'cards'].forEach(prefix => updateDropdowns(prefix, false));
+                });
+                renderLibrary();
+
+                let hasTime = userDataCache.subscriptionEnd > Date.now();
+                let hasCredits = parseFloat(userDataCache.credits) > 0;
+                
+                BacflixSecurity.setActive(hasTime, BacflixSecurity.getKey()); 
+
+                document.getElementById('studentCredits').innerText = userDataCache.credits || 0;
+                document.getElementById('subStatusText').innerHTML = hasTime 
+                    ? `حالة الأدوات: <span class="text-green-400 font-bold">مفعل</span>` 
+                    : `حالة الأدوات: <span class="text-red-400 font-bold">غير مفعل</span>`;
+                
+                initLiveSessions(userDataCache.credits || 0); 
+                initRecordedSessions(userDataCache.credits || 0); 
+                loadStudentTimetable();
+
+                const banner = document.getElementById('inactiveBanner');
+                if (!hasTime && !hasCredits) {
+                    if(banner) banner.style.display = 'flex';
+                } else {
+                    if(banner) banner.style.display = 'none';
+                }
+
+                if(!BacflixSecurity.isActive() && activeApp !== 'academy') {
+                    switchApp('academy');
+                }
+            });
+        }
+
+        async function fetchFromGemini(contentsArray, systemInstruction = null) {
+            if (typeof API_KEYS === 'undefined') throw new Error("المفاتيح مفقودة.");
+            let keys = [...API_KEYS].sort(() => 0.5 - Math.random());
+            let data = null, success = false, lastErr = "";
+            for (const key of keys) {
+                if(success) break;
+                try {
+                    let req = { contents: contentsArray };
+                    if (systemInstruction) req.systemInstruction = { parts: [{ text: systemInstruction }] };
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${key}`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(req)
+                    });
+                    if (res.ok) { data = await res.json(); success = true; break; }
+                    else { const err = await res.json(); lastErr = err.error?.message; if(res.status===429) await new Promise(r=>setTimeout(r,1000)); }
+                } catch(e) { lastErr = e.message; }
+            }
+            if(!success) throw new Error(lastErr || "الخوادم عليها ضغط حاليا.");
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        function switchApp(app) {
+            if (app !== 'academy' && app !== 'stats' && BacflixSecurity.isActive() === false) {
+                alert("عذرا! اشتراكك الزمني في (الأدوات الذكية) غير مفعل أو انتهى.\nامتلاكك للرصيد يسمح لك بالحضور المباشر فقط. يرجى الشحن لفتح المولدات.");
+                return;
+            }
+
+            activeApp = app;
+            document.querySelectorAll('.app-window').forEach(w => w.classList.remove('active'));
+            document.getElementById('app-' + app).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('btn-' + app).classList.add('active');
+            
+            const titles = { 'academy': 'المساعد الإداري', 'lab': 'المختبر (التحليل)', 'quiz': 'التقييم (الشرح)', 'cards': 'البطاقات (المراجعة)', 'stats': 'المحلل الأكاديمي', 'watch': 'أداة المشاهدة' };
+            document.getElementById('chat-title-text').innerText = titles[app] || '';
+            document.querySelector('.main-viewport').scrollTop = 0;
+            
+            if(app === 'stats') renderStats();
+            if(app !== 'academy' && app !== 'stats' && app !== 'watch') {
+                updateDropdowns(app, true);
+            }
+        }
+
+        async function loadCurriculum() {
+            if(!window.cloudDb) window.cloudDb = firebase.database();
+            try {
+                const snap = await window.cloudDb.ref('bacflix_curriculum_pro').once('value');
+                if (snap.exists()) { 
+                    cloudCurriculum = snap.val(); 
+                    if(activeApp !== 'academy' && activeApp !== 'stats' && activeApp !== 'watch') updateDropdowns(activeApp, false);
+                }
+            } catch(e) {}
+        }
+
+        function updateDropdowns(prefix, skipSubjectUpdate = false) {
+            const stream = currentStream;
+            const subjEl = document.getElementById(`${prefix}-subject`);
+            const topicCont = document.getElementById(`${prefix}-topicContainer`);
+            if(!subjEl || !topicCont || !cloudCurriculum) return;
+
+            if(!skipSubjectUpdate || subjEl.options.length === 0) {
+                let subjects = new Set();
+                if(cloudCurriculum[stream]) Object.keys(cloudCurriculum[stream]).forEach(s => subjects.add(s));
+                if(cloudCurriculum["مواد مشتركة"]) Object.keys(cloudCurriculum["مواد مشتركة"]).forEach(s => subjects.add(s));
+                
+                let currentVal = subjEl.value;
+                subjEl.innerHTML = '';
+                Array.from(subjects).forEach(s => subjEl.innerHTML += `<option value="${s}">${s}</option>`);
+                
+                if(currentVal && Array.from(subjects).includes(currentVal)) {
+                    subjEl.value = currentVal;
+                }
+            }
+
+            const subject = subjEl.value;
+            if(!subject) {
+                topicCont.innerHTML = '';
+                return;
+            }
+
+            let topicsObj = cloudCurriculum[stream]?.[subject] || cloudCurriculum["مواد مشتركة"]?.[subject] || {};
+            let topicNames = Object.keys(topicsObj);
+            
+            topicCont.innerHTML = `<label class="checkbox-label" style="grid-column: 1 / -1;"><input type="checkbox" onchange="document.querySelectorAll('.topic-cb-${prefix}').forEach(cb => cb.checked = this.checked)"> <span class="font-bold text-white">تحديد الكل</span></label>`;
+            topicNames.forEach(t => { topicCont.innerHTML += `<label class="checkbox-label"><input type="checkbox" class="topic-cb-${prefix}" value="${t}"> <span>${t}</span></label>`; });
+        }
+
+        function getSelectedTopicsData(prefix, subject) {
+            const stream = currentStream;
+            let selectedCbs = document.querySelectorAll(`.topic-cb-${prefix}:checked`);
+            if(selectedCbs.length === 0) return null;
+            let names = Array.from(selectedCbs).map(cb => cb.value);
+            let topicsObj = cloudCurriculum[stream]?.[subject] || cloudCurriculum["مواد مشتركة"]?.[subject] || {};
+            let detailsArr = names.map(n => `- **${n}**: ${topicsObj[n] || 'مراجعة عامة'}`);
+            return { namesString: names.join(' و '), namesArray: names, detailsString: detailsArr.join('\n') };
+        }
+
+        function cleanLatex(text) { return text.replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/\\textbf{([^}]+)}/g, '**$1**').replace(/\\section\*{([^}]+)}/g, '### $1'); }
+        function renderMathAndGraphs(containerId) {
+            const container = document.getElementById(containerId); if(!container) return;
+            container.querySelectorAll('code.language-functionplot').forEach((block, index) => {
+                let rawFuncs = block.textContent.trim().split('\n'); const pre = block.parentElement;
+                if (pre && pre.tagName === 'PRE') {
+                    const plotId = 'plot-' + Date.now() + '-' + index;
+                    const div = document.createElement('div'); div.id = plotId; div.className = 'graph-container'; pre.replaceWith(div);
+                    let validData = [];
+                    rawFuncs.forEach(f => {
+                        let cleanedF = f.trim().replace(/[\u0600-\u06FF]/g, '').replace(/^(f\(x\)|y|g\(x\)|h\(x\)|f)\s*=\s*/i, '').replace(/e\^x/g, 'exp(x)').replace(/ln\(/g, 'log(');
+                        if(cleanedF.length > 0 && cleanedF.includes('x')) validData.push({ fn: cleanedF, graphType: 'polyline', color: '#E50914' });
+                    });
+                    if(validData.length > 0) { try { functionPlot({ target: '#'+plotId, width: 400, height: 250, grid: true, data: validData }); } catch(e) {} }
+                }
+            });
+            container.querySelectorAll('code.language-mermaid').forEach((block) => {
+                const pre = block.parentElement;
+                if (pre && pre.tagName === 'PRE') { const div = document.createElement('div'); div.className = 'mermaid-container mermaid'; div.innerHTML = block.textContent.trim(); pre.replaceWith(div); }
+            });
+            try { mermaid.run({ querySelector: '.mermaid' }); } catch(e) {}
+            if(window.MathJax) MathJax.typesetPromise([container]).catch(()=>{});
+        }
+
+        function initLiveSessions(studentCredits) {
+            if(!window.cloudDb) return;
+            window.cloudDb.ref('bacflix_live_sessions').on('value', (snap) => {
+                const container = document.getElementById('liveSessionsContainer'); container.innerHTML = '';
+                const now = new Date();
+                if(!snap.exists()) { container.innerHTML = "<div class='glass-panel text-center text-gray-500 py-10'>لا توجد حصص مبرمجة حاليا.</div>"; return; }
+
+                let sessions = Object.keys(snap.val()).map(k => ({id:k, ...snap.val()[k]}));
+                sessions = sessions.filter(s => s.stream === currentStream || s.stream === "جميع الشعب");
+                sessions.sort((a,b) => new Date(a.time) - new Date(b.time));
+
+                let count = 0;
+                sessions.forEach(s => {
+                    const startTime = new Date(s.time); const duration = parseInt(s.duration) || 60;
+                    const endTime = new Date(startTime.getTime() + duration * 60000); const allowJoinTime = new Date(startTime.getTime() - 5 * 60000); 
+                    if ((now - endTime) / 3600000 > 3) return; 
+                    count++;
+
+                    const myStatus = (s.attendance && s.attendance[currentUser]) ? s.attendance[currentUser].status : null;
+                    let btnHtml = '';
+
+                    if (myStatus === 'confirmed') btnHtml = `<button disabled class="btn-primary !bg-emerald-600/20 !text-emerald-400 !shadow-none whitespace-nowrap">تم تسجيل حضورك</button>`;
+                    else if (myStatus === 'joined') {
+                        if (now >= endTime) btnHtml = `<button onclick="confirmPresence('${s.id}')" class="btn-primary !bg-emerald-600 animate-pulse whitespace-nowrap">أكد حضورك الآن</button>`;
+                        else btnHtml = `<button disabled class="btn-primary !bg-orange-500/20 !text-orange-400 !shadow-none whitespace-nowrap">الحصة جارية...</button>`;
+                    } else {
+                        if (now < allowJoinTime) btnHtml = `<button disabled class="btn-secondary !py-2 text-xs whitespace-nowrap">يفتح: ${startTime.toLocaleTimeString('ar-DZ',{hour:'2-digit',minute:'2-digit'})}</button>`;
+                        else if (now < endTime) {
+                            if (studentCredits >= 1) btnHtml = `<button onclick="joinLive('${s.id}', '${s.meetLink}')" class="btn-primary shadow-lg shadow-red-500/30 whitespace-nowrap">دخول الحصة (-1)</button>`;
+                            else btnHtml = `<button disabled class="btn-primary !bg-red-500/20 !text-red-400 !shadow-none whitespace-nowrap">رصيد غير كاف</button>`;
+                        } else btnHtml = `<button disabled class="btn-secondary !py-2 text-xs whitespace-nowrap">فاتتك الحصة</button>`;
+                    }
+
+                    container.innerHTML += `
+                        <div class="glass-panel flex flex-col md:flex-row justify-between items-center gap-4 ${now >= allowJoinTime && now < endTime ? 'border-red-500/50 bg-red-950/20' : ''}">
+                            <div>
+                                <h3 class="text-white font-bold text-lg leading-tight">${s.title}</h3>
+                                <p class="text-xs text-gray-400 mt-1">أ. ${s.teacher} | ${s.stream}</p>
+                                <div class="text-[11px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 w-fit px-3 py-1 rounded-md mt-3">${startTime.toLocaleString('ar-DZ', { weekday: 'long', hour: '2-digit', minute:'2-digit' })}</div>
+                            </div>
+                            <div class="min-w-[150px] flex justify-center">${btnHtml}</div>
+                        </div>`;
+                });
+                if(count === 0) container.innerHTML = "<div class='glass-panel text-center text-gray-500 py-10'>لا توجد حصص مباشرة قادمة.</div>";
+            });
+        }
+
+        async function joinLive(id, link) {
+            if(!confirm("سيتم خصم (1 نقطة) من رصيدك. تأكيد؟")) return;
+            try {
+                const sSnap = await window.cloudDb.ref(`bacflix_users/${currentUser}`).once('value');
+                const uData = sSnap.val();
+                const credits = parseFloat(uData.credits) || 0;
+                if (credits < 1) return alert("لا تملك رصيدا كافيا!");
+                
+                await window.cloudDb.ref(`bacflix_live_sessions/${id}/attendance/${currentUser}`).set({ 
+                    status: 'joined', 
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    voucherPrice: uData.lastVoucherPrice || 2000, 
+                    voucherCredits: uData.lastVoucherCredits || 8
+                });
+                
+                await window.cloudDb.ref(`bacflix_users/${currentUser}/credits`).transaction(c => { let current = parseFloat(c) || 0; return current >= 1 ? current - 1 : current; });
+                window.open(link, '_blank');
+            } catch (e) { alert("حدث خطأ في الاتصال."); }
+        }
+
+        async function confirmPresence(id) {
+            try {
+                await window.cloudDb.ref(`bacflix_live_sessions/${id}/attendance/${currentUser}/status`).set('confirmed');
+                alert("تم توثيق حضورك بنجاح!");
+            } catch(e) { alert("خطأ في التوثيق."); }
+        }
+
+        function initRecordedSessions(studentCredits) {
+            window.cloudDb.ref('bacflix_sessions_history').on('value', snap => {
+                const container = document.getElementById('recordedSessionsContainer'); container.innerHTML = '';
+                if(!snap.exists()) { container.innerHTML = "<div class='glass-panel col-span-full text-center text-gray-500 py-10'>لا توجد حصص مسجلة في الأرشيف.</div>"; return; }
+
+                let sessions = Object.keys(snap.val()).map(k => ({id:k, ...snap.val()[k]}));
+                sessions = sessions.filter(s => (s.stream === currentStream || s.stream === "جميع الشعب") && s.recordingLink);
+                sessions.sort((a,b) => b.completedAt - a.completedAt);
+                
+                let count = 0;
+                sessions.forEach(s => {
+                    count++;
+                    const myStatus = (s.attendance_stats && s.attendance_stats[currentUser]) ? s.attendance_stats[currentUser].status : null;
+                    let btnHtml = '';
+
+                    if (myStatus === 'joined' || myStatus === 'confirmed' || myStatus === 'recorded_paid') btnHtml = `<button onclick="window.open('${s.recordingLink}', '_blank')" class="btn-primary !bg-gray-700 hover:!bg-gray-600 !py-2.5 text-xs whitespace-nowrap">مشاهدة التسجيل</button>`;
+                    else {
+                        if (studentCredits >= 0.5) btnHtml = `<button onclick="buyRecording('${s.id}', '${s.recordingLink}')" class="btn-secondary !py-2.5 w-full text-xs whitespace-nowrap">فتح التسجيل (-0.5)</button>`;
+                        else btnHtml = `<button disabled class="btn-secondary !bg-red-500/10 !text-red-400 !border-red-500/20 !py-2.5 w-full text-xs whitespace-nowrap">رصيد غير كاف</button>`;
+                    }
+
+                    container.innerHTML += `
+                        <div class="glass-panel !p-5 flex flex-col justify-between gap-4">
+                            <div>
+                                <h3 class="text-white font-bold text-sm leading-tight">${s.title}</h3>
+                                <p class="text-[10px] text-gray-400 mt-1">أ. ${s.teacher} | ${s.stream}</p>
+                            </div>
+                            <div>${btnHtml}</div>
+                        </div>`;
+                });
+                if(count === 0) container.innerHTML = "<div class='glass-panel col-span-full text-center text-gray-500 py-10'>لا يوجد أرشيف تسجيلات حالياً.</div>";
+            });
+        }
+
+        async function buyRecording(id, link) {
+            if(!confirm("سيتم خصم (0.5 نقطة) لفتح هذا التسجيل للأبد. تأكيد؟")) return;
+            try {
+                const sSnap = await window.cloudDb.ref(`bacflix_users/${currentUser}`).once('value');
+                const uData = sSnap.val();
+                if (parseFloat(uData.credits) < 0.5) return alert("رصيد غير كاف!");
+                
+                await window.cloudDb.ref(`bacflix_sessions_history/${id}/attendance_stats/${currentUser}`).set({ 
+                    status: 'recorded_paid', 
+                    isHalfPoint: true,
+                    voucherPrice: uData.lastVoucherPrice || 2000,
+                    voucherCredits: uData.lastVoucherCredits || 8
+                });
+                
+                await window.cloudDb.ref(`bacflix_users/${currentUser}/credits`).transaction(c => { let current = parseFloat(c) || 0; return current >= 0.5 ? current - 0.5 : current; });
+                window.open(link, '_blank');
+            } catch (e) { alert("حدث خطأ في الاتصال."); }
+        }
+
+        function loadStudentTimetable() {
+            window.cloudDb.ref('bacflix_timetable').once('value', (snap) => {
+                const container = document.getElementById('studentTimetableContainer');
+                if (!snap.exists()) return container.innerHTML = '<p class="text-gray-500 text-xs text-center py-2">لا يوجد جدول حصص مبرمج.</p>';
+                let arr = Object.values(snap.val()).filter(t => t.stream === currentStream || t.stream === "جميع الشعب");
+                arr.sort((a,b) => a.order - b.order);
+                let html = '';
+                arr.forEach(t => {
+                    html += `<div class="bg-black/30 p-3 rounded-xl mb-2 border-r-2 border-red-600 flex justify-between items-center gap-2">
+                        <div><p class="text-white text-xs font-bold leading-tight">${t.subject}</p><p class="text-gray-400 text-[9px] mt-0.5">أ. ${t.teacher}</p></div>
+                        <div class="text-left"><p class="text-red-400 font-bold text-[11px]">${t.day}</p><p class="text-gray-500 text-[10px] font-mono mt-0.5">${t.time}</p></div>
+                    </div>`;
+                });
+                container.innerHTML = html || '<p class="text-gray-500 text-xs text-center py-2">لا يوجد جدول لهذه الشعبة.</p>';
+            });
+        }
+
+        function generateStorageKey(mode, subject, stream, topics, difficulty) {
+            const topicKey = topics.split(' و ').sort().join('_').substring(0, 40);
+            return `bacflix_${mode}_${subject}_${stream}_${topicKey}_${difficulty}`.replace(/\s+/g, '_');
+        }
+
+        async function fetchFromCloudPool(poolKey) {
+            if(!window.cloudDb) window.cloudDb = firebase.database();
+            try {
+                const snapshot = await window.cloudDb.ref('bacflix_pool/' + poolKey).once('value');
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    return Object.keys(data).map(key => ({ id: key, content: data[key] })); 
+                }
+                return [];
+            } catch (error) { return []; }
+        }
+
+        function saveToCloudPool(poolKey, content) {
+            if(!window.cloudDb) window.cloudDb = firebase.database();
+            const newRef = window.cloudDb.ref('bacflix_pool/' + poolKey).push();
+            newRef.set(content);
+            return newRef.key;
+        }
+
+        function markQuizAsSeen(examId) {
+            if (!currentUser || !examId) return;
+            const key = `bacflix_quiz_seen_${currentUser}`;
+            let seen = JSON.parse(localStorage.getItem(key)) || [];
+            if (!seen.includes(examId)) { seen.push(examId); localStorage.setItem(key, JSON.stringify(seen)); }
+        }
+
+        function getSeenQuizzes() {
+            if (!currentUser) return [];
+            return JSON.parse(localStorage.getItem(`bacflix_quiz_seen_${currentUser}`)) || [];
+        }
+
+        // ===================================
+        // محرك المختبر (Lab)
+        // ===================================
+        let lab_rawText = "";
+        async function lab_generateContent() {
+            const subj = document.getElementById('lab-subject').value; const stream = currentStream;
+            const mode = document.getElementById('lab-toolMode').value; const diff = document.getElementById('lab-difficulty').value;
+            
+            const topicsData = getSelectedTopicsData('lab', subj);
+            if(!topicsData) return alert("الرجاء اختيار محور واحد على الأقل.");
+            
+            let extra = document.getElementById('lab-extraRules').value || "";
+            const checkedOptions = Array.from(document.querySelectorAll('.lab-extra-cb:checked')).map(cb => cb.value);
+            if (checkedOptions.length > 0) extra += " الإضافات المطلوبة: " + checkedOptions.join("، ");
+
+            document.getElementById('lab-examWrapper').classList.add('hidden');
+            document.getElementById('lab-loadingState').classList.remove('hidden'); document.getElementById('lab-loadingState').classList.add('flex');
+            
+            const prompt = `أنت أستاذ ومفتش جزائري خبير. قم ببناء ${mode==='exam'?'موضوع امتحان تجريبي شامل':'ملخص درس احترافي'} في مادة ${subj} لشعبة ${stream}. المستوى البيداغوجي المطلـوب: ${diff}.
+            المحتوى يجب أن يبنى حصراً على هذه المحاور:
+            ${topicsData.detailsString}
+            ${extra ? '\nتوجيهات إضافية: ' + extra : ''}
+            ${mode==='exam'?'افصل بين الموضوع والتصحيح النموذجي بكلمة [SOLUTION_BREAK] في سطر مستقل وبشكل واضح.':''} استخدم MathJax للمعادلات العلمية $...$. تأكد من كتابة الرموز الرياضية واللاتينية من اليسار إلى اليمين بطريقة سليمة.`;
+            
+            try {
+                let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+                res = cleanLatex(res); lab_rawText = res;
+                updateStat('labGenerated', 1);
+                renderLabContent(mode, subj, stream);
+            } catch(e) { alert(e.message); document.getElementById('lab-loadingState').classList.add('hidden'); }
+        }
+        
+        function renderLabContent(mode, subj, stream) {
+            document.getElementById('lab-loadingState').classList.add('hidden'); document.getElementById('lab-loadingState').classList.remove('flex');
+            if(mode === 'exam') {
+                const parts = lab_rawText.split('[SOLUTION_BREAK]');
+                document.getElementById('lab-printSubject').innerText = subj; document.getElementById('lab-printStream').innerText = stream;
+                document.getElementById('lab-examContent').innerHTML = marked.parse(parts[0]||'');
+                document.getElementById('lab-correctionContent').innerHTML = marked.parse(parts[1]||'التصحيح غير متوفر أو مدمج.');
+                document.getElementById('lab-correctionSection').classList.add('hidden');
+            } else {
+                document.getElementById('lab-printSubject').innerText = subj + " (ملخص)"; document.getElementById('lab-printStream').innerText = stream;
+                document.getElementById('lab-examContent').innerHTML = marked.parse(lab_rawText);
+                document.getElementById('lab-correctionSection').classList.add('hidden');
+            }
+            document.getElementById('lab-examWrapper').classList.remove('hidden'); document.getElementById('lab-examWrapper').classList.add('flex');
+            setTimeout(()=>renderMathAndGraphs('lab-examWrapper'), 100);
+        }
+        function lab_toggleSolution() { document.getElementById('lab-correctionSection').classList.toggle('hidden'); }
+
+        // ===================================
+        // محرك الكويزات
+        // ===================================
+        let quiz_data = []; let quiz_interval;
+        
+        async function quiz_generate() {
+            const subj = document.getElementById('quiz-subject').value; 
+            const stream = currentStream;
+            const count = document.getElementById('quiz-count').value; 
+            const userDifficulty = document.getElementById('quiz-difficulty').value;
+            const type = document.getElementById('quiz-type').value;
+            const extra = document.getElementById('quiz-extraRules').value;
+            const forceNew = document.getElementById('forceNewExam') ? document.getElementById('forceNewExam').checked : false;
+            let timeVal = document.getElementById('quiz-timer').value;
+            
+            const topicsData = getSelectedTopicsData('quiz', subj);
+            if(!topicsData) return alert("الرجاء اختيار محور.");
+
+            document.getElementById('quiz-emptyState').classList.add('hidden'); 
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('quiz-loadingState').classList.remove('hidden'); 
+            document.getElementById('quiz-loadingState').classList.add('flex');
+            
+            const loadingText = document.getElementById('quiz-loadingText');
+
+            let appliedDifficulty = userDifficulty;
+            if(userDifficulty === "تكيفي") {
+                appliedDifficulty = getAdaptiveDifficulty(subj);
+            }
+
+            const poolKey = generateStorageKey('quiz', subj, stream, topicsData.namesString, `${appliedDifficulty}_${count}`);
+            currentQuizPoolKey = poolKey;
+
+            if (!forceNew) {
+                loadingText.innerText = "جاري البحث عن كويز في السحابة...";
+                const cloudTopics = await fetchFromCloudPool(poolKey);
+                const seenExams = getSeenQuizzes();
+                const unseenTopics = cloudTopics.filter(topic => !seenExams.includes(topic.id));
+                
+                if (unseenTopics.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * unseenTopics.length);
+                    const chosenTopic = unseenTopics[randomIndex];
+                    currentQuizFirebaseId = chosenTopic.id;
+                    markQuizAsSeen(chosenTopic.id);
+                    
+                    displayQuizContent(chosenTopic.content, timeVal, subj);
+                    if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
+                    return; 
+                }
+            }
+
+            loadingText.innerText = `يتم الآن بناء كويز جديد كلياً... (${appliedDifficulty})`;
+
+            const prompt = `ألف ${count} أسئلة من نوع (${type}) في مادة ${subj} شعبة ${stream}. الصعوبة المطبقة: ${appliedDifficulty}. 
+            مستوحاة من هذه المحاور:
+            ${topicsData.detailsString}
+            ${extra ? '\nتوجيهات إضافية من الطالب: ' + extra : ''}
+            قم بتغيير الأرقام والأمثلة لضمان عدم التكرار. استخدم MathJax للمعادلات العلمية $...$.
+            الإخراج JSON Array فقط (دون أي نص خارجي): [{"question":"السؤال","options":["خيار1","خيار2","خيار3","خيار4"],"correctIndex":0,"explanation":"الشرح البيداغوجي"}]`;
+            
+            try {
+                let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+                let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
+                
+                const newExamId = saveToCloudPool(poolKey, jsonStr);
+                currentQuizFirebaseId = newExamId; 
+                markQuizAsSeen(newExamId);
+                
+                displayQuizContent(jsonStr, timeVal, subj);
+                if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
+
+            } catch(e) { 
+                alert("حدث خطأ في توليد الأسئلة."); 
+                document.getElementById('quiz-loadingState').classList.add('hidden'); 
+                document.getElementById('quiz-emptyState').classList.remove('hidden'); 
+                if(document.getElementById('forceNewExam')) document.getElementById('forceNewExam').checked = false;
+            }
+        }
+
+        function displayQuizContent(jsonString, timeVal, subj) {
+            try {
+                quiz_data = JSON.parse(jsonString);
+                
+                document.getElementById('quiz-loadingState').classList.add('hidden'); document.getElementById('quiz-loadingState').classList.remove('flex');
+                let area = document.getElementById('quiz-questionsArea'); area.innerHTML = '';
+                quiz_data.forEach((q, i) => {
+                    let html = `<div class="question-card" id="qcard-${i}"><h3 class="font-bold mb-4 text-slate-800 text-lg">${i+1}. ${marked.parseInline(q.question)}</h3><div class="space-y-2">`;
+                    q.options.forEach((opt, oi) => { html += `<label class="option-label" id="lbl-${i}-${oi}"><input type="radio" name="q${i}" value="${oi}"><span>${marked.parseInline(opt)}</span></label>`; });
+                    html += `</div>
+                    <div class="explanation-box" id="exp-${i}">
+                        <strong>الشرح العلمي:</strong><br>${marked.parse(q.explanation)}
+                        <div class="border-t border-yellow-500/30 pt-3 mt-3 flex gap-2 items-center flex-wrap">
+                            <span class="text-xs font-bold text-yellow-900 ml-2">ما رأيك في هذا السؤال؟</span>
+                            <button onclick="submitRating(event, ${i}, 'واضح')" class="rating-btn rate-clear">✅ واضح</button>
+                            <button onclick="submitRating(event, ${i}, 'صعب')" class="rating-btn rate-hard">🔥 صعب جداً</button>
+                            <button onclick="submitRating(event, ${i}, 'خطأ')" class="rating-btn rate-error">⚠️ خطأ</button>
+                        </div>
+                    </div></div>`;
+                    area.innerHTML += html;
+                });
+                document.getElementById('quiz-title').innerText = `تقييم ذكي: ${subj}`;
+                document.getElementById('quiz-submitBtn').style.display = 'flex'; document.getElementById('quiz-finalScore').classList.add('hidden');
+                document.getElementById('quiz-wrapper').classList.remove('hidden'); document.getElementById('quiz-wrapper').classList.add('block');
+                setTimeout(()=>renderMathAndGraphs('quiz-questionsArea'), 100);
+                
+                let mins = parseInt(timeVal);
+                if(mins>0) { 
+                    clearInterval(quiz_interval); let time = mins*60; document.getElementById('quiz-timerDisplay').style.display = 'flex';
+                    document.getElementById('quiz-timeText').innerText = `${mins < 10 ? '0'+mins : mins}:00`;
+                    quiz_interval = setInterval(()=>{ 
+                        time--; let m=Math.floor(time/60); let s=time%60; document.getElementById('quiz-timeText').innerText=`${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+                        if(time<=60) document.getElementById('quiz-timerDisplay').classList.add('warning');
+                        if(time<=0) quiz_evaluate(true);
+                    },1000);
+                } else { document.getElementById('quiz-timerDisplay').style.display = 'none'; }
+            } catch(e) {
+                alert("عذراً، حدث خطأ في تنسيق الكويز المحمل. سيتم توليد واحد جديد.");
+                document.getElementById('quiz-loadingState').classList.add('hidden'); document.getElementById('quiz-emptyState').classList.remove('hidden');
+            }
+        }
+
+        window.submitRating = function(event, qIndex, ratingType) {
+            const questionData = quiz_data[qIndex];
+            const btn = event.target;
+            btn.parentElement.innerHTML = `<span class="text-xs font-bold text-green-700 p-2 bg-green-100 rounded border border-green-300">✓ شكراً على تقييمك (${ratingType})</span>`;
+            if(!window.cloudDb) return;
+            window.cloudDb.ref('bacflix_ratings').push({
+                user: currentUser, rating: ratingType, subject: document.getElementById('quiz-subject').value,
+                questionText: questionData.question, date: new Date().toISOString()
+            }).catch(err => console.error(err));
+        }
+
+        function quiz_evaluate(timeUp) {
+            clearInterval(quiz_interval); document.getElementById('quiz-timerDisplay').classList.remove('warning');
+            let score = 0;
+            let wrongAnswersDetails = [];
+
+            quiz_data.forEach((q, i) => {
+                let checked = document.querySelector(`input[name="q${i}"]:checked`);
+                document.querySelectorAll(`input[name="q${i}"]`).forEach(inp => inp.disabled=true);
+                let correctLabel = document.getElementById(`lbl-${i}-${q.correctIndex}`);
+                if(correctLabel) correctLabel.classList.add('correct-answer');
+                
+                if(checked) { 
+                    const selectedVal = parseInt(checked.value);
+                    if(selectedVal === q.correctIndex) {
+                        score++; 
+                    } else { 
+                        document.getElementById(`lbl-${i}-${selectedVal}`).classList.add('wrong-answer'); 
+                        wrongAnswersDetails.push(`- السؤال: ${q.question}\n- إجابتك: ${q.options[selectedVal]}\n- الصحيحة: ${q.options[q.correctIndex]}\n- التعليل: ${q.explanation}`);
+                    }
+                } else {
+                    wrongAnswersDetails.push(`- السؤال: ${q.question}\n- لم تجب\n- الصحيحة: ${q.options[q.correctIndex]}\n- التعليل: ${q.explanation}`);
+                }
+                document.getElementById(`exp-${i}`).classList.add('visible');
+            });
+            
+            const percentage = Math.round((score / quiz_data.length) * 100);
+            
+            updateStat('quizzesTaken', 1);
+            updateStat('quizTotalQuestions', quiz_data.length);
+            updateStat('quizCorrectAnswers', score);
+            
+            const currentSubj = document.getElementById('quiz-subject').value;
+            const selectedTopics = Array.from(document.querySelectorAll('.topic-cb-quiz:checked')).map(cb => cb.value).join(' و ');
+            saveQuizHistory(currentSubj, selectedTopics, percentage);
+
+            document.getElementById('quiz-submitBtn').style.display = 'none';
+            let scoreDiv = document.getElementById('quiz-finalScore'); scoreDiv.classList.remove('hidden');
+            scoreDiv.innerText = `${timeUp?'انتهى الوقت! ':''}النتيجة النهائية: ${score} / ${quiz_data.length} (${percentage}%)`;
+            scoreDiv.className = `text-center p-6 rounded-xl font-bold text-3xl mt-6 ${percentage>=50?'bg-emerald-100 text-emerald-800 border border-emerald-500':'bg-red-100 text-red-800 border border-red-500'}`;
+            scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(()=>renderMathAndGraphs('quiz-questionsArea'), 100);
+
+            let botGreeting = "";
+            if (percentage < 50) {
+                botGreeting = `مرحباً بك! لاحظت أنك واجهت بعض الصعوبة في كويز ${currentSubj}. لا تقلق، الأخطاء هي أفضل طريق للتعلم! هل تريدني أن أشرح لك الأسئلة التي أخطأت فيها؟`;
+            } else if (percentage >= 75) {
+                botGreeting = `عمل ممتاز! لقد تألقت في كويز ${currentSubj}. هل هناك أي نقطة معينة تود التعمق فيها أكثر؟`;
+            } else {
+                botGreeting = `نتيجة جيدة جداً في كويز ${currentSubj}. أنت في الطريق الصحيح! هل نراجع معاً الأسئلة التي ضاعت منك لتحصل على العلامة الكاملة المرة القادمة؟`;
+            }
+
+            let hiddenPrompt = `[ملاحظة نظامية مخفية - لا ترد عليها]: الطالب أنهى للتو كويز في ${currentSubj} وحصل على ${score} من ${quiz_data.length}. لقد بادرت أنت بسؤاله وعرضت المساعدة.\n`;
+            if (wrongAnswersDetails.length > 0) {
+                hiddenPrompt += `\nإليك الأسئلة التي أخطأ فيها الطالب لتعرف الإجابات الصحيحة:\n${wrongAnswersDetails.join('\n')}\n`;
+                hiddenPrompt += `\nبناءً على رده القادم، قم بإدارة الحوار بذكاء وتدرج في الشرح.`;
+            } else {
+                hiddenPrompt += `\nالطالب أجاب على جميع الأسئلة بشكل صحيح! شجعه واستعد لأي استفسار.`;
+            }
+
+            globalChatHistory.push({ role: "user", parts: [{ text: hiddenPrompt }] });
+            globalChatHistory.push({ role: "model", parts: [{ text: botGreeting }] });
+            
+            const chatBody = document.getElementById('chat-body');
+            chatBody.innerHTML += `<div class="message bot-msg" dir="auto">${botGreeting}</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            const chatBtn = document.getElementById('bacflix-chat-btn');
+            chatBtn.classList.add('chat-alert-active');
+            setTimeout(() => chatBtn.classList.remove('chat-alert-active'), 10000); 
+        }
+
+        // ===================================
+        // البطاقات
+        // ===================================
+        let cards_deck = []; let cards_index = 0; let cards_isFlipped = false;
+        
+        function renderLibrary() {
+            const list = document.getElementById('cards-localDecks'); if (!list) return;
+            let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
+            list.innerHTML = ''; const keys = Object.keys(lib).sort((a,b) => lib[b].lastAccessed - lib[a].lastAccessed);
+            if (keys.length === 0) { list.innerHTML = '<p class="text-[11px] text-gray-500 py-3 text-center">لا توجد حزم محفوظة في مكتبتك حالياً.</p>'; return; }
+            keys.forEach(k => {
+                const item = lib[k];
+                list.innerHTML += `<div class="deck-item" onclick="cards_startLocal('${item.subject}', '${item.topic}')">
+                    <div><div class="font-bold text-xs text-white">${item.subject}</div><div class="text-[9px] text-gray-400 mt-1">${item.topic}</div></div>
+                    <span class="text-[10px] bg-red-950/50 text-red-400 px-2 py-1 rounded-md">${item.cards.length} بطاقة</span>
+                </div>`;
+            });
+        }
+        function cacheCardsLocally(subj, topic, cardsArray) {
+            let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
+            const key = `${subj}_${topic}`; let existing = lib[key] ? lib[key].cards : [];
+            let ids = new Set(existing.map(c=>c.front)); cardsArray.forEach(c=>{if(!ids.has(c.front)) existing.push(c);});
+            lib[key] = { subject: subj, topic: topic, lastAccessed: Date.now(), cards: existing };
+            localStorage.setItem(`bacflix_library_${currentUser}`, JSON.stringify(lib)); renderLibrary();
+        }
+        window.cards_startLocal = function(subj, topic) {
+            let lib = JSON.parse(localStorage.getItem(`bacflix_library_${currentUser}`)) || {};
+            cards_deck = lib[`${subj}_${topic}`].cards.sort(() => 0.5 - Math.random());
+            cards_index = 0; document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
+            document.getElementById('cards-topicTitle').innerText = `${subj}`; cards_show();
+        }
+
+        async function cards_fetchAndStart() {
+            const subj = document.getElementById('cards-subject').value; const stream = currentStream; const count = document.getElementById('cards-count').value;
+            const diff = document.getElementById('cards-difficulty').value;
+            const extra = document.getElementById('cards-extraRules').value;
+            const topicsData = getSelectedTopicsData('cards', subj); if(!topicsData) return alert("اختر محورا.");
+            
+            document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.add('hidden');
+            document.getElementById('cards-loadingState').classList.remove('hidden'); document.getElementById('cards-loadingState').classList.add('flex');
+
+            const prompt = `ألف ${count} بطاقات مراجعة ذكية (سؤال وجواب قصير جداً للحفظ) في مادة ${subj} شعبة ${stream}. مستوى الصعوبة: ${diff}.
+            تغطي المحاور التالية: ${topicsData.detailsString}
+            ${extra ? '\nتوجيهات إضافية: ' + extra : ''}
+            استخدم MathJax للمعادلات العلمية $...$.
+            الإخراج JSON Array فقط (دون أي نص خارجي): [{"front":"السؤال (وجه البطاقة)","back":"الجواب (ظهر البطاقة)"}]`;
+            try {
+                let res = await fetchFromGemini([{parts:[{text:prompt}]}]);
+                let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
+                cards_deck = JSON.parse(jsonStr); cards_index = 0;
+                cacheCardsLocally(subj, topicsData.namesString, cards_deck);
+                document.getElementById('cards-loadingState').classList.add('hidden'); document.getElementById('cards-loadingState').classList.remove('flex');
+                document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
+                document.getElementById('cards-topicTitle').innerText = `بطاقات: ${subj}`; cards_show();
+            } catch(e) { alert("خطأ في توليد البطاقات."); document.getElementById('cards-loadingState').classList.add('hidden'); document.getElementById('cards-emptyState').classList.remove('hidden');}
+        }
+
+        async function cards_extractFromFile() {
+            const fileInput = document.getElementById('fileToExtract'); if(fileInput.files.length===0) return alert("اختر ملفا");
+            const file = fileInput.files[0]; const subj = document.getElementById('cards-subject').value;
+            const btn = document.getElementById('btn-extract-cards'); const orig = btn.innerText; btn.disabled=true; btn.innerText="جاري الاستخراج...";
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const b64 = e.target.result.split(',')[1];
+                try {
+                    let res = await fetchFromGemini([{parts:[{text:`استخرج بطاقات بصيغة JSON Array: [{"front":"سؤال قصير","back":"جواب قصير جدا"}] لمادة ${subj} من هذا الملف.`},{inlineData:{data:b64,mimeType:file.type}}]}]);
+                    let jsonStr = res.replace(/```json/gi,'').replace(/```/g,'').trim(); jsonStr = jsonStr.substring(jsonStr.indexOf('['), jsonStr.lastIndexOf(']')+1);
+                    cards_deck = JSON.parse(jsonStr); cards_index = 0;
+                    cacheCardsLocally(subj, "مستخرج من ملف", cards_deck);
+                    document.getElementById('fileExtractModal').style.display='none';
+                    document.getElementById('cards-emptyState').classList.add('hidden'); document.getElementById('cards-wrapper').classList.remove('hidden'); document.getElementById('cards-wrapper').classList.add('block');
+                    document.getElementById('cards-topicTitle').innerText = `مستخرج: ${subj}`; cards_show();
+                } catch(err){ alert("خطأ في قراءة أو تحليل الملف."); } finally { btn.disabled=false; btn.innerText=orig; }
+            }; reader.readAsDataURL(file);
+        }
+
+        async function cards_submitManual() {
+            const subj = document.getElementById('cards-subject').value;
+            const front = document.getElementById('manualFront').value; const back = document.getElementById('manualBack').value;
+            if(!front||!back) return alert("أكمل الفراغات");
+            cacheCardsLocally(subj, "إضافة يدوية", [{front: front, back: back}]);
+            alert("تمت الإضافة بنجاح!"); document.getElementById('manualCardModal').style.display='none';
+            document.getElementById('manualFront').value=''; document.getElementById('manualBack').value='';
+        }
+
+        function cards_show() {
+            if(cards_index >= cards_deck.length) {
+                document.getElementById('cards-wrapper').classList.add('hidden'); document.getElementById('cards-emptyState').classList.remove('hidden');
+                document.getElementById('cards-emptyState').innerHTML = `<p class="text-xl font-bold text-emerald-500">أنهيت مراجعة الحزمة بنجاح!</p>`; return;
+            }
+            cards_isFlipped = false; document.getElementById('cards-activeCard').classList.remove('is-flipped');
+            document.getElementById('cards-rating').classList.add('hidden'); document.getElementById('cards-hint').style.display = 'block';
+            document.getElementById('cards-front').innerHTML = marked.parse(cards_deck[cards_index].front);
+            document.getElementById('cards-back').innerHTML = marked.parse(cards_deck[cards_index].back);
+            document.getElementById('cards-counter').innerText = `${cards_index+1} / ${cards_deck.length}`;
+            setTimeout(()=>renderMathAndGraphs('cards-activeCard'), 50);
+        }
+        function cards_flip() { if(cards_isFlipped) return; cards_isFlipped=true; document.getElementById('cards-activeCard').classList.add('is-flipped'); document.getElementById('cards-hint').style.display='none'; setTimeout(()=>document.getElementById('cards-rating').classList.remove('hidden'), 400); }
+        
+        function cards_rate(rate, e) { 
+            e.stopPropagation(); 
+            updateStat('cardsReviewed', 1);
+            if(rate === 'easy') updateStat('cardsEasy', 1);
+            else if(rate === 'good') updateStat('cardsGood', 1);
+            else updateStat('cardsHard', 1);
+
+            cards_index++; 
+            cards_show(); 
+        }
+
+        // ===================================
+        // المساعد الذكي الخارجي
+        // ===================================
+        let isSocraticMode = false; let attachedFileBase64 = null, attachedFileMimeType = null, attachedFileName = null; let speechRecognition, isRecording = false; let isFullscreenChat = false;
+
+        function chat_toggle() { 
+            const w = document.getElementById('bacflix-chat-window'); 
+            w.style.display = w.style.display==='flex'?'none':'flex'; 
+            document.getElementById('bacflix-chat-btn').classList.remove('chat-alert-active');
+        }
+        
+        function toggleFullscreenChat() {
+            const win = document.getElementById('bacflix-chat-window');
+            const maxBtn = document.getElementById('maximize-btn');
+            if (!isFullscreenChat) { 
+                win.classList.add('fullscreen-chat'); 
+                maxBtn.innerHTML = 'تصغير'; 
+                isFullscreenChat = true; 
+            } else { 
+                win.classList.remove('fullscreen-chat'); 
+                maxBtn.innerHTML = 'تكبير'; 
+                isFullscreenChat = false; 
+            }
+        }
+
+        function chat_clear() { document.getElementById('chat-body').innerHTML = '<div class="message bot-msg" dir="auto">تم مسح ذاكرة الجلسة. كيف يمكنني مساعدتك الآن؟</div>'; globalChatHistory = []; removeAttachment(); }
+        
+        function toggleSocraticMode() {
+            isSocraticMode = !isSocraticMode; const btn = document.getElementById('socratic-toggle-btn');
+            if (isSocraticMode) { btn.innerHTML = 'تحدي (سقراطي)'; btn.style.background = 'var(--bacflix-red)'; btn.style.color = '#fff'; border='none'; } 
+            else { btn.innerHTML = 'شرح مباشر'; btn.style.background = '#111'; btn.style.color = '#ccc'; }
+        }
+
+        async function forceReviewAndFix() {
+            if(activeApp !== 'lab') return alert("هذا الزر مخصص لفحص أوراق المختبر فقط.");
+            if(!lab_rawText) return alert("لا توجد ورقة لفحصها!");
+            
+            const win = document.getElementById('bacflix-chat-window');
+            if(win.style.display !== 'flex') chat_toggle();
+
+            const chatBody = document.getElementById('chat-body');
+            chatBody.innerHTML += `<div class="message user-msg" dir="auto">افحص الورقة المعروضة حالياً وصحح أي أخطاء علمية أو بيداغوجية فيها.</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+
+            const loaderId = 'loader-' + Date.now();
+            chatBody.innerHTML += `<div class="message bot-msg" id="${loaderId}">أقوم بفحص دقيق للورقة، لحظات...</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+
+            const subj = document.getElementById('lab-subject').value;
+            const prompt = `المهمة: مراجعة وتصحيح الورقة التالية في مادة ${subj}:\n${lab_rawText}\nقم بإعادة كتابة المحتوى المحدث والمنقح بالكامل داخل علامات <UPDATE_EXAM> المحتوى الجديد </UPDATE_EXAM>`;
+
+            globalChatHistory.push({role: "user", parts: [{text: prompt}]});
+
+            try {
+                let res = await fetchFromGemini(globalChatHistory, "أنت مفتش بيداغوجي جزائري خبير.");
+                res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
+                document.getElementById(loaderId).remove();
+                globalChatHistory.push({role:"model", parts:[{text:res}]});
+                
+                if(res.includes('<UPDATE_EXAM>')) {
+                    const match = res.match(/<UPDATE_EXAM>([\s\S]*?)<\/UPDATE_EXAM>/);
+                    if(match && match[1]) {
+                        lab_rawText = match[1].trim();
+                        renderLabContent(document.getElementById('lab-toolMode').value, document.getElementById('lab-subject').value, currentStream);
+                        res = res.replace(match[0], `<div class="bg-red-950/40 p-3 rounded-lg border border-red-500/50 mt-2 text-center text-xs font-bold text-red-300">تم تحديث ورقة العمل بناءً على الفحص!</div>`);
+                    }
+                }
+
+                const msgId = 'msg-' + Date.now();
+                chatBody.innerHTML += `<div class="message bot-msg" id="${msgId}" dir="auto">${marked.parse(res)}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+                setTimeout(()=>renderMathAndGraphs(msgId), 50);
+            } catch(e) { document.getElementById(loaderId).innerText = 'خطأ في الاتصال.'; globalChatHistory.pop(); }
+        }
+
+        function handleFileSelection(e) {
+            const file = e.target.files[0]; if(!file) return; const reader = new FileReader();
+            reader.onload = (event) => {
+                attachedFileBase64 = event.target.result.split(',')[1]; attachedFileMimeType = file.type; attachedFileName = file.name;
+                document.getElementById('attachment-preview').style.display = 'flex'; document.getElementById('attachment-name').innerText = file.name;
+            }; reader.readAsDataURL(file);
+        }
+        function removeAttachment() { attachedFileBase64 = null; attachedFileMimeType = null; attachedFileName = null; document.getElementById('chat-file-input').value = ''; document.getElementById('attachment-preview').style.display = 'none'; }
+
+        function initSpeechRecognition() {
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (window.SpeechRecognition) {
+                speechRecognition = new window.SpeechRecognition(); speechRecognition.lang = 'ar-DZ'; speechRecognition.continuous = false; speechRecognition.interimResults = false;
+                let voiceDetected = false; 
+                speechRecognition.onstart = function() { isRecording = true; voiceDetected = false; document.getElementById('chat-input').placeholder = "تحدث الآن، أنا أستمع..."; MicBtnPulse(true); };
+                speechRecognition.onresult = function(event) { document.getElementById('chat-input').value += (document.getElementById('chat-input').value ? ' ' : '') + event.results[0][0].transcript; voiceDetected = true; };
+                speechRecognition.onerror = function() { stopSpeechRecognition(); }; speechRecognition.onend = function() { stopSpeechRecognition(); if (voiceDetected) chat_send(); };
+            } else { alert("متصفحك لا يدعم خاصية التعرف على الصوت."); }
+        }
+        function toggleSpeechRecognition() { if (!speechRecognition) initSpeechRecognition(); if (speechRecognition) { if (isRecording) speechRecognition.stop(); else try { speechRecognition.start(); } catch (e) {} } }
+        function stopSpeechRecognition() { isRecording = false; document.getElementById('chat-input').placeholder = "اكتب سؤالك هنا..."; MicBtnPulse(false); }
+        function MicBtnPulse(active) { const btn = document.getElementById('mic-btn'); if(active) btn.classList.add('animate-pulse', 'border-red-500', 'text-red-500'); else btn.classList.remove('animate-pulse', 'border-red-500', 'text-red-500'); }
+
+        async function chat_send() {
+            const inp = document.getElementById('chat-input'); const text = inp.value.trim();
+            if(!text && !attachedFileBase64) return;
+            inp.value = ''; const chatBody = document.getElementById('chat-body'); document.getElementById('send-btn').disabled = true; MicBtnPulse(false);
+
+            let fileHtmlForUI = '';
+            if(attachedFileBase64) {
+                if(attachedFileMimeType.startsWith('image/')) fileHtmlForUI = `<br><img src="data:${attachedFileMimeType};base64,${attachedFileBase64}" style="max-width:200px; border-radius:8px; margin-top:8px;">`;
+                else fileHtmlForUI = `<br><div class="bg-black/30 p-2 rounded mt-2 text-[10px] text-gray-400">ملف مرفق: ${attachedFileName}</div>`;
+            }
+            chatBody.innerHTML += `<div class="message user-msg" dir="auto">${text}${fileHtmlForUI}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+
+            let userParts = []; if(text) userParts.push({text: text});
+            if(attachedFileBase64) userParts.push({inlineData: {data: attachedFileBase64, mimeType: attachedFileMimeType}});
+            globalChatHistory.push({role: "user", parts: userParts}); removeAttachment();
+
+            let inst = "أنت المساعد البيداغوجي الذكي لمنصة BACFLIX التعليمية. ";
+            inst += "قاعدة صارمة جداً: يقتصر دورك حصراً على الإجابة عن الأسئلة التعليمية والأكاديمية للبكالوريا الجزائرية، أو الاستفسارات التقنية حول المنصة. إذا سألك الطالب عن أي موضوع آخر (سياسة، رياضة، دردشة، إلخ)، اعتذر بلباقة واطلب منه التركيز على دراسته. لا تجب أبدًا على الأسئلة الخارجة عن التعليم. ";
+            
+            if(isSocraticMode) inst += "أنت الآن في وضع التحدي (السقراطي). وجه الطالب بأسئلة دقيقة وتلميحات ليستنتج الحل بنفسه، ولا تعطه الإجابة مباشرة أبداً. ";
+            else inst += "أنت الآن في وضع الشرح المباشر. قدم شروحات علمية دقيقة، مفصلة، ومبسطة. ";
+            inst += "تنسيق الرياضيات: استخدم MathJax للمعادلات العلمية $...$. تأكد من كتابة الرموز الرياضية واللاتينية من اليسار إلى اليمين بطريقة سليمة ومقروءة. أجوبتك العامة يجب أن تكون باللغة العربية. ";
+
+            if(activeApp === 'lab' && lab_rawText) { 
+                inst += `الطالب يراجع حالياً ورقة العمل التالية:\n${lab_rawText}\n إذا طلب الطالب تعديل أو تحسين الورقة، قم بإعادة كتابتها بالكامل وضعها حصراً بين الوسمين: <UPDATE_EXAM> المحتوى الجديد </UPDATE_EXAM>`; 
+            } else if(activeApp === 'cards') {
+                inst += `إذا طلب الطالب استخراج أو تأليف بطاقات مراجعة، قم بتأليفها بصيغة JSON وضعها حصراً بين الوسمين: \`\`\`json_flashcards [{"front":"سؤال","back":"جواب"}] \`\`\``;
+            }
+
+            const loaderId = 'loader-' + Date.now();
+            chatBody.innerHTML += `<div class="message bot-msg loader-pulse" id="${loaderId}">جاري التفكير وتحليل طلبك...</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+            
+            try {
+                let res = await fetchFromGemini(globalChatHistory, inst);
+                res = res.replace(/<think>[\s\S]*?<\/think>/gi, '').trim(); 
+                document.getElementById(loaderId).remove();
+                globalChatHistory.push({role:"model", parts:[{text:res}]});
+                
+                if(res.includes('<UPDATE_EXAM>')) {
+                    const match = res.match(/<UPDATE_EXAM>([\s\S]*?)<\/UPDATE_EXAM>/);
+                    if(match && match[1]) {
+                        lab_rawText = match[1].trim();
+                        renderLabContent(document.getElementById('lab-toolMode').value, document.getElementById('lab-subject').value, currentStream);
+                        res = res.replace(match[0], `<div class="bg-red-950/40 p-3 rounded-lg border border-red-500/50 mt-2 text-center text-xs font-bold text-red-300">تم تحديث ورقة العمل بنجاح!</div>`);
+                    }
+                }
+                
+                if(res.includes('```json_flashcards')) {
+                    const match = res.match(/```json_flashcards([\s\S]*?)```/);
+                    if(match) {
+                        const safeJson = encodeURIComponent(match[1].trim());
+                        res = res.replace(match[0], `<div class="bg-emerald-950/40 p-3 rounded-lg border border-emerald-500/50 mt-2 text-center"><button onclick="saveChatCardsToBank(decodeURIComponent('${safeJson}'))" class="btn-primary !py-2 w-full text-xs !bg-emerald-600 hover:!bg-emerald-500 border-none shadow-none">حفظ هذه البطاقات في مكتبتي</button></div>`);
+                    }
+                }
+
+                const msgId = 'msg-' + Date.now();
+                chatBody.innerHTML += `<div class="message bot-msg" id="${msgId}" dir="auto">${marked.parse(res)}</div>`; chatBody.scrollTop = chatBody.scrollHeight;
+                setTimeout(()=>renderMathAndGraphs(msgId), 50);
+            } catch(e) { document.getElementById(loaderId).innerText = 'عذراً، حدث خطأ في الاتصال بالسيرفر.'; globalChatHistory.pop(); }
+            document.getElementById('send-btn').disabled = false;
+        }
+
+        window.onload = checkAuth;
+
+        // =========================================================================
+        // BACFLIX WATCH - PLUGIN LOGIC (تم الدمج بالكامل مع الكود الأصلي)
+        // =========================================================================
+        let watch_loadedChannels = [];
+        let watch_curatedPlaylists = {};
+        let watch_currentTeacherId = null;
+        let watch_currentTeacherName = null;
+        let watch_ytPlayer;
+        let watch_playlistVideos = [];
+        let watch_currentVideoIndex = 0;
+        let watch_autoPlayTimer;
+        let watch_currentPlaylistData = null;
+        let watch_currentPlaylistId = null;
+        let watch_chatHistory = []; 
+        let watch_isChatOpen = false; 
+        let watch_attachedFileBase64 = null; 
+        let watch_attachedMimeType = null; 
+        let watch_speechRecognition = null; 
+        let watch_isRecording = false;
+
+        const WATCH_YOUTUBE_API_KEYS = [ "AIzaSyCrUmCjenb2u9n-JqqPagPqZniLJdR6cbw", "AIzaSyCWUGCh7SL_g8aKQjggc2kcnfYI1da5_aU" ];
+
+        function watch_onEnter() {
+            if(!currentUser || !cloudCurriculum) return;
+            const subjEl = document.getElementById('watch-subject');
+            if (subjEl.options.length <= 1) {
+                let subjects = new Set();
+                if (cloudCurriculum[currentStream]) Object.keys(cloudCurriculum[currentStream]).forEach(s => subjects.add(s)); 
+                if (cloudCurriculum["مواد مشتركة"]) Object.keys(cloudCurriculum["مواد مشتركة"]).forEach(s => subjects.add(s));
+                
+                subjEl.innerHTML = '<option value="" disabled selected>-- اختر المادة --</option>';
+                Array.from(subjects).forEach(s => subjEl.innerHTML += `<option value="${s}">${s}</option>`);
+            }
+            watch_renderResumeBanner();
+        }
+
+        function watch_sanitizePath(str) { return str.replace(/[.#$\[\]]/g, '').substring(0, 50).replace(/\s+/g, '_'); }
+
+        async function watch_fetchFromYouTube(urlTemplate) {
+            let keysToTry = [...WATCH_YOUTUBE_API_KEYS].sort(() => 0.5 - Math.random()); let lastErr = "";
+            for (const key of keysToTry) {
+                try {
+                    const res = await fetch(urlTemplate.replace("{KEY}", key)); const data = await res.json();
+                    if (res.ok) return data; else { lastErr = data.error?.message || res.status; if (res.status === 403 && lastErr.toLowerCase().includes("quota")) continue; else throw new Error(lastErr); }
+                } catch (e) { lastErr = e.message; }
+            }
+            throw new Error("استُنفدت مفاتيح يوتيوب.");
+        }
+
+        function watch_openAddChannelModal() {
+            const subject = document.getElementById('watch-subject').value; if(!subject) return alert("الرجاء اختيار المادة أولاً.");
+            document.getElementById('watch-channelSearchResults').innerHTML = ''; document.getElementById('watch-channelSearchResults').classList.add('hidden');
+            document.getElementById('watch-channelSearchInput').value = ''; document.getElementById('watch-addChannelModal').style.display = 'flex';
+        }
+        
+        async function watch_searchChannelsForAdd() {
+            let input = document.getElementById('watch-channelSearchInput').value.trim(); if(!input) return alert("يرجى إدخال اسم الأستاذ أو رابط قناته.");
+            const btn = document.getElementById('watch-searchChannelBtn'); const resultsContainer = document.getElementById('watch-channelSearchResults');
+            btn.disabled = true; btn.innerText = "جاري..."; resultsContainer.innerHTML = ''; resultsContainer.classList.add('hidden');
+            if (input.includes('[youtube.com/](https://youtube.com/)')) { const match = input.match(/@([a-zA-Z0-9_.-]+)/); if (match) input = match[0]; }
+            try {
+                const searchQ = encodeURIComponent(input);
+                const data = await watch_fetchFromYouTube(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchQ}&type=channel&maxResults=5&key={KEY}`);
+                if (!data.items || data.items.length === 0) throw new Error("لم يتم العثور على قنوات بهذا الاسم.");
+                resultsContainer.classList.remove('hidden'); resultsContainer.classList.add('flex');
+                data.items.forEach(item => {
+                    const title = item.snippet.channelTitle; const thumb = item.snippet.thumbnails?.default?.url; const cid = item.snippet.channelId;
+                    resultsContainer.innerHTML += `<div class="flex justify-between items-center bg-[#1a1a1a] p-3 rounded-lg border border-[#333] hover:border-[--bacflix-red] transition"><div class="flex items-center gap-3"><img src="${thumb}" class="w-10 h-10 rounded-full object-cover"><span class="text-white text-sm font-bold truncate max-w-[150px] sm:max-w-xs" title="${title}">${title}</span></div><button onclick="watch_confirmChannelAdd('${cid}', '${title.replace(/'/g, "\\'")}', '${thumb}')" class="bg-[--bacflix-red] text-white text-xs px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition">اقتراح</button></div>`;
+                });
+            } catch (e) { alert(e.message); } finally { btn.disabled = false; btn.innerText = "بحث"; }
+        }
+        
+        async function watch_confirmChannelAdd(channelId, channelName, thumb) {
+            const subject = document.getElementById('watch-subject').value;
+            const newChannelData = { channelId, channelName, thumb, suggestedBy: currentUser, timestamp: Date.now() };
+            try { await window.cloudDb.ref(`bacflix_pending_channels/${watch_sanitizePath(subject)}/${channelId}`).set(newChannelData); alert(`تم إرسال اقتراحك للمدير لاعتماده.`); document.getElementById('watch-addChannelModal').style.display='none'; } 
+            catch (e) { alert("حدث خطأ أثناء الإرسال."); }
+        }
+
+        function watch_openAddPlaylistModal() {
+            const subject = document.getElementById('watch-subject').value; if(!subject) return alert("الرجاء اختيار المادة أولاً.");
+            document.getElementById('watch-addPlaylistModal').style.display = 'flex';
+        }
+        
+        async function watch_submitUserPlaylist() {
+            const url = document.getElementById('watch-playlistUrlInput').value.trim();
+            const match = url.match(/[?&]list=([^#\&\?]+)/); const playlistId = match && match[1] ? match[1] : null; if(!playlistId) return alert("رابط غير صحيح!");
+            const btn = document.getElementById('watch-submitPlaylistBtn'); btn.disabled = true; btn.innerText = "جاري الفحص...";
+            try {
+                const data = await watch_fetchFromYouTube(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${playlistId}&key={KEY}`);
+                if (!data.items || data.items.length === 0) throw new Error("القائمة غير متوفرة أو خاصة.");
+                const snippet = data.items[0].snippet; const thumbUrl = snippet.thumbnails?.high?.url || snippet.thumbnails?.medium?.url || snippet.thumbnails?.default?.url || '[https://via.placeholder.com/640x360.png?text=BACFLIX](https://via.placeholder.com/640x360.png?text=BACFLIX)';
+                const newPlaylistData = { playlistId: playlistId, title: snippet.title, channel: snippet.channelTitle, channelId: snippet.channelId, thumb: thumbUrl, suggestedBy: currentUser, timestamp: Date.now() };
+                const subject = document.getElementById('watch-subject').value;
+                const pendingPath = `bacflix_pending_playlists/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}/${playlistId}`;
+                await window.cloudDb.ref(pendingPath).set(newPlaylistData);
+                alert(`تم إرسال الدورة للمدير ليقوم بمراجعتها ونشرها.`); document.getElementById('watch-addPlaylistModal').style.display='none'; document.getElementById('watch-playlistUrlInput').value=''; 
+            } catch (e) { alert(e.message); } finally { btn.disabled = false; btn.innerText = "إرسال للمدير"; }
+        }
+
+        function watch_renderResumeBanner() {
+            if(!currentUser) return; const allResumes = JSON.parse(localStorage.getItem(`bacflix_resumes_${currentUser}`)) || {}; const banner = document.getElementById('watch-resumeBanner');
+            if (watch_currentTeacherId && allResumes[watch_currentTeacherId] && banner) {
+                banner.style.display = 'flex'; document.getElementById('watch-resumeTitle').innerText = allResumes[watch_currentTeacherId].title; document.getElementById('watch-resumeLesson').innerText = allResumes[watch_currentTeacherId].lessonTitle;
+            } else if (banner) { banner.style.display = 'none'; }
+        }
+
+        function watch_resumeVideo() {
+            if(!watch_currentTeacherId) return; const rData = (JSON.parse(localStorage.getItem(`bacflix_resumes_${currentUser}`)) || {})[watch_currentTeacherId];
+            if (rData) { watch_prepareCinema(rData.playlistId, rData.title, rData.channel, 'false', rData.videoIndex, rData.time); }
+        }
+
+        setInterval(() => {
+            if (watch_ytPlayer && typeof watch_ytPlayer.getPlayerState === 'function' && watch_ytPlayer.getPlayerState() === 1 && watch_currentPlaylistId && watch_currentTeacherId) {
+                const cTime = Math.floor(watch_ytPlayer.getCurrentTime());
+                if (cTime > 5) {
+                    const subj = document.getElementById('watch-subject').value;
+                    const rData = { playlistId: watch_currentPlaylistId, videoIndex: watch_currentVideoIndex, videoId: watch_playlistVideos[watch_currentVideoIndex].id, time: cTime, title: watch_currentPlaylistData.title, lessonTitle: watch_currentPlaylistData.currentLesson, channel: watch_currentPlaylistData.channel, stream: currentStream, subject: subj };
+                    let allResumes = JSON.parse(localStorage.getItem(`bacflix_resumes_${currentUser}`)) || {}; allResumes[watch_currentTeacherId] = rData; localStorage.setItem(`bacflix_resumes_${currentUser}`, JSON.stringify(allResumes));
+                }
+            }
+        }, 5000);
+
+        function watch_fireConfetti() {
+            for(let i=0; i<50; i++){
+                let conf = document.createElement('div'); conf.className = 'watch-confetti'; conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = ['#E50914', '#2563eb', '#16a34a', '#facc15', '#fff'][Math.floor(Math.random() * 5)]; conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(conf); setTimeout(()=>conf.remove(), 4000);
+            }
+        }
+
+        function watch_markCurrentVideoWatched() {
+            if(!watch_currentPlaylistId || !watch_playlistVideos[watch_currentVideoIndex]) return; const vidId = watch_playlistVideos[watch_currentVideoIndex].id;
+            let progress = JSON.parse(localStorage.getItem(`bacflix_progress_${currentUser}`)) || {};
+            if(!progress[watch_currentPlaylistId]) { progress[watch_currentPlaylistId] = { title: watch_currentPlaylistData.title, channel: watch_currentPlaylistData.channel, watched: [], total: watch_playlistVideos.length }; }
+            progress[watch_currentPlaylistId].total = watch_playlistVideos.length; 
+            if(!progress[watch_currentPlaylistId].watched.includes(vidId)) {
+                progress[watch_currentPlaylistId].watched.push(vidId); localStorage.setItem(`bacflix_progress_${currentUser}`, JSON.stringify(progress)); watch_renderPlaylistMenu(); 
+                if(progress[watch_currentPlaylistId].watched.length === watch_playlistVideos.length) { watch_fireConfetti(); alert("ألف مبروك! لقد أتممت الدورة بالكامل."); }
+            }
+        }
+
+        function watch_showProgressDashboard() {
+            const modal = document.getElementById('watch-progressModal'); const tbody = document.getElementById('watch-progressTableBody'); const statsDiv = document.getElementById('watch-progressStats');
+            let progress = JSON.parse(localStorage.getItem(`bacflix_progress_${currentUser}`)) || {}; let totalWatched = 0; let totalCourses = Object.keys(progress).length; tbody.innerHTML = '';
+            if(totalCourses === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-500">لم تبدأ بأي دورة بعد.</td></tr>'; statsDiv.innerHTML = ''; } 
+            else {
+                for(let pid in progress) {
+                    let p = progress[pid]; let wCount = p.watched.length; let tCount = p.total; let pct = Math.round((wCount / tCount) * 100) || 0; totalWatched += wCount;
+                    tbody.innerHTML += `<tr class="border-b border-gray-800 hover:bg-gray-800/50 transition"><td class="px-4 py-3 font-bold text-white">${p.title}</td><td class="px-4 py-3 text-gray-400 text-xs">${p.channel}</td><td class="px-4 py-3 text-xs text-center">${wCount} / ${tCount} درس</td><td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-full bg-gray-800 rounded-full h-2 border border-gray-700"><div class="bg-[--bacflix-red] h-1.5 rounded-full mt-[1px] ml-[1px]" style="width: ${pct}%"></div></div><span class="text-xs font-bold ${pct===100 ? 'text-green-500' : 'text-gray-300'}">${pct}%</span></div></td></tr>`;
+                }
+                statsDiv.innerHTML = `<div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-center shadow-inner"><div class="text-gray-400 text-xs mb-1">الدورات المفتوحة</div><div class="text-2xl font-bold text-white">${totalCourses}</div></div><div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-center shadow-inner"><div class="text-gray-400 text-xs mb-1">الدروس المنجزة إجمالاً</div><div class="text-2xl font-bold text-green-500">${totalWatched}</div></div>`;
+            }
+            modal.style.display = 'flex';
+        }
+
+        function watch_applyFilters() { if(document.getElementById('watch-playlistsGrid').style.display === 'grid') { if (watch_currentTeacherId === 'manual') { watch_showManualPlaylists(true); } else { watch_selectTeacher(watch_currentTeacherId, watch_currentTeacherName, true); } } else { watch_renderChannelsGrid(); } }
+
+        async function watch_loadTeachers() {
+            const subject = document.getElementById('watch-subject').value; if(!subject) return; document.getElementById('watch-favFilterCheckbox').checked = false;
+            const channelsGrid = document.getElementById('watch-channelsGrid'); const playlistsGrid = document.getElementById('watch-playlistsGrid'); const loading = document.getElementById('watch-loadingState'); const navPath = document.getElementById('watch-navigationPath');
+            channelsGrid.innerHTML = ''; playlistsGrid.innerHTML = ''; channelsGrid.style.display = 'grid'; playlistsGrid.style.display = 'none'; navPath.style.display = 'flex'; document.getElementById('watch-pathSubject').innerText = subject; document.getElementById('watch-pathArrow').style.display = 'none'; document.getElementById('watch-pathChannel').style.display = 'none'; document.getElementById('watch-backToChannelsBtn').style.display = 'none';
+            loading.style.display = 'flex'; document.getElementById('watch-loadingText').innerText = "جاري تحميل الدورات...";
+            try {
+                const cachePath = `bacflix_curated_playlists/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}`; const snap = await window.cloudDb.ref(cachePath).once('value'); watch_curatedPlaylists = snap.exists() ? snap.val() : {}; const playlistsArray = Object.values(watch_curatedPlaylists); let teachersDict = {};
+                playlistsArray.forEach(pl => { if(!teachersDict[pl.channelId]) { teachersDict[pl.channelId] = { channelId: pl.channelId, channelName: pl.channel, thumb: pl.channelThumb || '[https://via.placeholder.com/80](https://via.placeholder.com/80)', plCount: 1, totalVotes: pl.votes || 0 }; } else { teachersDict[pl.channelId].plCount++; teachersDict[pl.channelId].totalVotes += (pl.votes || 0); } });
+                const channelsSnap = await window.cloudDb.ref(`bacflix_approved_channels/${watch_sanitizePath(subject)}`).once('value');
+                if (channelsSnap.exists()) { const approvedChannels = channelsSnap.val(); for (let cid in approvedChannels) { if (!teachersDict[cid]) { teachersDict[cid] = { channelId: cid, channelName: approvedChannels[cid].channelName, thumb: approvedChannels[cid].thumb, plCount: 0, totalVotes: approvedChannels[cid].votes || 0 }; } else { teachersDict[cid].totalVotes += (approvedChannels[cid].votes || 0); } } }
+                watch_loadedChannels = Object.values(teachersDict); loading.style.display = 'none'; watch_renderChannelsGrid(); watch_currentTeacherId = null; watch_renderResumeBanner();
+            } catch (err) { console.error(err); loading.style.display = 'none'; }
+        }
+
+        function watch_renderChannelsGrid() {
+            const grid = document.getElementById('watch-channelsGrid'); grid.innerHTML = '';
+            if(watch_loadedChannels.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500 text-lg">لم يتم اعتماد أي دورات في هذا القسم بعد. ⏳</div>`; return; }
+            watch_loadedChannels.sort((a, b) => b.totalVotes - a.totalVotes);
+            let favs = JSON.parse(localStorage.getItem(`bacflix_fav_channels_${currentUser}`)) || []; const showFavsOnly = document.getElementById('watch-favFilterCheckbox').checked; let displayChannels = watch_loadedChannels; if (showFavsOnly) { displayChannels = watch_loadedChannels.filter(c => favs.includes(c.channelId)); }
+            if (!showFavsOnly) { grid.innerHTML += `<div class="teacher-card bg-blue-900/10 border-blue-900" onclick="watch_showManualPlaylists()"><div class="teacher-avatar flex items-center justify-center bg-blue-600 text-3xl font-black border-blue-500"><svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div><h3 class="text-white font-bold text-sm mb-1 truncate text-blue-300">دورات الطلبة</h3><div class="text-[10px] text-gray-500 bg-[#0d1117] px-2 py-1 rounded inline-block mt-auto">إضافات معتمدة يدوياً</div></div>`; }
+            displayChannels.forEach(ch => {
+                if (ch.channelId === 'manual') return; 
+                const isFav = favs.includes(ch.channelId); const favClass = isFav ? 'active' : ''; const opacityClass = ch.plCount === 0 ? 'opacity-50 hover:opacity-100' : ''; const currentVote = localStorage.getItem(`vote_ch_${ch.channelId}`); const upClass = currentVote == 1 ? 'voted-up' : ''; const downClass = currentVote == -1 ? 'voted-down' : '';
+                grid.innerHTML += `<div class="teacher-card flex flex-col justify-between ${opacityClass}" onclick="watch_selectTeacher('${ch.channelId}', '${ch.channelName.replace(/'/g, "\\'")}')"><div class="fav-btn ${favClass}" onclick="watch_toggleFavoriteChannel('${ch.channelId}', event)" title="إضافة للمفضلة"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div class="flex-1"><img src="${ch.thumb}" class="teacher-avatar" alt="${ch.channelName}" onerror="this.src='https://via.placeholder.com/80'"><h3 class="text-white font-bold text-sm mb-1 truncate" title="${ch.channelName}">${ch.channelName}</h3><div class="text-[10px] text-gray-400 bg-[#0d1117] px-2 py-1 rounded inline-block mt-1">${ch.plCount} دورات معتمدة</div></div><div class="mt-4 border-t border-[#333] pt-3 flex justify-center"><div class="vote-control" onclick="event.stopPropagation()"><button onclick="watch_voteChannel('${ch.channelId}', 1, event)" class="${upClass}" title="أعجبني"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></button><span id="watch-score-ch-${ch.channelId}">${ch.totalVotes || 0}</span><button onclick="watch_voteChannel('${ch.channelId}', -1, event)" class="${downClass}" title="لم يعجبني"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></button></div></div></div>`;
+            });
+        }
+
+        function watch_toggleFavoriteChannel(channelId, event) { event.stopPropagation(); let favs = JSON.parse(localStorage.getItem(`bacflix_fav_channels_${currentUser}`)) || []; if(favs.includes(channelId)) favs = favs.filter(c => c !== channelId); else favs.push(channelId); localStorage.setItem(`bacflix_fav_channels_${currentUser}`, JSON.stringify(favs)); watch_renderChannelsGrid(); }
+
+        function watch_selectTeacher(channelId, channelName, isFromFilter = false) {
+            watch_currentTeacherId = channelId; watch_currentTeacherName = channelName; watch_renderResumeBanner();
+            if (!isFromFilter) { document.getElementById('watch-favFilterCheckbox').checked = false; }
+            document.getElementById('watch-channelsGrid').style.display = 'none'; const pGrid = document.getElementById('watch-playlistsGrid'); pGrid.style.display = 'grid'; pGrid.innerHTML = '';
+            document.getElementById('watch-pathArrow').style.display = 'inline'; document.getElementById('watch-pathChannel').style.display = 'inline'; document.getElementById('watch-pathChannel').innerText = channelName; document.getElementById('watch-backToChannelsBtn').style.display = 'block';
+            let teacherPlaylists = Object.values(watch_curatedPlaylists).filter(pl => pl.channelId === channelId); teacherPlaylists.sort((a, b) => (b.votes || 0) - (a.votes || 0));
+            let favs = JSON.parse(localStorage.getItem(`bacflix_fav_playlists_${currentUser}`)) || []; const showFavsOnly = document.getElementById('watch-favFilterCheckbox').checked;
+            if (showFavsOnly) { teacherPlaylists = teacherPlaylists.filter(pl => favs.includes(pl.playlistId)); }
+            if (teacherPlaylists.length === 0) { pGrid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500">لا توجد دورات لعرضها هنا.</div>`; return; }
+            teacherPlaylists.forEach(pl => {
+                const isFav = favs.includes(pl.playlistId); const favClass = isFav ? 'active' : ''; const currentVote = localStorage.getItem(`vote_pl_curated_${pl.playlistId}`); const upClass = currentVote == 1 ? 'voted-up' : ''; const downClass = currentVote == -1 ? 'voted-down' : '';
+                pGrid.innerHTML += `<div class="video-card flex flex-col justify-between"><div class="fav-btn ${favClass}" onclick="watch_toggleFavoritePlaylist('${pl.playlistId}', event)" title="إضافة للمفضلة"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div class="thumbnail-container" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'false')"><img src="${pl.thumb}" alt="Thumbnail" loading="lazy" onerror="this.src='https://via.placeholder.com/640x360.png?text=No+Image'"><div class="absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity bg-black/40"><svg viewBox="0 0 24 24" width="40" height="40" stroke="currentColor" stroke-width="2" fill="white"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div></div><div class="p-4 flex-1 flex flex-col justify-between"><div><div class="text-[10px] text-gray-500 mb-1 flex justify-between"><span>${pl.channel}</span></div><h3 class="text-white font-bold text-sm line-clamp-2 leading-relaxed cursor-pointer hover:text-[--bacflix-red] transition" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'false')" title="${pl.title}">${pl.title}</h3></div><div class="flex justify-between items-center border-t border-[#333] pt-3 mt-3"><div class="vote-control" onclick="event.stopPropagation()"><button onclick="watch_votePlaylist('${pl.playlistId}', 1, false, event)" class="${upClass}"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></button><span id="watch-score-pl-${pl.playlistId}">${pl.votes || 0}</span><button onclick="watch_votePlaylist('${pl.playlistId}', -1, false, event)" class="${downClass}"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></button></div><span class="text-xs text-[--bacflix-red] font-bold cursor-pointer flex items-center gap-1" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'false')">شاهد <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span></div></div></div>`;
+            });
+        }
+
+        async function watch_showManualPlaylists(isFromFilter = false) {
+            watch_currentTeacherId = 'manual'; watch_currentTeacherName = 'دورات الطلبة'; watch_renderResumeBanner();
+            if (!isFromFilter) { document.getElementById('watch-favFilterCheckbox').checked = false; }
+            const subject = document.getElementById('watch-subject').value;
+            document.getElementById('watch-channelsGrid').style.display = 'none'; const pGrid = document.getElementById('watch-playlistsGrid'); pGrid.style.display = 'grid'; pGrid.innerHTML = '';
+            document.getElementById('watch-pathArrow').style.display = 'inline'; document.getElementById('watch-pathChannel').style.display = 'inline'; document.getElementById('watch-pathChannel').innerText = watch_currentTeacherName; document.getElementById('watch-backToChannelsBtn').style.display = 'block'; document.getElementById('watch-loadingState').style.display = 'flex';
+            try {
+                const cachePath = `bacflix_manual_playlists/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}`; const snap = await window.cloudDb.ref(cachePath).once('value'); let manualPlaylists = [];
+                if (snap.exists()) { const pObj = snap.val(); manualPlaylists = Object.keys(pObj).map(k => pObj[k]); manualPlaylists.sort((a, b) => (b.votes || 0) - (a.votes || 0)); }
+                document.getElementById('watch-loadingState').style.display = 'none'; let favs = JSON.parse(localStorage.getItem(`bacflix_fav_playlists_${currentUser}`)) || []; const showFavsOnly = document.getElementById('watch-favFilterCheckbox').checked;
+                if (showFavsOnly) { manualPlaylists = manualPlaylists.filter(pl => favs.includes(pl.playlistId)); }
+                if(manualPlaylists.length === 0) { pGrid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500">لا توجد دورات هنا.</div>`; return; }
+                manualPlaylists.forEach(pl => {
+                    const isFav = favs.includes(pl.playlistId); const favClass = isFav ? 'active' : ''; const currentVote = localStorage.getItem(`vote_pl_manual_${pl.playlistId}`); const upClass = currentVote == 1 ? 'voted-up' : ''; const downClass = currentVote == -1 ? 'voted-down' : '';
+                    pGrid.innerHTML += `<div class="video-card flex flex-col justify-between"><div class="fav-btn ${favClass}" onclick="watch_toggleFavoritePlaylist('${pl.playlistId}', event)" title="إضافة للمفضلة"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div class="thumbnail-container" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'true')"><img src="${pl.thumb}" alt="Thumbnail" loading="lazy" onerror="this.src='https://via.placeholder.com/640x360.png?text=No+Image'"><div class="absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity bg-black/40"><svg viewBox="0 0 24 24" width="40" height="40" stroke="currentColor" stroke-width="2" fill="white"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div></div><div class="p-4 flex-1 flex flex-col justify-between"><div><div class="text-[10px] text-gray-500 mb-1 flex justify-between"><span>${pl.channel}</span></div><h3 class="text-white font-bold text-sm line-clamp-2 leading-relaxed cursor-pointer hover:text-[--bacflix-red] transition" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'true')" title="${pl.title}">${pl.title}</h3></div><div class="flex justify-between items-center border-t border-[#333] pt-3 mt-3"><div class="vote-control" onclick="event.stopPropagation()"><button onclick="watch_votePlaylist('${pl.playlistId}', 1, true, event)" class="${upClass}"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></button><span id="watch-score-pl-${pl.playlistId}">${pl.votes || 0}</span><button onclick="watch_votePlaylist('${pl.playlistId}', -1, true, event)" class="${downClass}"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></button></div><span class="text-xs text-[--bacflix-red] font-bold cursor-pointer flex items-center gap-1" onclick="watch_prepareCinema('${pl.playlistId}', '${pl.title.replace(/'/g, "\\'")}', '${pl.channel.replace(/'/g, "\\'")}', 'true')">شاهد <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span></div></div></div>`;
+                });
+            } catch (e) { document.getElementById('watch-loadingState').style.display = 'none'; }
+        }
+
+        function watch_toggleFavoritePlaylist(playlistId, event) {
+            event.stopPropagation(); let favs = JSON.parse(localStorage.getItem(`bacflix_fav_playlists_${currentUser}`)) || [];
+            if(favs.includes(playlistId)) favs = favs.filter(id => id !== playlistId); else favs.push(playlistId);
+            localStorage.setItem(`bacflix_fav_playlists_${currentUser}`, JSON.stringify(favs)); watch_applyFilters();
+        }
+
+        async function watch_voteChannel(channelId, type, event) {
+            event.stopPropagation(); const subject = document.getElementById('watch-subject').value; const storageKey = `vote_ch_${channelId}`; const currentVote = localStorage.getItem(storageKey);
+            if (currentVote == type) { alert("لقد قمت بهذا التصويت مسبقاً."); return; } let increment = type; if (currentVote) { increment = type * 2; } localStorage.setItem(storageKey, type);
+            const scoreEl = document.getElementById(`watch-score-ch-${channelId}`); scoreEl.innerText = parseInt(scoreEl.innerText) + increment; event.target.parentElement.querySelectorAll('button').forEach(b => b.className=''); event.target.classList.add(type == 1 ? 'voted-up' : 'voted-down');
+            try { await window.cloudDb.ref(`bacflix_approved_channels/${watch_sanitizePath(subject)}/${channelId}/votes`).transaction((curr) => (curr || 0) + increment); } catch (e) {}
+        }
+
+        async function watch_votePlaylist(playlistId, type, isManual, event) {
+            event.stopPropagation(); const subject = document.getElementById('watch-subject').value; const storageKey = isManual ? `vote_pl_manual_${playlistId}` : `vote_pl_curated_${playlistId}`; const currentVote = localStorage.getItem(storageKey);
+            if (currentVote == type) { alert("لقد قمت بهذا التصويت مسبقاً."); return; } let increment = type; if (currentVote) { increment = type * 2; } localStorage.setItem(storageKey, type);
+            const scoreEl = document.getElementById(`watch-score-pl-${playlistId}`); scoreEl.innerText = parseInt(scoreEl.innerText) + increment; event.target.parentElement.querySelectorAll('button').forEach(b => b.className=''); event.target.classList.add(type == 1 ? 'voted-up' : 'voted-down');
+            const pathType = isManual ? 'bacflix_manual_playlists' : 'bacflix_curated_playlists';
+            try { await window.cloudDb.ref(`${pathType}/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}/${playlistId}/votes`).transaction((curr) => (curr || 0) + increment); } catch (e) {}
+        }
+
+        function watch_showChannelsView() {
+            document.getElementById('watch-favFilterCheckbox').checked = false; document.getElementById('watch-channelsGrid').style.display = 'grid'; document.getElementById('watch-playlistsGrid').style.display = 'none'; document.getElementById('watch-pathArrow').style.display = 'none'; document.getElementById('watch-pathChannel').style.display = 'none'; document.getElementById('watch-backToChannelsBtn').style.display = 'none'; watch_currentTeacherId = null; watch_renderResumeBanner(); watch_renderChannelsGrid(); 
+        }
+
+        function onYouTubeIframeAPIReady() { watch_ytPlayer = new YT.Player('watch-ytplayer', { height: '100%', width: '100%', playerVars: { 'autoplay': 1, 'rel': 0, 'modestbranding': 1, 'origin': window.location.origin }, events: { 'onStateChange': watch_onPlayerStateChange } }); }
+        function watch_togglePlaylist() { const sidebar = document.getElementById('watch-playlist-sidebar-container'); if(sidebar) sidebar.classList.toggle('watch-hidden-playlist'); }
+
+        document.addEventListener('keydown', function(e) {
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return; if (document.getElementById('watch-cinemaModal').style.display !== 'flex' || !watch_ytPlayer || typeof watch_ytPlayer.getPlayerState !== 'function') return;
+            if (e.code === 'Space') { e.preventDefault(); if (watch_ytPlayer.getPlayerState() === 1) watch_ytPlayer.pauseVideo(); else watch_ytPlayer.playVideo(); } 
+            else if (e.code === 'ArrowRight') { watch_ytPlayer.seekTo(watch_ytPlayer.getCurrentTime() + 10, true); } 
+            else if (e.code === 'ArrowLeft') { watch_ytPlayer.seekTo(watch_ytPlayer.getCurrentTime() - 10, true); } 
+            else if (e.code === 'KeyF' || e.key === 'f') { const playerEl = document.getElementById('watch-player-wrapper'); if (!document.fullscreenElement) { playerEl.requestFullscreen?.() || playerEl.webkitRequestFullscreen?.(); } else { document.exitFullscreen?.(); } }
+        });
+
+        async function watch_prepareCinema(playlistId, title, channel, isManualStr, forceIndex = 0, forceTime = 0) {
+            watch_currentPlaylistId = playlistId; watch_currentPlaylistData = { title, channel }; document.getElementById('watch-cinemaTitle').innerText = title; document.getElementById('watch-cinemaModal').style.display = 'flex'; document.body.style.overflow = 'hidden'; document.getElementById('watch-currentEpisodeTitle').innerText = "جاري التحميل..."; document.getElementById('watch-playlist-drawer').innerHTML = ''; 
+            const sidebar = document.getElementById('watch-playlist-sidebar-container'); if(sidebar) sidebar.classList.remove('watch-hidden-playlist'); watch_isChatOpen = false; document.getElementById('watch-aiChatWindow').style.display = 'none'; document.getElementById('watch-chat-messages').innerHTML = `<div class="message bot-msg" dir="auto">أنت تشاهد <b>"${title}"</b> للأستاذ <b>"${channel}"</b>.<br>يمكنك سؤالي عن أي شيء!</div>`; watch_chatHistory = []; 
+            try {
+                let vids = null; if(watch_curatedPlaylists[playlistId] && watch_curatedPlaylists[playlistId].videos) { vids = watch_curatedPlaylists[playlistId].videos; } 
+                else { const subject = document.getElementById('watch-subject').value; const pathType = isManualStr === 'true' ? 'bacflix_manual_playlists' : 'bacflix_curated_playlists'; const snap = await window.cloudDb.ref(`${pathType}/${watch_sanitizePath(currentStream)}/${watch_sanitizePath(subject)}/${playlistId}/videos`).once('value'); if(snap.exists()) vids = snap.val(); }
+                if(!vids || vids.length === 0) { alert("الحلقات غير متوفرة."); watch_closeCinema(); return; }
+                watch_playlistVideos = vids; document.getElementById('watch-playlistCountBadge').innerText = watch_playlistVideos.length; watch_currentVideoIndex = forceIndex || 0; watch_playCurrentVideo(forceTime); watch_renderPlaylistMenu(); 
+            } catch(e) { console.error(e); watch_closeCinema(); }
+        }
+
+        function watch_playCurrentVideo(startTime = 0) {
+            if(!watch_ytPlayer || !watch_playlistVideos[watch_currentVideoIndex]) return;
+            const vid = watch_playlistVideos[watch_currentVideoIndex]; document.getElementById('watch-currentEpisodeTitle').innerText = `${watch_currentVideoIndex + 1}. ${vid.title}`;
+            document.getElementById('watch-prevBtn').disabled = watch_currentVideoIndex === 0; document.getElementById('watch-nextBtn').disabled = watch_currentVideoIndex === watch_playlistVideos.length - 1;
+            const overlay = document.getElementById('watch-nextEpOverlay'); if(overlay) overlay.style.display = 'none'; watch_currentPlaylistData.currentLesson = vid.title;
+            if (watch_ytPlayer.loadVideoById) watch_ytPlayer.loadVideoById({videoId: vid.id, startSeconds: startTime}); watch_updatePlaylistMenuSelection(); 
+        }
+
+        function watch_playNextVideo() { watch_cancelAutoPlay(); if(watch_currentVideoIndex < watch_playlistVideos.length - 1) { watch_currentVideoIndex++; watch_playCurrentVideo(); } }
+        function watch_playPrevVideo() { watch_cancelAutoPlay(); if(watch_currentVideoIndex > 0) { watch_currentVideoIndex--; watch_playCurrentVideo(); } }
+        function watch_cancelAutoPlay() { clearInterval(watch_autoPlayTimer); const overlay = document.getElementById('watch-nextEpOverlay'); if(overlay) overlay.style.display = 'none'; }
+
+        function watch_renderPlaylistMenu() {
+            const drawer = document.getElementById('watch-playlist-drawer'); drawer.innerHTML = ''; let progress = JSON.parse(localStorage.getItem(`bacflix_progress_${currentUser}`)) || {}; let watchedList = progress[watch_currentPlaylistId]?.watched || [];
+            watch_playlistVideos.forEach((vid, index) => {
+                let isWatched = watchedList.includes(vid.id); let checkmark = isWatched ? `<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none" class="text-green-500 ml-1"><polyline points="20 6 9 17 4 12"></polyline></svg>` : '';
+                drawer.innerHTML += `<div id="watch-pl-item-${index}" class="watch-playlist-item" onclick="watch_jumpToVideo(${index})"><span class="font-bold text-xs w-6 text-center text-gray-500 watch-index-num">${index + 1}</span><span class="text-xs truncate flex-1 flex items-center" title="${vid.title}">${vid.title} ${checkmark}</span><span id="watch-pl-badge-${index}" class="text-[10px] bg-white text-red-600 px-1 rounded font-bold hidden shadow-lg shadow-white/50">الآن</span></div>`;
+            });
+            watch_updatePlaylistMenuSelection();
+        }
+
+        function watch_jumpToVideo(index) { watch_cancelAutoPlay(); watch_currentVideoIndex = index; watch_playCurrentVideo(); }
+
+        function watch_updatePlaylistMenuSelection() { watch_playlistVideos.forEach((vid, index) => { const item = document.getElementById(`watch-pl-item-${index}`); const badge = document.getElementById(`watch-pl-badge-${index}`); if (item) { if (index === watch_currentVideoIndex) { item.classList.add('active'); if(badge) badge.style.display = 'block'; item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } else { item.classList.remove('active'); if(badge) badge.style.display = 'none'; } } }); }
+
+        function watch_onPlayerStateChange(event) {
+            if (event && event.data === 0) {
+                watch_markCurrentVideoWatched(); 
+                if (watch_currentVideoIndex < watch_playlistVideos.length - 1) {
+                    const overlay = document.getElementById('watch-nextEpOverlay'); const timerText = document.getElementById('watch-countdownTimer');
+                    if(overlay) { overlay.style.display = 'flex'; let timeLeft = 5; timerText.innerText = timeLeft; watch_autoPlayTimer = setInterval(() => { timeLeft--; timerText.innerText = timeLeft; if(timeLeft <= 0) { clearInterval(watch_autoPlayTimer); watch_playNextVideo(); } }, 1000); }
+                }
+            }
+        }
+
+        function watch_closeCinema() {
+            if(watch_ytPlayer && typeof watch_ytPlayer.stopVideo === 'function') { try { watch_ytPlayer.stopVideo(); } catch(e){} }
+            watch_cancelAutoPlay(); document.getElementById('watch-cinemaModal').style.display = 'none'; document.body.style.overflow = 'auto'; 
+            watch_playlistVideos = []; watch_currentVideoIndex = 0; watch_currentPlaylistId = null; watch_removeAttachment(); watch_isChatOpen = false; document.getElementById('watch-aiChatWindow').style.display = 'none'; watch_renderResumeBanner(); 
+        }
+
+        function watch_toggleChat() { const chatWindow = document.getElementById('watch-aiChatWindow'); watch_isChatOpen = !watch_isChatOpen; chatWindow.style.display = watch_isChatOpen ? 'flex' : 'none'; }
+
+        function watch_initSpeechRecognition() {
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (window.SpeechRecognition) {
+                watch_speechRecognition = new window.SpeechRecognition(); watch_speechRecognition.lang = 'ar-DZ'; watch_speechRecognition.continuous = false; watch_speechRecognition.interimResults = false; let voiceDetected = false; 
+                watch_speechRecognition.onstart = function() { watch_isRecording = true; voiceDetected = false; document.getElementById('watch-mic-btn').classList.add('watch-mic-active'); document.getElementById('watch-chat-input').placeholder = "تحدث الآن..."; };
+                watch_speechRecognition.onresult = function(event) { document.getElementById('watch-chat-input').value += (document.getElementById('watch-chat-input').value ? ' ' : '') + event.results[0][0].transcript; voiceDetected = true; };
+                watch_speechRecognition.onerror = function(e) { watch_stopSpeechRecognition(); }; watch_speechRecognition.onend = function() { watch_stopSpeechRecognition(); if (voiceDetected && document.getElementById('watch-chat-input').value.trim() !== '') { watch_sendChatMessage(); } };
+            } else { document.getElementById('watch-mic-btn').style.display = 'none'; alert("متصفحك لا يدعم الإدخال الصوتي."); }
+        }
+
+        function watch_toggleSpeechRecognition() { if (!watch_speechRecognition) watch_initSpeechRecognition(); if (watch_speechRecognition) { if (watch_isRecording) { watch_speechRecognition.stop(); } else { try { watch_speechRecognition.start(); } catch (e) {} } } }
+        function watch_stopSpeechRecognition() { watch_isRecording = false; document.getElementById('watch-mic-btn').classList.remove('watch-mic-active'); document.getElementById('watch-chat-input').placeholder = "تحدث، اكتب، أو الصق صورة هنا (Ctrl+V)..."; }
+
+        function watch_handleFileSelect(event) {
+            const file = event.target.files[0]; if (!file) return; const reader = new FileReader();
+            reader.onload = (e) => { watch_attachedFileBase64 = e.target.result.split(',')[1]; watch_attachedMimeType = file.type; document.getElementById('watch-file-preview').style.display = 'flex'; document.querySelector('#watch-file-name .fn-text').innerText = file.name; }; reader.readAsDataURL(file);
+        }
+        function watch_removeAttachment() { watch_attachedFileBase64 = null; watch_attachedMimeType = null; document.getElementById('watch-chatFile').value = ''; document.getElementById('watch-file-preview').style.display = 'none'; }
+
+        function watch_sendPromptChip(text) { document.getElementById('watch-chat-input').value = text; watch_sendChatMessage(); }
+
+        document.getElementById('watch-chat-input').addEventListener('paste', function(e) {
+            let items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let index in items) { let item = items[index]; if (item.kind === 'file' && item.type.startsWith('image/')) { e.preventDefault(); let blob = item.getAsFile(); if (!blob) return; const reader = new FileReader(); reader.onload = (event) => { watch_attachedFileBase64 = event.target.result.split(',')[1]; watch_attachedMimeType = blob.type; document.getElementById('watch-file-preview').style.display = 'flex'; document.querySelector('#watch-file-name .fn-text').innerText = "صورة_ملصقة_" + Math.floor(Math.random() * 1000) + ".png"; }; reader.readAsDataURL(blob); break; } }
+        });
+
+        async function watch_sendChatMessage() {
+            const input = document.getElementById('watch-chat-input'); const text = input.value.trim(); const sendBtn = document.getElementById('watch-send-btn');
+            if (!text && !watch_attachedFileBase64) return; sendBtn.disabled = true; sendBtn.innerText = "..."; 
+            let userMsgDisplay = text; if(watch_attachedFileBase64) { userMsgDisplay += `<br><div class="bg-[#333] p-2 rounded text-xs mt-1 border border-[#444] text-gray-300 flex items-center gap-1"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg> تم إرفاق صورة للتمرين</div>`; }
+            watch_appendMessage(userMsgDisplay || `<div class="bg-[#333] p-2 rounded text-xs border border-[#444] text-gray-300">صورة مرفقة</div>`, 'user-msg'); input.value = ''; const loadingMsg = watch_appendMessage('أقوم بالتحليل...', 'bot-msg');
+            const subject = document.getElementById('watch-subject').value; const isChallenge = document.getElementById('watch-challengeModeToggle').checked;
+            let currentTimeInfo = ""; if (watch_ytPlayer && typeof watch_ytPlayer.getCurrentTime === 'function') { let timeInSeconds = Math.floor(watch_ytPlayer.getCurrentTime()); let m = Math.floor(timeInSeconds / 60); let s = timeInSeconds % 60; currentTimeInfo = `\n[تنبيه مخفي: الطالب يطرح السؤال وهو في الدقيقة ${m}:${s < 10 ? '0'+s : s} من الفيديو.]`; }
+
+            let systemPromptText = `أنت مساعد بيداغوجي ذكي في منصة BACFLIX. الطالب يتابع دورة للأستاذ "${watch_currentPlaylistData?.channel}" بعنوان: "${watch_currentPlaylistData?.title}".${currentTimeInfo} الدرس الحالي: "${watch_currentPlaylistData?.currentLesson}". اشرح بدقة تتوافق مع شعبة ${currentStream} ومادة ${subject}. استخدم MathJax للرياضيات. للتحكم ضمن الأكواد: [PAUSE], [PLAY], [SEEK:60], [FULLSCREEN].`;
+            if (isChallenge) { systemPromptText += `\n[تنبيه هام]: الطالب فعّل "وضع التحدي". يمنع إعطاؤه الإجابة المباشرة. وجهه ليستنتج الحل بنفسه.`; }
+
+            let userParts = []; if (text) userParts.push({ text: text }); if (watch_attachedFileBase64) { userParts.push({ inlineData: { mimeType: watch_attachedMimeType, data: watch_attachedFileBase64 } }); watch_removeAttachment(); } watch_chatHistory.push({ role: "user", parts: userParts });
+
+            try {
+                let reply = await fetchFromGemini(watch_chatHistory, systemPromptText); reply = reply.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+                if (reply.includes('[PAUSE]')) { if (watch_ytPlayer && typeof watch_ytPlayer.pauseVideo === 'function') watch_ytPlayer.pauseVideo(); reply = reply.replace('[PAUSE]', ''); }
+                if (reply.includes('[PLAY]')) { if (watch_ytPlayer && typeof watch_ytPlayer.playVideo === 'function') watch_ytPlayer.playVideo(); reply = reply.replace('[PLAY]', ''); }
+                if (reply.includes('[FULLSCREEN]')) { const playerEl = document.getElementById('watch-player-wrapper'); if (playerEl.requestFullscreen) playerEl.requestFullscreen(); else if (playerEl.webkitRequestFullscreen) playerEl.webkitRequestFullscreen(); reply = reply.replace('[FULLSCREEN]', ''); }
+                const seekMatch = reply.match(/\[SEEK:\s*(\d+)\s*\]/i); if (seekMatch) { if (watch_ytPlayer && typeof watch_ytPlayer.seekTo === 'function') watch_ytPlayer.seekTo(parseInt(seekMatch[1]), true); reply = reply.replace(seekMatch[0], ''); }
+                loadingMsg.remove(); watch_chatHistory.push({ role: "model", parts: [{ text: reply }] }); const msgEl = watch_appendMessage(marked.parse(reply), 'bot-msg'); setTimeout(() => { if (window.MathJax) MathJax.typesetPromise([msgEl]).catch(()=>{}); }, 50);
+            } catch (error) { loadingMsg.remove(); watch_chatHistory.pop(); watch_appendMessage("عذراً، حدث خطأ في الاتصال.", 'bot-msg'); } sendBtn.disabled = false; sendBtn.innerText = "إرسال";
+        }
+        function watch_appendMessage(text, className) { const chatBody = document.getElementById('watch-chat-messages'); const msgDiv = document.createElement('div'); msgDiv.className = `message ${className}`; msgDiv.setAttribute('dir', 'auto'); msgDiv.innerHTML = text; chatBody.appendChild(msgDiv); chatBody.scrollTop = chatBody.scrollHeight; return msgDiv; }
+        function watch_handleChatEnter(e) { if (e.key === 'Enter') watch_sendChatMessage(); }
+    </script>
+</body>
+</html>
